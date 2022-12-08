@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>html, css, js의 프론트 기술의 차이점</title>
+
+    <style> /* css 영역 시작 */
+        h1{
+            color:red;
+        }
+        div{
+            font-size:1.5rem;
+        }
+        #js{
+            color:skyblue;
+            font-size:1.8rem;
+        }
+    </style> <!-- css 영역 끝 -->
+
+    <script> /*javascript 영역의 시작*/
+        let name = window.prompt("당신의 이름은?");
+        window.alert(name + "님 대머리 깍아라.");
+    </script> <!--javascript 영역의 끝-->
+</head>
+<body>
+    <h1>html, css, js 프론트 기술의 차이점</h1>
+
+    <div id="html">
+        html은 정적인 언어로 웹 문서의 뼈대를 만들고 컨텐츠를 넣는 역할을 합니다.
+    </div>
+    <div id="css">
+        css는 html태그에 접근하여 스타일을 꾸며주는 역할을 합니다.
+    </div>
+    <div id="js" onclick="this.style.color='blue'">
+        javascript는 사용자의 액션에 반응하여 웹 문서를 동적으로 변화시키는 역할을 합니다.
+    </div>
+
+    <h6>이상진</h6>
+    <div>2022-12-08</div>
+
+</body>
+</html>
