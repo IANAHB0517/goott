@@ -5,6 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>테이블 태그</title>
+    <style>
+      .blank {
+        width: 200px;
+      }
+      .son {
+        width: 100px;
+      }
+      .sonTable {
+        line-height: 1.4;
+      }
+
+      .category {
+        color: rgb(92, 92, 92);
+      }
+
+      table {
+        margin-top: 50px;
+      }
+    </style>
   </head>
   <body>
     <h4>3행 4열 짜리 표를 만들어봅시다.</h4>
@@ -40,6 +59,186 @@
         <td>5</td>
         <td>6</td>
       </tr>
+    </table>
+    <h4>테이블 셀의 병합</h4>
+    <table border="1">
+      <tr>
+        <td colspan="2">1</td>
+        <!-- <td>2</td> -->
+        <td>3</td>
+        <td>4</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+        <td rowspan="2">8</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>10</td>
+        <td>11</td>
+        <!-- <td>12</td> -->
+      </tr>
+    </table>
+
+    <h4>문제 8행 4열 표 만들기</h4>
+    <!--컬럼을 병합할 때는 colspan="합쳐질 컬럼 수", 행을 병합할때는, rowspan="합쳐질 행의 수"를 td 속성에 기입한다.-->
+    <table border="1">
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td colspan="2">3</td>
+        <!-- <td>4</td> -->
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+        <td>8</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td rowspan="3">10</td>
+        <td>11</td>
+        <td>12</td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <!-- <td>14</td> -->
+        <td>15</td>
+        <td>16</td>
+      </tr>
+      <tr>
+        <td>17</td>
+        <!-- <td>18</td> -->
+        <td>19</td>
+        <td>20</td>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td>22</td>
+        <td>23</td>
+        <td>24</td>
+      </tr>
+      <tr>
+        <td>25</td>
+        <td colspan="3">26</td>
+        <!-- <td>27</td>
+        <td>28</td> -->
+      </tr>
+      <tr>
+        <td>29</td>
+        <td>30</td>
+        <td>31</td>
+        <td>32</td>
+      </tr>
+    </table>
+
+    <h4>주소록</h4>
+
+    <table border="1">
+      <caption>
+        주소록
+      </caption>
+      <thead>
+        <th>이름</th>
+        <th>전화번호</th>
+        <th>주소</th>
+        <th>사진</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>둘리</td>
+          <td>010-8888-9999</td>
+          <td>쌍문동</td>
+          <td><img src="./dolly.png" alt="" /></td>
+        </tr>
+        <tr>
+          <td>희동이</td>
+          <td>010-101-9999</td>
+          <td>쌍문동</td>
+          <td><img src="./hi.jpg" alt="" /></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table border="0">
+      <caption>
+        손흥민
+      </caption>
+      <!-- <thead>
+        
+      </thead> -->
+      <tbody class="sonTable">
+        <tr>
+          <td class="category">출생</td>
+          <td>1992. 7. 8., 게자리, 원숭이띠</td>
+          <td rowspan="7" class="blank"></td>
+          <td rowspan="4">
+            <a
+              href="https://search.naver.com/search.naver?where=image&query=%EC%86%90%ED%9D%A5%EB%AF%BC&sm=tab_txc"
+            >
+              <img class="son" src="./son.jpg"
+            /></a>
+          </td>
+        </tr>
+        <tr>
+          <td class="category">나이</td>
+          <td>31세, 만30세</td>
+        </tr>
+        <tr>
+          <td class="category">소속팀</td>
+          <td>
+            <a
+              href="https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%ED%86%A0%ED%8A%B8%EB%84%98%20%ED%99%8B%EC%8A%A4%ED%8D%BC%20FC"
+              >토트넘 홋스퍼 FC
+            </a>
+            (FW 공격수)
+          </td>
+        </tr>
+        <tr>
+          <td class="category">가족</td>
+          <td>
+            아버지
+            <a
+              href="https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&pkid=1&os=191738&qvt=0&query=%EC%86%90%EC%9B%85%EC%A0%95"
+              >손웅정</a
+            >
+            , 형
+            <a
+              href="https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&pkid=1&os=479977&qvt=0&query=%EC%86%90%ED%9D%A5%EC%9C%A4"
+              >손흥윤</a
+            >
+          </td>
+        </tr>
+        <tr>
+          <td class="category">데뷔</td>
+          <td>2010년 함부르크 SV 입단</td>
+        </tr>
+        <tr>
+          <td class="category">관련정보</td>
+          <td>
+            프리미어리그 -
+            <a
+              href="https://www.premierleague.com/players/4999/Son-Heung-Min/overview"
+            >
+              손흥민 경기 성적</a
+            >
+          </td>
+        </tr>
+        <tr>
+          <td class="category">사이트</td>
+          <td>
+            <a
+              href="https://www.tottenhamhotspur.com/teams/men/players/heung-min-son/"
+            >
+              공식홈페이지</a
+            >, <a href="https://www.instagram.com/hm_son7/">인스타그램</a>,
+            <a href="https://www.facebook.com/HeungMinSonOfficial/">페이스북</a>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </body>
 </html>
