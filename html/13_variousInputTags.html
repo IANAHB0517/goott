@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>다양한 입력 요소들</title>
+    <script>
+      function changeSal(obj) {
+        console.log(obj.value);
+        document.getElementById("hopeSal").innerHTML = obj.value;
+      }
+    </script>
+  </head>
+  <body>
+    <form action="">
+      <div>
+        이름 :
+        <input type="text" name="userName" placeholder="이름을 입력하세요" />
+        <!-- 텍스트 문자영을 입력 받을 수 있는 도구-->
+        <!--name 속성은 Back-End를 위해 태그에게 붙여주는 이름-->
+      </div>
+      <div>
+        비밀번호 :
+        <input type="password" name="userPassword" placeholder="암호입력" />
+        <!--암호 같은 비밀 문자열을 입력 받는 도구-->
+      </div>
+      <div>
+        메모 :
+        <textarea
+          name="memo"
+          id="memoe"
+          cols="80"
+          rows="10"
+          placeholder="불만 사항을 입력하세요"
+        ></textarea>
+        <!--대량의 문자열을 입력 받을 수 있는 도구-->
+      </div>
+      <div>
+        좋아하는 음식 :
+        <input type="checkbox" name="favFood" value="jja" /> 짜장면
+        <input type="checkbox" name="favFood" value="sam" /> 삼겹살
+        <input type="checkbox" name="favFood" value="rice" /> 쌀국수
+        <input type="checkbox" name="favFood" value="kim" /> 김치찌개
+        <!--다중 선택 가능-->
+      </div>
+      <div>
+        취미 :
+        <input type="checkbox" name="hobby" value="exe" /> 운동
+        <input type="checkbox" name="hobby" value="sleep" /> 낮잠
+        <input type="checkbox" name="hobby" value="read" /> 독서
+      </div>
+      <div>
+        성별 :
+        <input type="radio" name="gender" value="fe" /> 여성
+        <input type="radio" name="gender" value="ma" /> 남성
+        <!--같은 name 값을 가진 항목중 단일 선택 가능-->
+      </div>
+      <div>
+        통신사 :
+        <select name="comm" id="">
+          <option value="skt">SKT</option>
+          <option value="kt">KT</option>
+          <option value="lg">LG</option>
+          <!--value 값을 생략 가능 value 값을 생략하면 태그 안의 내용이 전송된다-->
+        </select>
+      </div>
+
+      <div>
+        <input type="hidden" name="hid" value="10" />
+        <!--사용자의 눈에는 보이지 않지만, 데이터를 전송할 필요가 있을때 사용하는 태그-->
+      </div>
+      <div>생년 월일 : <input type="date" name="birth" /></div>
+      <div>
+        이메일 :
+        <input type="email" name="email" placeholder="이메일을 입력하세요" />
+        <!--이메일 형식인지 체크해주는 형식(진위여부를 확인 불가)-->
+      </div>
+      <div>파일업로드 : <input type="file" name="upFile" /></div>
+      <div>좋아하는 색상 : <input type="color" name="favoritColor" /></div>
+      <div>나이: <input type="number" name="age" /></div>
+      <div>
+        희망연봉 :
+        <input
+          type="range"
+          min="3000"
+          max="30000"
+          name="annsal"
+          onchange="changeSal(this);"
+        />
+        <!-- this는 현재 객체를 의미함 -->
+        <span id="hopeSal"></span>만원
+      </div>
+      <button type="submit">전송</button>
+    </form>
+  </body>
+</html>
