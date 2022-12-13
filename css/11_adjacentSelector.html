@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>인접 형제(동생) 선택자</title>
+    <style>
+      h1 + p {
+        /*h1 태그의 이후에 나오는 p 태그중 h1 바로 뒤의 p 태그만 선택*/
+        background-color: blueviolet;
+      }
+
+      p + h4 + p {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Adjacent 선택자</h1>
+    <p>Adjacent 선택자로 스타일을 꾸미면 어떻게 될까요</p>
+    <div>
+      <p>div내부의 p태그(div의 자식)</p>
+      <p>div내부의 p태그(div의 자식)</p>
+      <p>div내부의 p태그(div의 자식)</p>
+      <h3>
+        <p>div내부내부의 p태그(h3태그의 자식, div의 자손)</p>
+      </h3>
+    </div>
+    <p>div 외부의 p태그1</p>
+    <p>div 외부의 p태그2</p>
+    <h4>
+      div 외부의 h4 태그(div와 동위이긴 하지만 p 태그가 아니라서 적용 X)
+      <p>h4 내부의 p태그 이것은 동위가 아니라서 적용 X</p>
+    </h4>
+    <p>div 외부 p태그3</p>
+
+    <p></p>
+    <h4></h4>
+    <p>가나다</p>
+    <p></p>
+    <h4></h4>
+    <p>라마바</p>
+    <p></p>
+    <h3></h3>
+    <p>사아자</p>
+  </body>
+</html>

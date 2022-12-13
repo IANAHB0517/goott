@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>일반 동위(이웃) 선택자</title>
+    <style>
+      div ~ p {
+        background-color: blue;
+        /* (div 이후의 동위 태그만 선택) */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sibling 선택자</h1>
+    <p>Sibling 선택자로 스타일을 꾸미면 어떻게 될까요</p>
+    <div>
+      <p>div내부의 p태그(div의 자식)</p>
+      <p>div내부의 p태그(div의 자식)</p>
+      <p>div내부의 p태그(div의 자식)</p>
+      <h3>
+        <p>div내부내부의 p태그(h3태그의 자식, div의 자손)</p>
+      </h3>
+    </div>
+    <p>div 외부의 p태그1</p>
+    <p>div 외부의 p태그2</p>
+    <h4>
+      div 외부의 h4 태그(div와 동위이긴 하지만 p 태그가 아니라서 적용 X)
+      <p>h4 내부의 p태그 이것은 동위가 아니라서 적용 X</p>
+    </h4>
+    <p>div 외부 p태그3</p>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>의사(가상) 클래스</title>
+    <style>
+      li:hover {
+        /*마우스를 올릴 경우*/
+        background-color: yellow;
+      }
+      a:visited {
+        /*방문했던 페이지*/
+        color: #f00;
+      }
+      h1::first-letter {
+        /*h1 태그의 첫번째 문자*/
+        font-size: 15px;
+      }
+
+      h1 + ul > li:nth-child(odd) {
+        border: 1px dotted blue;
+      }
+
+      input:checked + label {
+        color: red;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Web Front 기술</h1>
+    <ul>
+      <li><a href="https://namu.wiki/w/HTML">HTML</a></li>
+      <li><a href="https://namu.wiki/w/CSS">CSS</a></li>
+      <li><a href="https://namu.wiki/w/JAVASCRIPT">JavaScript</a></li>
+      <li><a href="https://namu.wiki/w/JAVASCRIPT">jQuery</a></li>
+      <li><a href="https://namu.wiki/w/JAVASCRIPT">Ajax</a></li>
+    </ul>
+
+    <ul>
+      <li>
+        <input type="radio" name="room" id="basic" checked />
+        <label for="basic">기본형(최대 2인)</label>
+      </li>
+      <li>
+        <input type="radio" name="room" id="family" />
+        <label for="family">가족형(최대 8인)</label>
+      </li>
+    </ul>
+  </body>
+</html>
