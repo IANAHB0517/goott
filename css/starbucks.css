@@ -1,0 +1,19 @@
+body {
+  font-family: "nbg", "맑은 고딕", HelveticaNeue, DroidSans, Sans-serif,
+    Helvetica;
+}
+ul {
+  list-style-type: none;
+  display: flex;
+}
+
+.headMenu {
+  text-transform: capitalize;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navBar {
+  display: flex;
+  text-transform: uppercase;
+}
