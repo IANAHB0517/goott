@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Display 속성</title>
+    <style>
+      ul {
+        list-style-type: none;
+        background-color: aliceblue;
+      }
+      ul li {
+        display: inline-block;
+        padding: 40px;
+      }
+
+      li a {
+        text-decoration: none;
+        color: black;
+        text-transform: uppercase;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      li:hover a {
+        color: #fff;
+        background-color: yellow;
+      }
+
+      #big {
+        display: none;
+      }
+    </style>
+    <script>
+      function sizeUp() {
+        document.getElementById("big").style.display = "block";
+      }
+      function sizeDown() {
+        document.getElementById("big").style.display = "none";
+      }
+    </script>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="#">menu1</a></li>
+        <li><a href="#">menu2</a></li>
+        <li><a href="#">menu3</a></li>
+        <li><a href="#">menu4</a></li>
+      </ul>
+    </nav>
+
+    <div class="smallimg">
+      <img
+        src="../html/img/son.jpg"
+        width="100=px"
+        onmouseover="sizeUp();"
+        onmouseout="sizeDown();"
+        alt=""
+      />
+    </div>
+    <div id="big">
+      <img src="../html/img/son.jpg" width="300=px" alt="" />
+    </div>
+  </body>
+</html>
