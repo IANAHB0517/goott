@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>clear 속성을 사용한 예제</title>
+    <style>
+      .left {
+        width: 150px;
+        height: 150px;
+        text-align: center;
+        line-height: 150px;
+        background-color: violet;
+        float: left;
+      }
+      .right {
+        width: 150px;
+        height: 150px;
+        text-align: center;
+        line-height: 150px;
+        background-color: violet;
+        float: right;
+      }
+      p {
+        clear: both;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>clear 속성을 이용한 float 문제 해결 1</h1>
+    <div>
+      <div class="left">왼쪽 끝 요소</div>
+      <div class="right">오른쪽 끝 요소</div>
+    </div>
+
+    <p>이 글자는 제대로 나오게 출력하고 싶어요!</p>
+  </body>
+</html>

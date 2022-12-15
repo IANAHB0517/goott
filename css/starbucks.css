@@ -1,19 +1,70 @@
 body {
   font-family: "nbg", "맑은 고딕", HelveticaNeue, DroidSans, Sans-serif,
     Helvetica;
+  height: 500vh;
+  background-color: #f6f5ef;
 }
 ul {
   list-style-type: none;
   display: flex;
 }
+.headMenu ul li {
+  margin-right: 15px;
+}
+.headMenu ul li:hover {
+  text-decoration: underline;
+}
+.headMenu ul li:last-of-type {
+  margin-right: 65px;
+}
+.navBar ul li {
+  /* margin-right: 35px; */
+  padding: 15px 18px 30px 18px;
+  /* padding-top: 10px;
+  padding-bottom: 30px; */
+}
+.navBar ul li:hover {
+  color: #20bd42;
+  background-color: #373838;
+}
+nav {
+  margin: 2vw;
+  white-space: nowrap;
+  height: 15vh;
+}
+.nav {
+  text-align: center;
+  width: 90%;
+  position: fixed;
+  left: 5%;
+  display: grid;
+  grid-template-columns: minmax(50px, 150px) 1fr;
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.icon {
+  align-items: center;
+  justify-items: center;
+  grid-column: 1/2;
+  grid-row: 1/3;
+}
 
 .headMenu {
+  font-size: 0.7rem;
+  grid-column: 2/3;
+  grid-row: 1/2;
   text-transform: capitalize;
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 3vh;
 }
 
 .navBar {
+  font-size: 0.8rem;
+  grid-column: 2/3;
+  grid-row: 2/3;
   display: flex;
   text-transform: uppercase;
+  display: flex;
+  justify-content: center;
 }
