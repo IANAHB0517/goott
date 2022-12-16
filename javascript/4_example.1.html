@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>프로그래밍 연습1</title>
+    <script>
+      window.onload = function () {
+        //문1) 가로가 3cm, 높이가 6cm인 직사각형의 넓이를 구해 출력한 프로그램을 만드세요.
+        // 1) 가로 값과 세로 값을 저장
+        // 2) 넓이는 가로 * 세로 공식을 이용하여 결과를 구하고 넓이 값을 저장
+        //3) 화면에 넓이 값을 출력
+        // a * b = ab
+        let width = window.prompt("가로값"),
+          height = window.prompt("세로값"),
+          area = 0;
+
+        area = width * height;
+        // let ;
+        // let area = width * height;
+        // document.getElementById("result").innerHTML = area;
+        document.write("<div>" + area + "cm<sup>2</sup>" + "</div>");
+
+        //문2) 반지름이 5cm인 원의 sg원 넓이를 구하고 출력하세요.
+        let radius = window.prompt("반지름"),
+          circleArea = 0;
+
+        circleArea = radius * radius * Math.PI;
+        document.write("<div>" + circleArea + "cm<sup>2</sup>" + "</div>");
+
+        //문3) num1이라는 변수에 3이 대입되어 있고, num2라는 변수에 5라는 값이 있는데,
+        //두 변수의 값을 바꾸어 저장되도록 하고, 출력하세요.
+
+        let num1 = 3,
+          num2 = 5,
+          num3 = 0;
+
+        num3 = num1;
+        num1 = num2;
+        num2 = num3;
+        //1) num1의 값을 num3에 복사
+        //2) num2의 값을 num1에 복사
+        //3) num3의 값을 num2에 복사
+        document.write("<div>" + num1 + "</div>" + "<div>" + num2 + "</div>");
+
+        //문4) 밑변과 높이를 유저에게 입력받아, 삼각형의 넓이를 구해 출려하는 프로그램을 만드세요.
+
+        //삼각형의 넓이 = 밑변 * 높이 / 2
+        //1)밑변, 높이, 넓이 저장할 변수 선언
+        //2)밑변과 높이를 유저에게 각각 입력 받는다.
+        //3)공식을 이용하여 삼각형 넓이를 구해 저장한
+        //4)삼각형 넓이를 출력한다.
+
+        let tWidth = 0,
+          tHeight = 0,
+          tArea = 0;
+
+        tWidth = Number(window.prompt("삼각형의 밑변 입력", "0"));
+        tHeight = Number(window.prompt("삼각형의 넓이 입력", "0"));
+
+        tArea = (tWidth * tHeight) / 2;
+        document.write("삼각형의 넓이는 : " + tArea + "cm²");
+      };
+    </script>
+  </head>
+  <body>
+    <!-- <h1 id="result"></h1> -->
+  </body>
+</html>
