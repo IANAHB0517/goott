@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>if ~ else if ~ else문</title>
+    <script>
+      //사용자에게 이름, 국어, 영어, 수학 점수를 입력받아 총점, 평균을 구하고, 학점을 구해 출력하는 프로그램을 작성하세요.
+      //단 평균이 90점 이상 100점 이하면 A, 80점 이상 90점 미만이면 B 70점 이상 80점 미만 이면 C, 60점 이상 70점 미만이면 D, 나머지는 F학점이다.
+
+      let name = window.prompt("이름을 입력하세요", "");
+      let kor = Number(window.prompt("국어점수를 입력하세요"));
+      let math = Number(window.prompt("수학점수를 입력하세요"));
+      let eng = Number(window.prompt("영어점수를 입력하세요"));
+      let tot = kor + math + eng;
+      let avg = Math.round(tot / 3);
+      let grade = "";
+
+      if (avg >= 90 && avg < 100) {
+        grade = "A";
+      } else if (avg >= 80 && avg < 90) {
+        grade = "B";
+      } else if (avg >= 70 && avg < 80) {
+        grade = "C";
+      } else if (avg >= 60 && avg < 70) {
+        grade = "D";
+      } else {
+        grade = "F";
+      }
+
+      document.write(`당신의 총점은 ${tot}점 학점은 ${grade}입니다`);
+    </script>
+  </head>
+  <body></body>
+</html>

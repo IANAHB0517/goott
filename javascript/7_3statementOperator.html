@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3항 연산자</title>
+    <script>
+      //3항 연산자는 조건식을 비교하여 참일 때와 거짓일때 어떤 값을 다르게 변수에 대입 할 때 사용 if문을 사용하는 것 보다 수월해진다
+      let a = 10;
+      //(조건식)? A : B ; 조건식을 비교하여 조건식이 참이면 A를 수행, 조건식이 거짓이면 B를 수행
+      console.log(a > 5 ? "크다" : "작다"); // "크다"
+
+      // if문과의 차이점
+      // 3항 연산자는 조건식을 비교하여 어떤 값을 대입할 때 유리
+      //간단한 대입을 할 때만 사용 복잡한 부분을 수행하기에는 if 문이 더 낫다
+
+      let result = ""; // 문자열을 넣어줄 변수로 선언 - 문자열의 초기값 변수의 데이터 타입을 정의
+
+      //   result = a % 2 == 0 ? "짝수" : "홀수";
+
+      if (a % 2 === 0) {
+        // 조건식이 참일 때 수행될 문자
+        result = "짝수";
+      } else {
+        // 조건식이 거짓일 때 수행될 문장
+        result = "홀수";
+      }
+      console.log(result);
+    </script>
+  </head>
+  <body></body>
+</html>

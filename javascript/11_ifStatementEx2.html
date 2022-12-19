@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>점심 뭐 먹지...?</title>
+    <script>
+      //추천 메뉴를 출력하는 프로그램 작성
+      // 1부터 7까지 랜덤한 수를 출력하고, 그 수가 1이면
+      // 1 : 짜장면
+      // 2 : 김치찌개
+      // 3 : 돈까스
+      // 4 : 햄버거
+      // 5 : 부대찌개
+      // 6 : 쌀국수
+      // 7 : 라면 + 김밥
+
+      // 0) 필요한 변수 선언
+      let randNum = 0,
+        foodName = "",
+        foodImg = "";
+      // 1) 1 ~ 7 까지의 랜덤한 정수를 구한다.
+      // Math.floor = 소수점 이하 버림 해주는 함수
+      randNum = Math.floor(Math.random() * 7 + 1);
+
+      // 2) 1번에서 나온 랜덤한 수가 어떤 음식이지 비교 판단한다.
+      if (randNum == 1) {
+        foodName = "짜장면";
+        foodImg = "<img src='img/jja.jpg'/>";
+      } else if (randNum == 2) {
+        foodName = "김치찌개";
+        foodImg = "<img src='img/kim.jpg'/>";
+      } else if (randNum == 3) {
+        foodName = "돈까스";
+        foodImg = "<img src='img/don.jpg'/>";
+      } else if (randNum == 4) {
+        foodName = "햄버거";
+        foodImg = "<img src='img/ham.jpg'/>";
+      } else if (randNum == 5) {
+        foodName = "부대찌개";
+        foodImg = "<img src='img/bu.jpg'/>";
+      } else if (randNum == 6) {
+        foodName = "쌀국수";
+        foodImg = "<img src='img/ssal.jpg'/>";
+      } else {
+        foodName = "라면 + 김밥";
+        foodImg = "<img src='img/la.jpg'>";
+      }
+
+      document.write(`오늘의 점심메뉴는 ${foodName}(으)로 하시죠`);
+      document.write(foodImg);
+
+      // 3) 음식을 출력한다.
+    </script>
+    <style>
+      img {
+        width: 300px;
+        /* height: 100px; */
+      }
+    </style>
+  </head>
+  <body>
+    추천
+  </body>
+</html>

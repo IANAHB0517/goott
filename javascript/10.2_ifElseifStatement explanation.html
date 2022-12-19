@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>if ~ else if ~ else문</title>
+    <script>
+      //사용자에게 이름, 국어, 영어, 수학 점수를 입력받아 총점, 평균을 구하고, 학점을 구해 출력하는 프로그램을 작성하세요.
+      //단 평균이 90점 이상 100점 이하면 A, 80점 이상 90점 미만이면 B 70점 이상 80점 미만 이면 C, 60점 이상 70점 미만이면 D, 나머지는 F학점이다.
+
+      let stuName = window.prompt("이름을 입력하세요", "");
+      let kor = Number(window.prompt("국어점수를 입력하세요", "0"));
+      let math = Number(window.prompt("수학점수를 입력하세요", "0"));
+      let eng = Number(window.prompt("영어점수를 입력하세요", "0"));
+
+      console.log(stuName, kor, eng, math);
+      //2) 총점,평균을 구한다. //코드 블럭 밖에서 선언된 변수는 코드블럭의 안쪽이나 바깥쪽 모두 사용가능 하다 (전역변수)
+      let tot = kor + math + eng;
+      let avg = Math.round(tot / 3);
+      let grade = "";
+
+      //3) 학점을 구한다
+      // 중괄호 코드 블럭 안에서 생선된 변수는 코드 블럭 안에서 밖에 사용하지 못한다. (지역변수)
+      if (avg >= 90 && avg <= 100) {
+        grade = "A";
+      } else if (avg >= 80 && avg < 90) {
+        grade = "B";
+      } else if (avg >= 70 && avg < 80) {
+        grade = "C";
+      } else if (avg >= 60 && avg < 70) {
+        grade = "D";
+      } else {
+        grade = "F";
+      }
+      let output = `<table class="score"><tr><td>이름</td><td>국어</td><td>영어</td><td>수학</td><td>총점</td><td>평균</td><td>학점</td></tr><tr><td>${stuName}</td><td>${kor}</td><td>${eng}</td><td>${math}</td><td>${tot}</td><td>${avg}</td><td>${grade}</td></tr></table>`;
+      document.write(output);
+    </script>
+    <style>
+      table,
+      tr,
+      td {
+        border-collapse: collapse;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body></body>
+</html>
