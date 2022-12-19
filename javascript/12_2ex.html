@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>switch case</title>
+    <script>
+      let score = window.prompt("점수를 입력하세요", "70"),
+        grade = "";
+
+      if (score > 80 && score <= 100) {
+        grade = "상";
+      } else if (score >= 50 && score <= 79) {
+        grade = "중";
+      } else if (score < 50 && score >= 0) {
+        grade = "하";
+      } else {
+        window.alert("잘못된 점수입니다!");
+      }
+
+      let result = "";
+      if (score > 100 || score < 0) {
+        window.alert("잘못된 점수입니다!");
+      } else if (score >= 80 && score <= 100) {
+        result = "상";
+      } else if (score >= 50 && score < 80) {
+        result = "중";
+      } else if (score < 50 && score >= 0) {
+        result = "하";
+      }
+
+      // switch (score) {
+      //     case (score > 80 && score <= 100) :
+      //         grade = "상"
+      //         break;
+      //         case (score > 50 && score <= 79) :
+      //             grade = "중"
+      //         break;
+      //         case (score < 50) :
+      //         grade = "하"
+      //         break;
+      //         default:
+      //             window.alert("잘못된 점수입니다!")
+      //             break;
+      //         }
+
+      document.write(grade);
+      document.write(`점수는 ${score}이고, 등급은 ${result}입니다`);
+    </script>
+  </head>
+  <body></body>
+</html>

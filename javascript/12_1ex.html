@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ifExStatement</title>
+    <script>
+      // 1)
+
+      let height = Number(window.prompt("나의 키는?", "120cm")),
+        weight = Number(window.prompt("나의 몸무게는?", "50kg"));
+
+      height /= 100;
+
+      let BMI = weight / (height * height),
+        BmiLevel = "0";
+
+      // console.log(BMI);
+      // 2)
+      if (BMI < 18.5) {
+        BmiLevel = "저체중";
+      } else if (BMI >= 18.5 && BMI <= 22.9) {
+        BmiLevel = "정상";
+      } else if (BMI >= 23 && BMI <= 24.9) {
+        BmiLevel = "위험 체중";
+      } else if (BMI >= 25 && BMI <= 29.9) {
+        BmiLevel = "1단계 비만";
+      } else if (BMI >= 30) {
+        BmiLevel = "고도비만";
+      }
+
+      // 3)
+      document.write(`bmi 지수 : ${BMI}, 결과는 : ${BmiLevel} 입니다`);
+    </script>
+  </head>
+  <body></body>
+</html>

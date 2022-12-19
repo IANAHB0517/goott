@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EX 4</title>
+    <script>
+      let userChoice = window.prompt(
+          "가위 = 1, 바위 = 2, 보 = 3 중에 고르세요"
+        ),
+        comChoice = Math.floor(Math.random() * 3 + 1),
+        result = "";
+
+      if (userChoice == comChoice) {
+        result = "비겼습니다.";
+      } else if (
+        (userChoice == 1 && comChoice == 3) ||
+        (userChoice == 2 && comChoice == 1) ||
+        (userChoice == 3 && comChoice == 2)
+      ) {
+        result = "이겼습니다.";
+      } else {
+        result = "졌습니다.";
+      }
+
+      console.log(userChoice, comChoice);
+      document.write(`당신이 ${result}`);
+    </script>
+  </head>
+  <body></body>
+</html>

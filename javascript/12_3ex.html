@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EX 3</title>
+    <script>
+      let name = window.prompt("당신의 이름을 입력하세요"),
+        kor = Number(window.prompt("당신의 국어 점수를 입력하세요")),
+        eng = Number(window.prompt("당신의 영어 점수를 입력하세요")),
+        math = Number(window.prompt("당신의 수학 점수를 입력하세요")),
+        tot = kor + eng + math,
+        avg = Math.floor(tot / 3),
+        result = 0;
+      grade = "";
+
+      result = Math.floor((avg - 60) / 10);
+      console.log(result);
+
+      switch (result) {
+        case 4:
+        case 3:
+          grade = "A";
+          break;
+        case 2:
+          grade = "B";
+          break;
+        case 1:
+          grade = "C";
+          break;
+        case 0:
+          grade = "D";
+          break;
+
+        default:
+          grade = "F";
+          break;
+      }
+
+      console.log(kor, eng, math, tot, avg);
+
+      document.write(
+        `당신의 총점은 ${tot} 평균은 ${avg} 학점은 ${grade}입니다`
+      );
+
+      // switch (true) {
+      //     case (avg > 89):
+      //         grade = "A"
+      //         break;
+      //     case (avg > 79):
+      //         grade = "B"
+      //         break;
+      //     case (avg > 69):
+      //         grade = "C"
+      //         break;
+      //     case (avg > 59):
+      //         grade = "D"
+      //         break;
+
+      //     default:
+      //     grade = "F"
+      //         break;
+      // }
+    </script>
+  </head>
+  <body></body>
+</html>

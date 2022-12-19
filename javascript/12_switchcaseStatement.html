@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>점심 뭐 먹지...?</title>
+    <title>점심 뭐 먹지...?(switch case 문 활용)</title>
     <script>
       //추천 메뉴를 출력하는 프로그램 작성
       // 1부터 7까지 랜덤한 수를 출력하고, 그 수가 1이면
@@ -25,27 +25,42 @@
       randNum = Math.floor(Math.random() * 7 + 1);
 
       // 2) 1번에서 나온 랜덤한 수가 어떤 음식이지 비교 판단한다.
-      if (randNum == 1) {
-        foodName = "짜장면";
-        foodImg = "img/jja.jpg";
-      } else if (randNum == 2) {
-        foodName = "김치찌개";
-        foodImg = "img/kim.jpg";
-      } else if (randNum == 3) {
-        foodName = "돈까스";
-        foodImg = "img/don.jpg";
-      } else if (randNum == 4) {
-        foodName = "햄버거";
-        foodImg = "img/ham.jpg";
-      } else if (randNum == 5) {
-        foodName = "부대찌개";
-        foodImg = "img/bu.jpg";
-      } else if (randNum == 6) {
-        foodName = "쌀국수";
-        foodImg = "img/ssal.jpg";
-      } else {
-        foodName = "라면 + 김밥";
-        foodImg = "img/la.jpg";
+      switch (randNum) {
+        case 1:
+          foodName = "짜장면";
+          foodImg = "img/jja.jpg";
+          break; // 해당 switch 블럭을 빠져나가게 한다.
+
+        case 2:
+          foodName = "김치찌개";
+          foodImg = "img/kim.jpg";
+          break;
+
+        case 3:
+          foodName = "돈까스";
+          foodImg = "img/don.jpg";
+          break;
+
+        case 4:
+          foodName = "햄버거";
+          foodImg = "img/ham.jpg";
+          break;
+
+        case 5:
+          foodName = "부대찌개";
+          foodImg = "img/bu.jpg";
+          break;
+
+        case 6:
+          foodName = "쌀국수";
+          foodImg = "img/ssal.jpg";
+          break;
+
+        default: // 위의 경우가 모두 아니라면 출력
+          foodName = "라면 + 김밥";
+          foodImg = "img/la.jpg";
+
+          break;
       }
     </script>
     <style>
