@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>practice</title>
+    <script>
+      window.onload = function () {
+        document.getElementById("star").innerHTML = star;
+        document.getElementById("triangle").innerHTML = triangle;
+        document.getElementById("reverseTriangle").innerHTML = reverseTriangle;
+        document.getElementById("table").innerHTML = table;
+        document.getElementById("pera").innerHTML = pera;
+      };
+
+      let star = "";
+      for (let j = 0; j < 5; j++) {
+        for (let i = 0; i < 5; i++) {
+          star += "★";
+        }
+        star += "<br>";
+      }
+
+      let cnt = 0;
+      let table = "<table>";
+
+      for (let i = 0; i < 4; i++) {
+        table += `<tr><td>${cnt++}</td><td>${cnt++}</td><td>${cnt++}</td></tr>`;
+      }
+      table += "</table>";
+
+      let triangle = "";
+      let j = 0;
+      for (let j = 0; j < 6; j++) {
+        for (let i = 0; i < j; i++) {
+          triangle += "★";
+        }
+        triangle += "<br>";
+      }
+
+      let reverseTriangle = "";
+      let reverseJ = 5;
+      for (let j = 5; reverseJ > 0; reverseJ--) {
+        for (let i = 0; i < reverseJ; i++) {
+          reverseTriangle += "★";
+        }
+        reverseTriangle += "<br>";
+      }
+
+      //   let b = 0;
+      //   let w = 5;
+      //   let pera = "";
+      //   for (let b = 0; b < 5; b++) {
+      //     for (w; b < 2; w--) {
+      //       pera += "☆";
+      //     }
+      //     for (let b = 0; b < b; b++) {
+      //       pera += "★";
+      //     }
+
+      //     pera += "<br>";
+      //   }
+
+      let oddSum2 = 0,
+        evenSum2 = 0;
+      for (let i = 0; i < 101; i++) {
+        switch (i % 2) {
+          case 0:
+            evenSum2 += i;
+            break;
+
+          default:
+            oddSum2 += i;
+            break;
+        }
+      }
+      document.write(
+        `if 문을 빼고 구한 짝수합은 ${evenSum2},홀수합은 ${oddSum2}입니다<br>`
+      );
+
+      let oddSum3 = 0,
+        evenSum3 = 0;
+      for (let i = 1; i < 100; i) {
+        oddSum3 += i++;
+        evenSum3 += i++;
+      }
+      document.write(
+        `if 문을 빼고 구한 짝수합은 ${evenSum3},홀수합은 ${oddSum3}입니다`
+      );
+    </script>
+  </head>
+  <body>
+    <div id="star"></div>
+    <hr />
+    <div id="table"></div>
+    <hr />
+    <div id="triangle"></div>
+    <hr />
+    <div id="reverseTriangle"></div>
+    <hr />
+    <div id="pera"></div>
+    <hr />
+  </body>
+</html>
