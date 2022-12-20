@@ -6,33 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EX 3</title>
     <script>
-      let name = window.prompt("당신의 이름을 입력하세요"),
+      let stuName = window.prompt("당신의 이름을 입력하세요"),
         kor = Number(window.prompt("당신의 국어 점수를 입력하세요")),
         eng = Number(window.prompt("당신의 영어 점수를 입력하세요")),
         math = Number(window.prompt("당신의 수학 점수를 입력하세요")),
         tot = kor + eng + math,
-        avg = Math.floor(tot / 3),
-        result = 0;
-      grade = "";
+        avg = Math.round((tot / 3) * 100) * 0.01, // 소수점 둘째 자리에서 반올림
+        grade = "";
 
-      result = Math.floor((avg - 60) / 10);
-      console.log(result);
-
-      switch (result) {
-        case 4:
-        case 3:
+      switch (Math.floor(avg / 10)) {
+        case 10:
+        case 9:
           grade = "A";
           break;
-        case 2:
+        case 8:
           grade = "B";
           break;
-        case 1:
+        case 7:
           grade = "C";
           break;
-        case 0:
+        case 6:
           grade = "D";
           break;
-
         default:
           grade = "F";
           break;
@@ -64,6 +59,7 @@
       // }
 
       let output = `<table class="score"><tr><td>이름</td><td>국어</td><td>영어</td><td>수학</td><td>총점</td><td>평균</td><td>학점</td></tr><tr><td>${stuName}</td><td>${kor}</td><td>${eng}</td><td>${math}</td><td>${tot}</td><td>${avg}</td><td>${grade}</td></tr></table>`;
+
       document.write(output);
     </script>
     <style>

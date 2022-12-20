@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EX 4</title>
+    <script>
+      let win = 0,
+        draw = 0,
+        lose = 0; // 전역 변수로 함수를 실행 할 때 마다 증가된 값이 저장된다
+      function gameStart() {
+        // let win = 0,
+        //   draw = 0,
+        //   lose = 0; 지역 변수로 함수를 실행 할 때마다 초기화 된다
+        let users = Number(document.getElementById("userSelectVal").value); //인풋요소는 거의 문자열로 들어 오기때문에 Number로 바꿔주어야 한다.
+
+        console.log(users);
+
+        let computers = Math.floor(Math.random() * 3) + 1;
+        //-------------------------------------- max  min
+        console.log(computers);
+
+        let userImg = "",
+          comImg;
+
+        switch (users) {
+          case 1:
+            userImg = "<img src='img/scissors.png'>";
+            break;
+          case 2:
+            userImg = "<img src='img/rock.png'>";
+            break;
+          default:
+            userImg = "<img src='img/papper.png'>";
+            break;
+        }
+
+        switch (computers) {
+          case 1:
+            comImg = "<img src='img/scissors.png'>";
+            break;
+          case 2:
+            comImg = "<img src='img/rock.png'>";
+            break;
+          default:
+            comImg = "<img src='img/papper.png'>";
+            break;
+        }
+        document.getElementById("user").innerHTML = userImg;
+        document.getElementById("computer").innerHTML = comImg;
+        let result = "";
+
+        if (users == computers) {
+          result = "비겼다."; //비긴경우
+          draw++;
+        } else if (
+          (users == 1 && computers == 3) ||
+          (users == 2 && computers == 1) ||
+          (users == 3 && computers == 2)
+        ) {
+          //유저가 이긴경우
+          result = "이겼다.";
+          win++;
+        } else {
+          // 진 경우
+          result = "졌다.";
+          lose++;
+        }
+
+        document.getElementById("result").innerHTML = `<h4>${result}</h4>`;
+        document.getElementById(
+          "total"
+        ).innerHTML = `<h5>${win}승 ${draw}무 ${lose}패</h5>`;
+      }
+    </script>
+    <style>
+      table {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+
+      tr,
+      td {
+        border: 1px solid black;
+      }
+
+      td img {
+        width: 250px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title">가위, 바위, 보 게임</h1>
+
+    <div class="userInput">
+      가위, 바위, 보 중에 하나를 선택하시고, 버튼을 누르세요
+      <select name="" id="userSelectVal">
+        <option value="1">가위</option>
+        <option value="2">바위</option>
+        <option value="3">보</option>
+      </select>
+      <input type="button" value="게임시작" onclick="gameStart();" />
+    </div>
+
+    <table>
+      <tr>
+        <td>User</td>
+        <td>Computer</td>
+      </tr>
+      <tr>
+        <td id="user"></td>
+        <td id="computer"></td>
+      </tr>
+    </table>
+
+    <div id="result"></div>
+    <div id="total"></div>
+  </body>
+</html>
