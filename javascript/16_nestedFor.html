@@ -5,7 +5,135 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>중첩 for 문 (for 문 안에 다른 for문)</title>
-    <script></script>
+    <script>
+      // 중첩 for 문의 실행 구조 분석 (바깥 쪽 for 루프가 1회 수행할 때 안쪽의 for 루프문이 각가 횟수만큼 수행된다.)
+      for (let i = 0; i < 3; i++) {
+        // for 문 i, j, k, l, m, n
+        // i = 0, 1, 2
+        document.write("☆");
+        for (let j = 0; j < 2; j++) {
+          // j = 0, 1
+          document.write("★");
+        }
+      }
+
+      let table = "<table>";
+      let cnt = 0;
+
+      for (let i = 0; i < 4; i++) {
+        table += "<tr>";
+        for (let j = 0; j < 3; j++) {
+          table += `<td>${cnt++}</td>`;
+        }
+        table += "</tr>";
+      }
+
+      table += "</table>";
+
+      document.write(table);
+      document.write("<hr>");
+
+      // 구구단을 모두 출력하세요. (1단 ~ 9단까지), 단, 1단을 출력하고 줄 바꿈을 하여 출력하세요
+
+      for (let i = 1; i < 10; i++) {
+        document.write("<div>");
+        for (let j = 1; j < 10; j++) {
+          document.write(`${i} * ${j} = ${i * j}&nbsp&nbsp`);
+        }
+        document.write("</div>");
+      }
+      document.write("<hr>");
+
+      // 직사각형 별 (3행 4열)
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 8; j++) {
+          document.write("*");
+        }
+        document.write("<br>");
+      }
+
+      document.write("<hr>");
+      //직각 삼각형 별
+      for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < i; j++) {
+          document.write("*");
+        }
+        document.write("<br>");
+      }
+      document.write("<hr>");
+      //  직각 삼각형 별2 (역 삼각형)
+      for (let i = 0; i < 6; i++) {
+        for (let j = 5; j > i; j--) {
+          document.write("*");
+        }
+        document.write("<br>");
+      }
+      document.write("<hr>");
+      // 삼각형
+      for (let i = 0; i < 6; i++) {
+        for (let j = 5; j > i; j--) {
+          document.write("*");
+        }
+        document.write("<br>");
+      }
+
+      for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5 - i; j++) {
+          document.write("*");
+        }
+        document.write("<br>");
+      }
+      document.write("<hr>");
+
+      for (let i = 0; i < 5; i++) {
+        for (let j = 5; j > i; j--) {
+          document.write("&nbsp;");
+        }
+        for (let k = 0; k <= i * 2; k++) {
+          document.write("*");
+        }
+        document.write("<br>");
+      }
+      document.write("<hr>");
+      for (let i = 0; i < 5; i++) {
+        for (let j = 5; j > i; j--) {
+          document.write("&nbsp;");
+        }
+        for (let k = 0; k <= i; k++) {
+          document.write("★");
+        }
+        document.write("<br>");
+      }
+      document.write("<hr>");
+
+      // 피라미드 강사님 버전
+      for (let i = 0; i < 5; i++) {
+        for (let j = 5; j > i + 1; j--) {
+          document.write("&nbsp;");
+        }
+
+        for (let k = 0; k < i * 2 + 1; k++) {
+          document.write("*");
+        }
+        document.write("<br>");
+      }
+      //    *
+      //   ***
+      //  *****
+      // *******
+      //*********
+      //
+      //
+      //
+    </script>
+    <style>
+      table,
+      tr,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
   </head>
   <body></body>
 </html>

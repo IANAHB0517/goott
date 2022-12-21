@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Continue Break 문</title>
+    <script>
+      // 1~100 까지의 짝수합만을 구해보자 (continue 이용)
+
+      let evenSum = 0;
+      for (let i = 0; i < 101; i++) {
+        // i = 0 ~ 100
+        if (i % 2 == 0) {
+          evenSum += i;
+        } else {
+          continue; // 다음 loop로 skip
+          console.log(i); // continue 이후의 코드는 무시된다 no-effect;(수행되지 않는다.)
+        }
+        // console.log(i);
+      }
+
+      document.write(evenSum);
+      document.write("<hr>");
+
+      //-------------------------------------------------------
+
+      for (let i = 0; i < 5000000; i++) {
+        document.write(i + "<br>");
+        if (i == 10) {
+          break; // 해당 반복문 루프를 빠져 나간다.
+        }
+      }
+      document.write("<hr>");
+
+      //1부터 누적 합을 구하되, 몇까지 더해야 누적합이 1000이 넘어가는지 출력하세요
+      let sumTh = 0;
+      for (let i = 0; i < 10000; i++) {
+        sumTh += i;
+        document.write(i + "까지의 합은" + sumTh + "입니다<br>");
+        if (sumTh >= 1000) {
+          document.write(i + "<br>");
+          break;
+        }
+      }
+
+      let accmulate = 0;
+      let i = 0;
+
+      while (accmulate <= 100000) {
+        accmulate += i++;
+      }
+      document.write(i + "까지의 합은" + accmulate + "입니다<br>");
+    </script>
+  </head>
+  <body></body>
+</html>

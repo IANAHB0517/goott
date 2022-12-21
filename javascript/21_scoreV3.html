@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>성적표</title>
+    <script>
+      //사용자에게 이름, 국어, 영어, 수학 점수를 입력 받아 총점, 평균을 구하고, 학점을 구해 출력하는 프로그램을 작성하세요.
+      //  단 평균이 90점 이상 100점 이하면 A, 80점 이상 90점 미만이면 B 70점 이상 80점 미만 이면 C, 60점 이상 70점 미만이면 D, 나머지는 F학점이다.
+      window.onload = function () {
+        document.getElementById("category").innerHTML = writeCategory;
+        document.getElementById("result").innerHTML = writeResult;
+
+        for (let i = 0; i < stu.length; i++) {
+          document.getElementById(`${category[i]}`).innerHTML = stu[i];
+        }
+        // document.getElementById("result").innerHTML =
+        // for (let i = 0; i < stu.length; i++) {
+        //   document.getElementsByClassName(`${category[i]}`).innerHTML =
+        // stu[i];
+        // }
+        // console.log(document.getElementsByClassName(`name`)[0]);
+      };
+
+      let stu = [];
+      let category = ["name", "kor", "eng", "math", "tot", "avg", "grade"];
+      let writeCategory = "";
+      let writeResult = "";
+      stu[0] = window.prompt("당신의 이름을 입력하세요");
+
+      stu[1] = Number(window.prompt("당신의 국어 점수를 입력하세요"));
+      stu[2] = Number(window.prompt("당신의 영어 점수를 입력하세요"));
+      stu[3] = Number(window.prompt("당신의 수학 점수를 입력하세요"));
+      stu[4] = stu[1] + stu[2] + stu[3];
+      stu[5] = Math.round((stu[4] / 3) * 100) * 0.01;
+      stu[6] = "";
+
+      if (stu[5] >= 90 && stu[5] <= 100) {
+        stu[6] = "A";
+      } else if (stu[5] >= 80 && stu[5] < 90) {
+        stu[6] = "B";
+      } else if (stu[5] >= 70 && stu[5] < 80) {
+        stu[6] = "C";
+      } else if (stu[5] >= 60 && stu[5] < 70) {
+        stu[6] = "D";
+      } else {
+        stu[6] = "F";
+      }
+
+      for (let i = 0; i < category.length; i++) {
+        writeCategory += `<td>${category[i]}</td>`;
+        writeResult += `<td id="${category[i]}"></td>`;
+      }
+
+      document.write(stu);
+    </script>
+    <style>
+      table,
+      tr,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr id="category"></tr>
+      <tr id="result"></tr>
+    </table>
+  </body>
+</html>

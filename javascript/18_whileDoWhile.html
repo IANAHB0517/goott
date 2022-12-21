@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>while문과 do~while문</title>
+    <script>
+      // 사용자에게 숫자를 입력 받는다. 단, 숫자를 입력하지 않으면 숫자를 입력할 때 까지 계속 입력 받도록 하시고, 숫자가 입력되면 입력된 숫자를 화면에 출력하세요.
+      //유저가 숫자를 몇회 만에 입력할지 모르므로, for 반복문을 사용해 코딩할 때 힘들다. 이럴 때 while을 사용하여 쉽게 코딩 할 수 있다.
+
+      // let data = window.prompt("숫자를 입력하세요", "0");
+
+      // while (!isFinite(data))
+      // {
+      //   // !(not) 연산자는 우선순위가 높아서 조금이라도 빠르게 계산 된다.
+      //   // data에 있는 값이 문자인가?
+      //   data = window.prompt("숫자를 입력하세요", "0");
+      // }
+
+      // document.write(data);
+
+      let data = 0;
+      do {
+        data = window.prompt("숫자를 입력하세요", "0");
+      } while (!isFinite(data));
+      document.write(data);
+
+      console.log(isNaN(data));
+      // 위의 코드는 입력 받는 부분에서 중복 코드가 생기게 된다. while문을 사용하여 중복 코드가 생길때, while문을 do~while 문으로 바꾸면 중복 코드가 생기지 않게 된다.
+
+      //   if (isFinite(data)) {
+      //     // 숫자
+      //   } else {
+      //     let data = window.prompt("숫자를 입력하세요", "0"); // 전역 변수와 지역 변수의 차이로 다시 선언 하더라도 에러가 나지 않는다. 단, 블럭 밖에서는 이 data를 불러 올 수 없다.(사용하는 메모리의 위치가 다르다)
+      //   }
+    </script>
+  </head>
+  <body></body>
+</html>
