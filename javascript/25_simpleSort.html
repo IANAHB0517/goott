@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>정렬</title>
+    <script>
+      // sort 정렬
+      let arr = new Array(10);
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = Math.floor(Math.random() * 100) + 1;
+      }
+
+      document.write(arr + "<br>");
+
+      for (let i = 0; i < arr.length - 1; i++) {
+        for (let j = 1 + i; j < arr.length; j++) {
+          if (arr[i] > arr[j]) {
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            console.log(arr[i], arr[j], temp);
+          }
+        }
+      }
+      document.write(arr);
+
+      function table() {}
+    </script>
+  </head>
+  <body></body>
+</html>

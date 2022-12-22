@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ex1</title>
+    <script>
+      let randNum = new Array(10);
+      let maxNum = [0],
+        minNum = 100;
+      for (let i = 0; i < randNum.length; i++) {
+        randNum[i] = Math.floor(Math.random() * 100) + 1;
+      }
+
+      console.log(randNum);
+      document.write(randNum);
+      document.write("<hr>");
+
+      for (let i of randNum) {
+        if (i > maxNum) {
+          maxNum = i;
+        }
+        if (i < minNum) {
+          minNum = i;
+          console.log(minNum, maxNum);
+        }
+      }
+
+      document.write(maxNum + "<br>");
+      document.write(minNum);
+      document.write("<hr>");
+
+      outTable = "<table><tr>";
+
+      for (let i = 0; i < randNum.length; i++) {
+        outTable += `<td>${randNum[i]}</td>`;
+      }
+
+      outTable += "</tr></table>";
+
+      console.log(minNum, maxNum);
+      document.write(outTable);
+      document.write("<hr>");
+
+      let tds = document.getElementsByTagName("td");
+
+      for (let item of tds) {
+        if (maxNum == item.innerHTML) {
+          item.style.backgroundColor = "red";
+        }
+
+        if (minNum == item.innerHTML) {
+          item.style.backgroundColor = "blue";
+        }
+      }
+
+      //   for (let item of tds) {
+      //     if (maxNum == item.innerHTML) {
+      //       item.style.backgroundColor = "red";
+      //     } else if (minNum == item.innerHTML) {
+      //       item.style.backgroundColor = "blue";
+      //     }
+      //   }
+
+      console.log(tds);
+      //   document.getElementById;
+
+      //   document.write(outTable);
+      document.write("<hr>");
+    </script>
+    <style>
+      table,
+      tr,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body></body>
+</html>

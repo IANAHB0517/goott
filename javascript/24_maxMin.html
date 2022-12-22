@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>최대값 최소값 구하기</title>
+    <script>
+      let arr = new Array(10);
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = Math.floor(Math.random() * 100) + 1;
+      }
+
+      let table = "<table><tr>";
+      for (let i = 0; i < arr.length; i++) {
+        table += "<td>" + arr[i] + "</td>";
+      }
+      table += "</tr></table>";
+
+      document.write(table);
+
+      let max = Number.MIN_VALUE,
+        min = Number.MAX_VALUE;
+      for (let i = 0; i < arr.length; i++) {
+        if (max < arr[i]) {
+          max = arr[i];
+        }
+
+        if (min > arr[i]) {
+          min = arr[i];
+        }
+      }
+
+      document.write(`${min} 최소값은 ${max} 최대값은`);
+
+      for (let item of document.getElementsByTagName("td")) {
+        if (item.innerHTML == max) {
+          item.style.backgroundColor = "red";
+        }
+
+        if (item.innerHTML == min) {
+          item.style.backgroundColor = "blue";
+        }
+      }
+    </script>
+    <style>
+      table,
+      tr,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body></body>
+</html>

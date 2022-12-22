@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>성적표</title>
+    <script>
+      let student = new Array(7); // 이게 정식
+      let legend = ["이름", "국어", "영어", "수학", "총점", "평균", "학점"];
+      for (let i = 0; i < 4; i++) {
+        student[i] = window.prompt(`${legend[i]}를 입력하세요`);
+      }
+
+      // 총점, 평균, 학점 계산
+      student[4] = Number(student[1]) + Number(student[2]) + Number(student[3]);
+      student[5] = Math.round((student[4] / 3) * 100) / 100;
+
+      if (student[5] >= 90 && student[5] <= 100) {
+        student[6] = "A";
+      } else if (student[5] >= 80 && student[5] < 90) {
+        student[6] = "B";
+      } else if (student[5] >= 70 && student[5] < 80) {
+        student[6] = "C";
+      } else if (student[5] >= 60 && student[5] < 70) {
+        student[6] = "D";
+      } else {
+        student[6] = "F";
+      }
+      console.log(student);
+
+      let output = "<table><tr>";
+      for (let i = 0; i < student.length; i++) {
+        output += `<th>${legend[i]}</th>`;
+      }
+      output += "</tr><tr>";
+      for (let i = 0; i < student.length; i++) {
+        output += `<td>${student[i]}</td>`;
+      }
+      output += "</tr></table>";
+
+      window.onload = function () {
+        document.getElementById("output").innerHTML = output;
+      };
+    </script>
+    <style>
+      table,
+      tr,
+      td,
+      th {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>성적표</h1>
+    <div id="output"></div>
+  </body>
+</html>

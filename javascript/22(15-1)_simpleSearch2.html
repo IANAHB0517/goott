@@ -21,7 +21,7 @@
       let cnt = 0;
       let table = "<table>";
       for (let i = 0; i < 5; i++) {
-        table += "<tr>";
+        table += "<tr class='tr'>";
         for (let j = 0; j < 10; j++) {
           table += `<td>${data[cnt++]}</td>`;
         }
@@ -48,6 +48,15 @@
         document.write(`${findNum}은 없습니다`);
       } else {
         document.write(`${findNum}은 ${result}번째 있습니다`);
+        let tds = document.getElementsByTagName("td"); // 웹문서에 있는 모든 td 태그(배열구조)를 가져와서 tds라는 변수에 넣어라
+        for (let item of tds) {
+          if (findNum == item.innerHTML) {
+            // 찾았다.
+            item.style.backgroundColor = "yellow";
+            item.innerHTML = "★" + findNum;
+          }
+        }
+        console.log(document.getElementsByClassName("tr"));
       }
     </script>
     <style>
