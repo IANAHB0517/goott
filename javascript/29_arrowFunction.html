@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>arrow Function(화살표 함수)</title>
+    <script>
+      // 화살표 (=>) 처럼 생긴 기호를 이용하여 함수를 단축화 하여 표현할 수 있다.
+      // 반환값이 있는 함수에 대해서
+
+      // 모던 자바스크립트에서는 아래와 같은 방식으로 표현한다.
+
+      //   function sum(a, b) {
+      //     return a + b;
+      //   }
+      //sum함수를 화살표함수 방식으로 표현하면
+
+      const sum = (a, b) => a + b;
+
+      document.write(sum(10, 20));
+      document.write("<hr>");
+
+      //   function hi(name) {
+      //     return name + "님 안녕하세요";
+      //   }
+      const hi = (name) => name + "님 안녕하세요";
+      document.write(hi("이갱"));
+      document.write("<hr>");
+
+      const hello = (name) => name + "님 안녕하세요"; // 인자가 하나라면 괄호도 생략 될 수 있다. (프리티어가 괄호를 쳐버림)
+      document.write(hello("이갱"));
+      document.write("<hr>");
+
+      // function greeting(){
+      //   return "hello!";
+      // }
+
+      const greeting = () => "Hello!";
+
+      document.write(greeting());
+    </script>
+  </head>
+  <body></body>
+</html>

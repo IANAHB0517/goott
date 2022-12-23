@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2차원배열</title>
+    <script>
+      //2차원 배열의 기본 운용
+      //2차원 배열을 생성해 보자
+
+      let ar = [
+        ["a", "b", "c"],
+        ["d", "e", "f"],
+      ];
+
+      console.log(ar);
+
+      document.write(ar[0][2] + "<hr>"); // c
+      document.write(ar[1][1] + "<hr>"); // e
+
+      ar[0][1] = 50;
+      document.write(ar[0][1] + "<hr>"); // 50
+      //   ar.push[0][3] = "ok?";
+      //   document.write(ar[0][3] + "<hr>"); // "ok?"
+
+      document.write(ar.length + "<hr>"); // 2 행의 길이
+      document.write(ar[0].length + "<hr>"); // 3  0행 의 길이
+      document.write(ar[1].length + "<hr>"); // 3  1행 의 길이
+
+      // ar의 모든 데이터를 테이블 태그를 이용하여 출력하기
+
+      let output = "<table>";
+
+      for (let i = 0; i < ar.length; i++) {
+        output += "<tr>";
+        for (let j = 0; j < ar[0].length; j++) {
+          output += `<td>  ${ar[i][j]} </td>`;
+        }
+        output += "</tr>";
+      }
+      output += "</table>";
+
+      document.write(output + "<hr>");
+
+      let ar2 = new Array(2);
+      ar2[0] = new Array(3);
+      ar2[1] = new Array(3);
+      ar2[0][0] = "a";
+      ar2[0][1] = "b";
+      ar2[0][2] = "c";
+      ar2[1][0] = "d";
+      ar2[1][1] = "e";
+      ar2[1][2] = "f";
+
+      console.log(ar2);
+
+      document.write(ar2[0][2] + "<hr>"); // c
+      document.write(ar2[1][1] + "<hr>"); // e
+
+      ar2[0][1] = 50;
+      document.write(ar2[0][1] + "<hr>"); // 50
+      //   ar2.push[0][3] = "ok?";
+      //   document.write(ar2[0][3] + "<hr>"); // "ok?"
+
+      document.write(ar2.length + "<hr>"); // 2 행의 길이
+      document.write(ar2[0].length + "<hr>"); // 3  0행 의 길이
+      document.write(ar2[1].length + "<hr>"); // 3  1행 의 길이
+
+      // ar2의 모든 데이터를 테이블 태그를 이용하여 출력하기
+
+      let output2 = "<table>";
+
+      for (let i = 0; i < ar2.length; i++) {
+        output2 += "<tr>";
+        for (let j = 0; j < ar2[0].length; j++) {
+          output2 += `<td>  ${ar2[i][j]} </td>`;
+        }
+        output2 += "</tr>";
+      }
+      output2 += "</table>";
+
+      document.write(output2 + "<hr>");
+
+      let jagged = new Array(3);
+
+      jagged[0] = [45, 24, 12];
+      jagged[1] = [45, 23];
+      jagged[2] = [77, 77, 65, 45];
+
+      console.log(jagged);
+    </script>
+    <style>
+      table,
+      tr,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body></body>
+</html>

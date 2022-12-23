@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>사용자 정의 함수의 기번 운영법</title>
+
+    <script>
+      //함수명은 보통 영문자 소문자로 시작하고, 함수에서 수행하고자 하는 기능을 동사형태로 만든다.
+      function sayHello() {
+        // 함수는 함수의 위치와 상관없이 호출되기 이전에는 절대 실행되지 않는다
+        document.write("헬러");
+      }
+
+      function sayHi(times) {
+        console.log(times);
+        for (let i = 0; i < times; i++) {
+          document.write("hi");
+        }
+      }
+
+      let times = 3;
+      for (let i = 0; i < times; i++) {
+        sayHello(); //함수의 호출 (함수가 호출 (함수가 만들어진 형태 (porototype)) 또는 함수의 정의문을 보고 호출하게 된다.
+        document.write("<hr>");
+      }
+
+      function addTwoNumber(num1, num2) {
+        document.write(num1 + num2); // 값 복사 document.write 에서 키를 받아 복사 해온다.
+      }
+
+      function addTwoNumberWithRetrunValue(num1, num2) {
+        let result = 0; // 지역 변수
+        result = num1 + num2;
+        return result; // 함수를 호출한 곳으로 되돌려 줌.
+      }
+
+      sayHi(5);
+      document.write("<hr>");
+      addTwoNumber(3, 4);
+      document.write("<hr>");
+
+      document.write(addTwoNumberWithRetrunValue(45, 23));
+      document.write("<hr>");
+      let result = addTwoNumberWithRetrunValue(45, 23);
+      document.write(result);
+      document.write("<hr>");
+
+      //2개의 문자열을 받아 한 문자열로 합쳐 (연결하여) 반환하는 함수를 만들되, 이름은 concatStr 로 하세요
+
+      function concatStr(str1, str2) {
+        return str1 + str1;
+      }
+      document.write(concatStr("ret", "urn"));
+      document.write("<hr>");
+
+      let concatStr2 = function (str1, str2) {
+        // 함수 포인터 방식으로 함수를 정의 할 수 도 있다. concatStr2이라는 함수가 이름 없는 (anonymous) 함수를 가리키고 (reference) 있기 때문에, concatStr2이 마치 함수 명처럼 사용되는 방식
+        return str1 + str2;
+      };
+
+      document.write(concatStr2("홍가놈", " 도둑놈"));
+      document.write("<hr>");
+
+      function sum(a, b = 20) {
+        // b의 값은 기본 값으로 20이 할당 됨
+        return a + b;
+        console.log(a, b, a + b); // 10 20 30
+      }
+
+      document.write(sum(40)); // b 값을 입력하면 위에서 선언된 b =20을 덮어쓴다.
+      document.write("<hr>");
+      function sum2(a, b) {
+        // b의 값은 기본 값으로 20이 할당 됨
+        return a + b;
+        console.log(arguments); // 10 20 30
+        console.log(a, b); // 10 20
+      }
+
+      sum(10, 20, 30);
+      document.write(sum2(10, 20, 30));
+      document.write("<hr>");
+    </script>
+  </head>
+  <body></body>
+</html>

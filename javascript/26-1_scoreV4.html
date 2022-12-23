@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2차원 배열을 활용한 성적표</title>
+    <script>
+      let scores = new Array(4);
+      scores[0] = new Array(8);
+      scores[1] = new Array(8);
+      scores[2] = new Array(8);
+      scores[3] = new Array(8);
+
+      scores = [
+        ["홍길동", 45, 45, 35],
+        ["도우너", 35, 45, 95],
+        ["아무개", 95, 95, 85],
+        ["마이콜", 95, 85, 95],
+      ];
+      // for (let i = 0; i < scores.length; i++) {
+      //   scores[i][0] = window.prompt("이름을 입력하세요");
+      //   scores[i][1] = Number(window.prompt("국어점수를 입력하세요"));
+      //   scores[i][2] = Number(window.prompt("영어점수를 입력하세요"));
+      //   scores[i][3] = Number(window.prompt("수학점수를 입력하세요"));
+      // }
+
+      // console.log(scores);
+
+      for (let i = 0; i < scores.length; i++) {
+        scores[i][4] = scores[i][1] + scores[i][2] + scores[i][3]; // 총점
+        scores[i][5] = Math.round((scores[i][4] / 3) * 100) * 0.01; // 평균
+
+        if (scores[i][5] >= 90 && scores[i][5] <= 100) {
+          // 학점
+          scores[i][6] = "A";
+        } else if (scores[i][5] >= 80 && scores[i][5] < 90) {
+          scores[i][6] = "B";
+        } else if (scores[i][5] >= 70 && scores[i][5] < 80) {
+          scores[i][6] = "C";
+        } else if (scores[i][5] >= 60 && scores[i][5] < 70) {
+          scores[i][6] = "D";
+        } else {
+          scores[i][6] = "F";
+        }
+      }
+
+      // 평균을 기준으로 내림차순 정렬
+      for (let i = 0; i < scores.length - 1; i++) {
+        for (let j = i + 1; j < scores.length; j++) {
+          if (scores[i][5] < scores[j][5]) {
+            let tmp = scores[i];
+            scores[i] = scores[j];
+            scores[j] = tmp;
+            console.log(scores[i], scores[j], tmp);
+          }
+        }
+      }
+
+      // // 평균을 기준으로 랭킹
+      for (let i = 0; i < scores.length; i++) {
+        console.log(scores[i + 1]);
+        if (scores[i][5] == scores[i + 1][5]) {
+          document.write("!");
+        }
+        if (scores[i][5] != scores[i - 1][5]) {
+          document.write("＆");
+        }
+      }
+
+      // for (let i = 0; i < scores.length; i++) {
+      //   // console.log(scores[i + 1]);
+      //   if (scores[i][5] == scores[i - 1][5]) {
+      //     // 뒤에서 splice 되면서 length가 늘어나면서 어디를 비교해야하는지 정확하지 않아서 [5]를 불러오지 못함
+      //     // 아랫등수와 비교하여 평균이 같으면 함께 등수를 출력하고 등수를 증가시킴 (동점자가 여러명일때 문제가 발생할듯)
+      //     // scores[i].splice(8, 0, `${i + 1}등`); //가장 앞쪽으로 등수 삽입
+      //     // scores[i + 1].splice(8, 0, `${i + 1}등`);
+      //     document.write("!");
+      //   }
+      //   if (scores[i][5] != scores[i + 1][5]) {
+      //     // scores[i].splice(8, 0, `${i + 1}등`); // 만약에 점수가 같지 않다면 그냥 등수를 출력
+      //     document.write("!!!");
+      //   }
+      // }
+
+      // let rank = 1,
+      //   curRank = 1;
+      // scores[0][7] = curRank;
+      // for (let i = 1; i < scores.length; i++) {
+      //   rank++;
+      //   if (scores[i][5] != scores[i - 1][5]) {
+      //     curRank = rank;
+      //   }
+
+      //   scores[i][7] = curRank;
+      // }
+
+      let table = "<table>";
+      table +=
+        "<tr><th>이름</th><th>국어</th><th>영어</th><th>수학</th><th>총점</th><th>평균</th><th>학점</th>";
+      for (let i = 0; i < scores.length; i++) {
+        table += "<tr>";
+        for (let j = 0; j < scores[0].length; j++) {
+          table += `<td>${scores[i][j]}</td>`;
+        }
+        table += "</tr>";
+      }
+      table += "</table>";
+
+      document.write(table);
+      document.write("<hr>");
+    </script>
+  </head>
+  <body></body>
+</html>
