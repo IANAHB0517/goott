@@ -46,25 +46,25 @@
       }
 
       // 평균을 기준으로 내림차순 정렬
-      for (let i = 0; i < scores.length - 1; i++) {
-        for (let j = i + 1; j < scores.length; j++) {
-          if (scores[i][5] < scores[j][5]) {
-            let tmp = scores[i];
-            scores[i] = scores[j];
-            scores[j] = tmp;
-            console.log(scores[i], scores[j], tmp);
-          }
-        }
-      }
+      // for (let i = 0; i < scores.length - 1; i++) {
+      //   for (let j = i + 1; j < scores.length; j++) {
+      //     if (scores[i][5] < scores[j][5]) {
+      //       let tmp = scores[i];
+      //       scores[i] = scores[j];
+      //       scores[j] = tmp;
+      //       console.log(scores[i], scores[j], tmp);
+      //     }
+      //   }
+      // }
 
-      // // 평균을 기준으로 랭킹
+      // 평균을 기준으로 랭킹
       for (let i = 0; i < scores.length; i++) {
         console.log(scores[i + 1]);
         if (scores[i][5] == scores[i + 1][5]) {
           document.write("!");
         }
-        if (scores[i][5] != scores[i - 1][5]) {
-          document.write("＆");
+        if (scores[i][5] != scores[i + 1][5]) {
+          document.write("&");
         }
       }
 
@@ -83,17 +83,17 @@
       //   }
       // }
 
-      // let rank = 1,
-      //   curRank = 1;
-      // scores[0][7] = curRank;
-      // for (let i = 1; i < scores.length; i++) {
-      //   rank++;
-      //   if (scores[i][5] != scores[i - 1][5]) {
-      //     curRank = rank;
-      //   }
+      let rank = 1,
+        curRank = 1;
+      scores[0][7] = curRank;
+      for (let i = 1; i < scores.length; i++) {
+        rank++;
+        if (scores[i][5] != scores[i - 1][5]) {
+          curRank = rank;
+        }
 
-      //   scores[i][7] = curRank;
-      // }
+        scores[i][7] = curRank;
+      }
 
       let table = "<table>";
       table +=

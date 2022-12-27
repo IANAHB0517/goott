@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>지정일로부터 몇일이나 지났는가?</title>
+    <script>
+      // 사용자에게 날짜를 입력받아 현재 시간이 입력받은 날짜로부터 얼마나 지났는지 계산해 본다.
+
+      function calcDate() {
+        // input type="date" 객체로부터 사용자가 입력한 날짜를 얻어옴
+        // Date() 생성자에게 문자열을 매개변수로 주면, 문자열 기반의 날짜 객체(Date)가 반환된다. (날짜기리만 연산)
+        let usersDate = new Date(
+          document.getElementsByTagName("input")[0].value
+        );
+        console.log(usersDate); // string 타입
+
+        let now = new Date(); // 현재 시간 날짜를 얻어옴
+        let tmp = now - usersDate;
+        console.log(tmp);
+
+        let result = Math.floor(tmp / 1000 / 60 / 60 / 24);
+        document.getElementById("result").innerHTML = result + "일 지났습니다.";
+      }
+    </script>
+  </head>
+  <body>
+    <div id="calender">
+      지정일을 입력하세요. <input type="date" name="" id="" />
+      <button type="button" onclick="calcDate()">확인</button>
+    </div>
+    <div id="result"></div>
+  </body>
+</html>

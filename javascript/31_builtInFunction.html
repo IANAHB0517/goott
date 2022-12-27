@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내장함수</title>
+    <script>
+      //1. eval() : evalution.    자바스크립트 명령어를 실행한다.
+      let result = eval("2 * 3 /  5");
+      document.write(result + "<br>");
+      document.write();
+
+      // 2. parseInt() : 문자열을 정수로 변환이 되는 부분을 변환하여 반환
+      // 정수로 변환 할 수 없다면 Nan(Not A Number)을 반환
+      document.write(parseInt("3.14") + "<br>"); // 3
+      document.write(parseInt("가나다") + "<br>"); // NaN
+      document.write(parseInt("3.14입니다") + "<br>"); //3 -- 첫문자가 숫자일때 변환 하는 듯 하다
+      // parseFloat() : 문자열을 실수로 변환이 되는 부분을 변환하여 반환
+      document.write(parseFloat("3.141592쩜쩜쩜") + "<br>"); // 3.141592
+
+      // 비교) Number() : 매개변수 안에 있는 값을 Number 타입의 객체로 만드는 생성자.(constructor)
+
+      //3. isNan() : 숫자인지 아닌지. 숫자가 아니면 true 반환
+      document.write(isNaN(3) + "<br>"); // false
+
+      //4. isFinite() : 유한(숫자)인가 숫자면 true 반환
+      document.write(isFinite("끝") + "<br>"); // false
+    </script>
+  </head>
+  <body></body>
+</html>

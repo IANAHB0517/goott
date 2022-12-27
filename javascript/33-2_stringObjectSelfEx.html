@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가사 속에서 찾기</title>
+    <script>
+      let picaresque = `길에 시커먼 어둠이 물들 그 때 쯤 인물들 둘러봐 민물 들고 독주에 취한 척하는 산티아고 노인네 혼자 머물러 있네 나일 속이려 흰머리는 물 들이고 넥타이 컬러 바꾸는 걸로 그날 컨셉을 정해 오늘은 작가 느낌 타이는 다크 월넛 전에 저 꼴로 뜨내길 등처먹던걸 난 아무 기억도 못하는 걸로 씬 거기 빈티지라고 쓰인 LP판 좀 줘봐 씬 얼음 채워놔 씬 저기 산티아고씬 우리 카펜 아마 당신 없인 하루도 못 버틸거라던데 그녀의 출신? 그딴 건 몰라, 최고의 웨이트리스 '근데 저 노인 술값은 내일 드릴 수 있다던데' 'fuck! 티아고 hey please!'`;
+      let picaresque2 = `순진한 기 없는 여자 이국적으로 느껴져 사연 많은 눈빛이 순간 입구 쪽으로 따분함이 깨지는 실내 문턱 넘어 큼지막한 두개의 실루엣 한쪽 남자 팔뚝 문신 흐릿하게 '신뢰' 일행은 아닌듯 해 문신 없는 쪽이 말했지 '실례!' 내가 누군지 알아? 실은 가수야 나 필요하지 않아? 들어볼래 하나? 특별히 오늘은 돈 안받을게 제목 the picaresque 훅은 촌스러 벌스로 쓸어버려 볼수록 왠지 안쓰러운 깡패들 가득한 까페엔 딱이거든 the picaresque `;
+      let picaresque3 = `이름도 모르는 가수가 부르는 '악당들' 이 뒷골목 사연 없는 놈은 하나도 없다 한들 언제부턴가 죄란 죄는 죄다 여기 있지 니가 뭐라 여길지 몰라도 눈빛들이 깊지 문신 있는 저 친군 이방인 근처에서 본 적 없지 '웨이트리스, 이방인, 무명 가수, 늙은 사기꾼, 전부 다 여기 있군...' `;
+      let picaresque4 = `무명 가수 음악이 끝날 때 쯤 갑자기 꿈, 그것도 나쁜 꿈에서 깰 때 낼 듯 한 비명 또 들리는 듯 가라 앉을까 담배 좀 피우면 어쨌든 이제부터가 꽤 흥미로운 챕터 내 목소리는 이 풍경 니 눈 앞에다 펼쳐놓는 프로젝터`;
+
+      console.log(picaresque, picaresque2, picaresque3, picaresque4);
+      console.log(
+        picaresque.length,
+        picaresque2.length,
+        picaresque3.length,
+        picaresque4.length
+      );
+      document.write(picaresque.charAt(154) + "<hr>");
+
+      document.write(picaresque.indexOf("씬") + "<hr>");
+      document.write(picaresque2.indexOf("picaresque") + "<hr>");
+      document.write(picaresque3.substr(30, 90) + "<hr>");
+      document.write(picaresque2.toUpperCase() + "<hr>");
+      document.write(
+        picaresque2
+          .toUpperCase()
+          .substr(picaresque2.length - 14, picaresque2.length) + "<hr>"
+      );
+      document.write(
+        picaresque2
+          .toUpperCase()
+          .substr(picaresque2.length - 14, picaresque2.length) + "<hr>"
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

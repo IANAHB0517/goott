@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date 객체</title>
+    <script>
+      // JavaScript Date 객체는 시간의 한 점을 플랫폼에 종속되지 않는 형태로 나타냅니다. Date 객체는 1970년 1월 1일 UTC(협정 세계시) 자정과의 시간 차이를 밀리초로 나타내는 정수 값(TimeStamp : 날짜 시간의 연산을 위해 만들어짐)을 담습니다.
+
+      // get~() : 시간을 얻어온다. 객체로 부터 얻어오는것
+      // set~() : 시간을 설정한다. 객체에게 저장 시키는것
+
+      let date = new Date(); //새로운 객체 Date를 만들어서 date 라는 변수를 만들고 그 안에 저장하라(date 라는 변수가 Date 라는 객체를 가리키고 있다.) 현재 (날짜 시간) 객체를 생성
+      document.write(`현재시간 : ${date} <br>`); // 현재 (날짜 시간) 출력
+      document.write(`연도 : ${date.getFullYear()} <br>`); // 현재 연도 출력
+      document.write(`월 : ${date.getMonth() + 1} <br>`); // 현재 월 출력, 월  0부터 시작함
+      document.write(`일 : ${date.getDate()} <br>`); // 현재 일 출력
+      document.write(`요일 : ${date.getDay()} <br>`); // 현재 요일 출력
+      let yoil = [
+        "일요일",
+        "월요일",
+        "화요일",
+        "수요일",
+        "목요일",
+        "금요일",
+        "토요일",
+      ];
+      document.write("요일 : " + yoil[date.getDay()] + " <br>"); // 현재 요일 출력
+
+      document.write("시 : " + date.getHours() + "<br>"); //현재 시간
+      document.write("분 : " + date.getMinutes() + "<br>"); // 현재 분
+      document.write("초 : " + date.getSeconds() + "<br>"); // 현재 초
+
+      console.log(Date.now()); // TimeStamp 값이 출력됨 (1970년 부터 흘러온 시간 값을 정수로 나타낸 값)
+
+      let date2 = new Date(); // 현재 (시간 날짜) 객체 생성
+      console.log(date2);
+      date2.setDate(15); // setter(set...()으로 시작하는 날짜 객체함수들을 이용하여 원하는 날짜. 시간으로 바꿀 수 있다.)
+      console.log(date2);
+      date2.setHours(1, 10, 10); // setter(set...()으로 시작하는 날짜 객체함수들을 )
+      console.log(date2);
+
+      window.onload = function () {
+        setInterval(function () {
+          let now = new Date();
+          document.getElementById("time").innerHTML = now;
+        }, 1000); //setInterval(콜백함수, 인터벌); // 콜백함수를 인터벌(ms단위) 간격으로 계속 실행한다
+      };
+    </script>
+  </head>
+  <body>
+    <div id="time"></div>
+    <script></script>
+  </body>
+</html>

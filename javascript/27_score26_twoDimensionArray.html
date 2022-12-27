@@ -9,63 +9,59 @@
       let scoreTable = new Array(4);
       scoreTable[0] = ["이름", "국어", "영어", "수학", "총점", "평균", "학점"];
 
-      let table = "<table>"
+      let table = "<table>";
 
-        table += "<tr>"
-          for (const i of scoreTable[0]) {
-            table += `<td>${i}</td>`
-            }
-            table += "</tr>"
-            
-            for (let i = 1; i < scoreTable.length; i++) {
-              scoreTable[i][0] = window.prompt("당신의 이름을 입력하세요","")
-          }
-            
-            for (let i = 1; i < scoreTable.length; i++) {
-              scoreTable[i] = new Array(7);
-              for (let j = 1; j < 4; j++) {
-                
-                scoreTable[i][j] = Number(window.prompt(`${scoreTable[i][0]} 의 ${scoreTable[0][j]}(을(점수)를 입력하세요`))
+      table += "<tr>";
+      for (const i of scoreTable[0]) {
+        table += `<td>${i}</td>`;
+      }
+      table += "</tr>";
+
+      for (let i = 1; i < scoreTable.length; i++) {
+        scoreTable[i][0] = window.prompt("당신의 이름을 입력하세요", "");
+      }
+
+      for (let i = 1; i < scoreTable.length; i++) {
+        scoreTable[i] = new Array(7);
+        for (let j = 1; j < 4; j++) {
+          scoreTable[i][j] = Number(
+            window.prompt(
+              `${scoreTable[i][0]} 의 ${scoreTable[0][j]}(을(점수)를 입력하세요`
+            )
+          );
         }
       }
-      
 
       for (let i = 1; i < scoreTable.length; i++) {
         for (let j = 0; j < scoreTable[i].length; j++) {
-          scoreTable[i][4]= scoreTable[i][1] + scoreTable[i][2] + scoreTable[i][3];
-          scoreTable[i][5]= Math.round(( scoreTable[i][4]/ 3) * 100) * 0.01;
-          scoreTable[i][6]= "";
-   
-         if ( scoreTable[i][5]>= 90 && scoreTable[i][5] <= 100) {
-            scoreTable[i][6]= "A";
-         } else if ( scoreTable[i][5]>= 80 &&  scoreTable[i][5]< 90) {
-            scoreTable[i][6]= "B";
-         } else if ( scoreTable[i][5]>= 70 &&  scoreTable[i][5]< 80) {
-            scoreTable[i][6]= "C";
-         } else if ( scoreTable[i][5]>= 60 &&  scoreTable[i][5]< 70) {
-            scoreTable[i][6]= "D";
-         } else {
-            scoreTable[i][6]= "F";
-         }
-          
-          
+          scoreTable[i][4] =
+            scoreTable[i][1] + scoreTable[i][2] + scoreTable[i][3];
+          scoreTable[i][5] = Math.round((scoreTable[i][4] / 3) * 100) * 0.01;
+          scoreTable[i][6] = "";
+
+          if (scoreTable[i][5] >= 90 && scoreTable[i][5] <= 100) {
+            scoreTable[i][6] = "A";
+          } else if (scoreTable[i][5] >= 80 && scoreTable[i][5] < 90) {
+            scoreTable[i][6] = "B";
+          } else if (scoreTable[i][5] >= 70 && scoreTable[i][5] < 80) {
+            scoreTable[i][6] = "C";
+          } else if (scoreTable[i][5] >= 60 && scoreTable[i][5] < 70) {
+            scoreTable[i][6] = "D";
+          } else {
+            scoreTable[i][6] = "F";
+          }
         }
-        
       }
 
-
-for (let i = 1; i<scoreTable.length;i++){
-      table += "<tr>"
+      for (let i = 1; i < scoreTable.length; i++) {
+        table += "<tr>";
         for (let j = 0; j < scoreTable[i].length; j++) {
-          
-          table += `<td>${scoreTable[i][j]}</td>`
+          table += `<td>${scoreTable[i][j]}</td>`;
         }
-          
-          
-          
-          table += "</tr>"
+
+        table += "</tr>";
       }
-      table += "</table>"
+      table += "</table>";
 
       document.write(scoreTable);
     </script>
