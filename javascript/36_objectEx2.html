@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 정의 객체</title>
+    <script>
+        let account = new Object(); // account 라는 이름의 비어 있는 객체 생성
+        // 객체에 속성을 부여
+        // .(점,dot) = 멤버 접근 연산자
+        account.owner = "이상진"; // 예금주 account 라는 객체의 owner 라는 속성의 값이 이상진 이다.
+        account.accNum = "0001-01-7777"; // 계좌번호
+        account.balance = 9999999999999 // 잔액
+        account.name = "DD 비자금 예금" // 취직시 직장인 비과세 예금 만들기
+        account.bankName = "우리은행";
+        // 값의 이름이 부여 되어있음 속성이 붙어있음
+        console.log(account);
+
+        document.write(account + "<br>");
+        document.write("예금주 : " + account.owner + "<br>");
+        document.write("은행명 : " + account.bankName  + "<br>");
+        document.write("잔액 : " + account.balance + "<br>");
+        
+        account.balance -= 50000
+        document.write("잔액 : " + account.balance + "<br>");
+        
+        account.deposit = deposit; // () 가 없는 이유는 바로 실행할게 아니라서??
+        account.deposit(50000);
+        document.write("잔액 : " + account.balance + "<br>");
+        
+        
+        account.withDraw = withDraw;
+        account.withDraw(1000000);
+        
+        
+        account.confirm = inquiry;
+        document.write(`잔액 : ${account.confirm()} <br>`)
+
+
+
+        account.withDraw = withDraw;
+        account.withDraw(100000000);
+        
+        
+        account.confirm = inquiry;
+        document.write(`잔액 : ${account.confirm()} <br>`)
+
+
+        account.withDraw = withDraw;
+        account.withDraw(9999998999999); // 잔액이 부족합니다!
+        
+        
+        account.confirm = inquiry;
+        document.write(`잔액 : ${account.confirm()} <br>`)
+        
+        //예금하기, 인출하기, 잔액조회하기 -> 기능(메서드) 부여 여러번 사용할 것이기 때문에 반복 사용이 가능하도록 
+        
+        // account.deposit = function (money) { // 예금 개념 money를 받아서  
+        //     this.balance += money; //balance에 누적한다.
+        // };
+        
+        
+
+
+        
+        function deposit (money) { // 예금 개념 money를 받아서  
+           this.balance += money; //balance에 누적한다.
+       };
+       
+       function inquiry() {
+           return this.balance;
+
+       }
+
+       function withDraw(money){
+        if(this.balance >= money){
+            this.balance -= money;
+        } else {
+            window.alert("잔액이 부족합니다!")
+        }
+       }
+
+
+       // ----------------------------------------------------------------------
+
+       let account2 = new Object(); // account 라는 이름의 비어 있는 객체 생성
+        // 객체에 속성을 부여
+        // .(점,dot) = 멤버 접근 연산자
+        account2.owner = "둘리"; // 예금주 account 라는 객체의 owner 라는 속성의 값이 이상진 이다.
+        account2.accNum = "2222-01-5252"; // 계좌번호
+        account2.balance = 9990 // 잔액
+        account2.name = "DD 비자금 예금" // 취직시 직장인 비과세 예금 만들기
+        account2.bankName = "우리은행";
+        // 값의 이름이 부여 되어있음 속성이 붙어있음
+        console.log(account2);
+
+
+        account2.confirm = inquiry;
+        document.write(`잔액 : ${account2.confirm()} <br>`)
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

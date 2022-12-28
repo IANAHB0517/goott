@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>생성자함수(prototype Function)를 이용하여 객체 생성 및 사용하기</title>
+    <script>
+       // prototype 만들기
+       function Account(owner, accNum, balance){ // Account 객체를 만들기 위한 생성자 함수임을 알림 
+       this.owner//(현재 객체가 가지고 있는 속성)
+        = owner; //(owner 명으로 받은 키 값)
+        this.accNum = accNum;
+        this.balance = balance;
+        this.bankName = "우리은행";
+        this.name = "직장인 비과세 예금";
+
+
+        // 객체에 기능 부여
+        this.inquiry = function() {
+           return this.balance;
+       }
+
+       this.deposit = function (money) { 
+           this.balance += money; 
+       }
+
+       this.withDraw = function withDraw(money){
+        if(this.balance >= money){
+            this.balance -= money;
+        } else {
+            window.alert("잔액이 부족합니다!")
+        }
+       }
+       
+    }
+
+    let acc1 = new Account("둘리","2222-44-5252", 9990);
+    console.log(acc1);
+    document.write("예금주 : " + acc1.owner + "<br>");
+    document.write("은행명 : " + acc1.bankName  + "<br>");
+    document.write("잔액 : " + acc1.balance + "<br>");
+    
+    
+    acc1.deposit(50000);
+    document.write("잔액 : " + acc1.balance + "<br>");
+    document.write(`잔액 : ${acc1.inquiry()} <br>`)
+    acc1.withDraw(100000000);
+    document.write(`잔액 : ${acc1.inquiry()} <hr>`)
+    
+    let acc2 = new Account("dooly",  "0000-22-0909", 5000)
+    console.log(acc2);
+    
+    document.write("예금주 : " + acc2.owner + "<br>");
+    document.write("은행명 : " + acc2.bankName  + "<br>");
+    document.write("잔액 : " + acc2.balance + "<br>");
+    
+    
+    acc2.deposit(50000);
+    document.write("잔액 : " + acc2.balance + "<br>");
+    document.write(`잔액 : ${acc2.inquiry()} <br>`)
+    acc2.withDraw(50000);
+    document.write(`잔액 : ${acc2.inquiry()} <br>`)
+    </script>
+
+</head>
+<body>
+    
+</body>
+</html>

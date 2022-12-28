@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>score_Last ver</title>
+    <script>
+      function Student(name, kor, eng, math, tot, avg, grade) {
+        this.name = name;
+        this.kor = kor;
+        this.eng = eng;
+        this.math = math;
+        this.tot = kor + eng + math;
+        this.avg = Math.round((this.tot / 3) * 100) / 100;
+        switch (Math.floor(this.avg / 10)) {
+          case 10:
+          case 9:
+            this.grade = "A";
+            break;
+          case 8:
+            this.grade = "B";
+            break;
+          case 7:
+            this.grade = "C";
+            break;
+          case 6:
+            this.grade = "D";
+            break;
+          default:
+            this.grade = "F";
+            break;
+        }
+      }
+
+      let student = [];
+      for (let i = 0; i < 3; i++) {
+        student.push(
+          new Student(
+            window.prompt("이름을 입력하세요"),
+            Math.floor(Math.random() * 100 + Math.random() * 50) + 1,
+            Math.floor(Math.random() * 100) + 1,
+            Math.floor(Math.random() * 100) + 1
+            //   Number(window.prompt("영어성적을 입력하세요")),
+            //   Number(window.prompt("수학성적을 입력하세요"))
+          )
+        );
+      }
+
+      console.log(student);
+      console.log(student[0].length);
+      let tableStart = `<table><tr> <th>이름</th>
+      <th>국어</th>
+      <th>영어</th>
+      <th>수학</th>
+      <th>총점</th>
+      <th>평균</th>
+      <th>학점</th></tr>`;
+      output = tableStart;
+      student.forEach((student) => {
+        output += `<tr><td>${student.name}</td><td>${student.kor}</td><td>${student.eng}</td><td>${student.math}</td><td>${student.tot}</td><td>${student.avg}</td><td>${student.grade}</td></tr>`;
+      });
+
+      output += "</table>";
+
+      document.write(output);
+
+      function gradeCalc(stu) {
+        if (stu.avg >= 90 && stu.avg <= 100) {
+          stu.grade = "A";
+        } else if (stu.avg >= 80 && stu.avg < 90) {
+          stu.grade = "B";
+        } else if (stu.avg >= 70 && stu.avg < 80) {
+          stu.grade = "C";
+        } else if (stu.avg >= 20 && stu.avg < 70) {
+          stu.grade = "D";
+        } else {
+          stu.grade = "F";
+        }
+      }
+
+      function searchStu() {
+        window.alert("!");
+        let find = document.getElementsByTagName("input")[0].value;
+
+        console.log(find);
+
+        for (let i = 0; i < student.length; i++) {
+          if (student[i].name == find) {
+            window.alert("!");
+            output = ` ${tableStart} <tr><td>${student[i].name}</td><td>${student[i].kor}</td><td>${student[i].eng}</td><td>${student[i].math}</td><td>${student[i].tot}</td><td>${student[i].avg}</td><td>${student[i].grade}</td></tr>`;
+          } else {
+            window.alert("!");
+            output = ` ${tableStart}<tr>학생을 찾지 못했습니다</tr> `;
+          }
+        }
+        // student.forEach((element) => {
+        // if (find == element.name) {
+        //   output = ` ${tableStart} <tr><td>${element.name}</td><td>${element.kor}</td><td>${element.eng}</td><td>${element.math}</td><td>${element.tot}</td><td>${element.avg}</td><td>${element.grade}</td></tr>`;
+        // } else {
+        //   output = ` ${tableStart}<tr>학생을 찾지 못했습니다</tr> `;
+        // }
+        // output += "</table>";
+        //   });
+        document.write(output);
+      }
+    </script>
+  </head>
+  <body>
+    <input type="text" /><button onclick="searchStu()">검색</button>
+  </body>
+</html>

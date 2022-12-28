@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/account.js"></script>
+    <title>배열에 객체 담아 관리하기</title>
+    <script>
+    let acc1 = new Account("둘리","2222-44-5252", 999999);
+        console.log(acc1)
+
+    let acc2 = new Account("Doolly","3333-01-5252", 90);
+        console.log(acc2)
+
+    let clients = [];
+
+    clients.push(acc1);
+    clients.push(acc2);
+    console.log(clients);
+
+    let output = "<ul>";
+    // for (let i = 0; i < clients.length; i++) {
+    //  output += `<li> 예금주 : ${clients[i].owner}</li>`;
+    //  output += `<li> 계좌번호 : ${clients[i].accNum}</li>`;
+    //  output += `<li> 잔액 : ${clients[i].balance}</li>`;
+     
+    // }
+    
+    
+    for (let i of clients) { // clients 라는 배열에 각각(acc),(i 번째에?) 접근한다.
+        output += `<li> 예금주 : ${i.owner}</li>`; // i는 그냥 키값이다 뭐로든 사용가능
+        
+    }
+
+
+    output += "</ul>"
+
+    document.write(output);
+    document.write("<hr>");
+    document.write(JSON.stringify(clients));
+
+
+
+
+    </script>
+    
+</head>
+<body>
+    
+</body>
+</html>

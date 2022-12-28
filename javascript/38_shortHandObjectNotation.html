@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>객체를 단축키로 표현하기</title>
+    <script>
+      let acc1 = {
+        // 이 함수 안에 만들어지기 때문에 function에 어떤 객체인지 명시할 필요가 없다.
+        owner: "홍길동",
+        accNum: "1111-43-9999",
+        balance: 500,
+        bankName: "우리은행",
+        name: "직장인 비과세 예금",
+
+        inquiry: function () {
+          return this.balance;
+        },
+
+        deposit: function (money) {
+          this.balance += money;
+        },
+
+        withDraw: function (money) {
+          if (this.balance >= money) {
+            this.balance -= money;
+          } else {
+            window.alert("잔액이 부족합니다!");
+          }
+        },
+      };
+      console.log(acc1);
+      document.write(acc1.inquiry() + "<br>");
+
+      let clients = [
+        {
+          owner: "홍길동",
+          accNum: "1111-43-9999",
+          balance: 500,
+          bankName: "우리은행",
+          name: "직장인 비과세 예금",
+        },
+        {
+          owner: "홍길동",
+          accNum: "1111-43-9999",
+          balance: 500,
+          bankName: "우리은행",
+          name: "직장인 비과세 예금",
+        },
+      ];
+
+      console.log(clients);
+      document.write(acc1.inquiry());
+    </script>
+  </head>
+  <body></body>
+</html>
