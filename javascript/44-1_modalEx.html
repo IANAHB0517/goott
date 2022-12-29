@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>모달 창 띄우기</title>
+    <script>
+      function modalClose() {
+        document.getElementsByClassName("modal-content")[0].style.display =
+          "none";
+        document.getElementById("myModal").style.backgroundColor = "#fff";
+      }
+      function modalToggle() {
+        document.getElementsByClassName("modal-content")[0].style.display =
+          "block";
+        document.getElementById("myModal").style.backgroundColor =
+          "rgba(0, 0, 0, 0.2)";
+      }
+    </script>
+    <style>
+      body {
+        width: 100%;
+        height: 100vh;
+      }
+
+      .modal {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+
+        z-index: 1;
+      }
+
+      .modal-content {
+        display: none;
+
+        width: 400px;
+        height: 500px;
+        border: 2.5px solid black;
+        padding: 50px;
+        position: absolute;
+        left: 250px;
+        top: 100px;
+        background-color: #fff;
+        box-shadow: 5px 10px 15px 5px;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="myModal" class="modal">
+      <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus nam
+        voluptatem saepe, blanditiis labore quaerat exercitationem assumenda
+        iusto hic consectetur dignissimos culpa aliquam explicabo eveniet. Rerum
+        saepe fugiat, quam quibusdam eveniet beatae ut illo distinctio
+        dignissimos, ratione accusantium architecto unde corrupti incidunt nam
+        illum ullam tempore cum possimus. Minus consectetur nulla doloribus?
+        Animi, provident quaerat. Voluptates explicabo nam repudiandae nostrum
+        nemo quos sint vero, in, ad laborum cupiditate minus id dignissimos et
+        ab omnis nihil corporis eveniet vitae tempore sequi, eligendi earum enim
+        laudantium! Labore dicta commodi illum incidunt assumenda accusantium
+        ducimus ad beatae, alias est! Eveniet impedit ad enim earum
+        necessitatibus! Dolor aspernatur eos eum, saepe dignissimos expedita
+        accusamus amet cum officia earum labore laudantium quidem ipsa vel hic
+        totam sunt tempore, enim aut alias, rem quisquam. Ea aut, aspernatur
+        odit rem nemo debitis, ut repellendus, blanditiis ex similique
+        voluptatibus tempore nihil cum recusandae excepturi voluptates laborum
+        iste quae alias. Laboriosam dolores in aliquid quos fugit harum
+        inventore tempora blanditiis voluptatem, sit ab? Impedit quidem,
+        repudiandae iusto optio odio iure quo vero recusandae maiores provident?
+        Tempore nobis fuga aliquid ipsam, cupiditate provident quam voluptatem
+        hic maxime porro odio, vitae, error molestiae inventore ipsa
+        necessitatibus quis. Sapiente dolor rem quae, quasi libero expedita
+        reprehenderit! Ab est dolores consectetur nihil eum doloremque nesciunt
+        labore, excepturi officiis assumenda, incidunt hic corporis qui natus
+        cupiditate quibusdam necessitatibus quaerat quisquam et sed culpa.
+        Commodi voluptatum voluptatem, cumque numquam similique quod aliquid sit
+        officia labore, error laboriosam dolore mollitia repellat natus
+        asperiores? Fuga aperiam enim ea, velit aspernatur debitis pariatur
+        voluptatibus reiciendis soluta dolorum vitae quo optio nisi consectetur
+        vel. Laudantium accusamus itaque minus nisi recusandae! Totam inventore
+        quis atque numquam, esse aliquid excepturi alias impedit ut nisi at hic
+        modi nostrum maxime odio fugit, molestias animi tempore! At aliquam nam
+        odit sapiente incidunt obcaecati dolores neque! Vel, quisquam? Optio, ad
+        distinctio. Quasi numquam hic, libero veniam odio laborum ducimus
+        praesentium voluptatum mollitia expedita earum aut odit. Assumenda at
+        delectus quis quod nostrum, sed deleniti. Veritatis mollitia assumenda,
+        doloribus exercitationem autem possimus molestias saepe ex fugit ea
+        voluptatem porro iste architecto laudantium reiciendis cumque quia
+        quaerat, repudiandae natus quas ducimus incidunt earum. Voluptatum
+        quidem illum voluptas dolores corrupti expedita non quibusdam
+        accusantium exercitationem provident quam aut accusamus nobis animi
+        velit iste excepturi molestiae maxime quod a, enim possimus suscipit
+        eaque. Amet odit doloremque veniam eos in illum incidunt adipisci,
+        blanditiis eaque voluptates maxime sed numquam culpa eligendi deleniti
+        quas nemo repellendus officiis repudiandae autem recusandae! Aspernatur
+        inventore, saepe nostrum veniam unde minus, fugiat maiores pariatur
+        eaque repellat iure distinctio quia? Eveniet impedit architecto odio
+        necessitatibus nihil saepe incidunt quibusdam illo a accusantium tempora
+        suscipit ipsam non, animi itaque. Cupiditate sit a provident quaerat
+        modi ea nam aut labore earum dolore numquam, est vel soluta amet, et rem
+        delectus, eos natus eius cum iure accusantium itaque? Dolores, maxime
+        debitis. Perferendis, tempora voluptatibus. Veniam modi eius aliquid
+        ullam! Debitis ut voluptate tenetur quaerat aspernatur ullam fugit sint,
+        vitae quo omnis? Cum unde officiis reprehenderit doloremque ducimus,
+        eius soluta voluptate exercitationem adipisci ea fugit eaque porro rem
+        repellendus, quam itaque quibusdam maiores, obcaecati provident ut
+        debitis! Cumque, voluptates ratione eligendi architecto nisi itaque.
+        Alias labore inventore quasi error repellendus recusandae vel nulla.
+        Ducimus totam, minima eligendi cupiditate repudiandae dolor
+        exercitationem illo odio, perferendis atque impedit non molestias eius
+        officiis amet omnis ea hic sapiente? Voluptate enim praesentium facere
+        quo dolores. Enim pariatur facere sit officiis atque velit architecto
+        porro a assumenda quod? Soluta ea vel quibusdam autem at non beatae
+        eius. Laudantium aspernatur ullam provident accusamus rerum nulla
+        adipisci asperiores pariatur, omnis ad, tempore aperiam optio hic
+        reprehenderit alias dolore esse debitis nisi culpa maiores maxime
+        corrupti! Quis nostrum obcaecati deleniti tempora deserunt quo explicabo
+        sint alias repellat. Accusantium, nulla dolore? Ipsum aspernatur ratione
+        magnam, saepe iste repellendus architecto autem laborum hic! Eius
+        dolorum repellendus autem aperiam quas, possimus ut nisi magni molestiae
+        voluptas excepturi repellat! Iste, exercitationem non et amet explicabo
+        quis minus maxime quibusdam. Blanditiis eum inventore iste mollitia
+        eligendi vel aut odio, sapiente doloremque, quia saepe minus aliquam
+        magnam dolorum recusandae, consectetur corporis dolor eveniet unde.
+        Rerum quibusdam necessitatibus ad explicabo recusandae magnam amet sint,
+        harum, consequatur labore numquam quaerat exercitationem! Vero quaerat,
+        dolorum, adipisci soluta rem perspiciatis reprehenderit dolor
+        praesentium a in eligendi voluptas, ratione impedit? Neque dicta officia
+        dignissimos tenetur nam itaque, necessitatibus dolores id maxime ad
+        natus ut velit modi, eligendi aspernatur at earum adipisci possimus
+        quam, blanditiis ipsum! Officia porro vitae pariatur quidem atque
+        ratione obcaecati voluptates alias dolorem nobis! Recusandae quasi saepe
+        error nobis praesentium. Deserunt dolor voluptates perferendis nam
+        dolorum sit sapiente adipisci suscipit corporis quis! Esse fuga, dolore,
+        ad pariatur rem corrupti qui quidem consectetur fugit, laudantium alias?
+        Eius quod modi, obcaecati molestiae perspiciatis illum quo tempora qui
+        molestias voluptas reprehenderit, facilis ducimus eos deserunt
+        recusandae consequatur reiciendis debitis dolore vitae pariatur porro
+        dolorum. Officia qui ipsum, quia sint cumque fugiat perferendis illum
+        blanditiis facere corrupti eveniet sunt soluta odit aliquid pariatur
+        dicta, maxime suscipit iusto, in dignissimos sequi doloribus! Quas nemo
+        minima nisi commodi iure harum incidunt quibusdam ut natus consequatur
+        nostrum ducimus suscipit adipisci, vitae doloremque minus saepe ipsam,
+        officia fugiat neque nulla id. Labore, nisi tenetur libero quasi iste
+        perspiciatis modi hic suscipit, sit iure tempora itaque. Repudiandae
+        vel, fuga necessitatibus dolorem temporibus molestiae voluptates ut
+        consectetur tempora exercitationem, aperiam est sapiente voluptatem
+        dignissimos ducimus quo? Libero, ipsum. A temporibus, harum illo commodi
+        ullam consequatur enim iusto sapiente in beatae fuga nulla unde
+        voluptate dignissimos officia nobis mollitia eligendi hic ex
+        perspiciatis! Eligendi iste molestias fuga est, vel aperiam repellat
+        eaque deserunt voluptate voluptatum, ipsam porro obcaecati impedit quae
+        quibusdam ad adipisci autem facilis deleniti quaerat praesentium numquam
+        sed. Fugiat vel, aperiam obcaecati dolorum repellendus unde, adipisci
+        nobis voluptatibus perferendis ducimus impedit consectetur temporibus
+        dolorem repudiandae corrupti voluptatem et facere minima veniam cumque
+        consequatur, ipsa nesciunt accusamus sed? Ullam culpa asperiores neque
+        perspiciatis fugit nesciunt hic, labore distinctio excepturi saepe
+        adipisci soluta! Cum similique magnam modi fugiat aperiam, sunt aut,
+        autem et explicabo unde minus.
+      </div>
+
+      <div class="modal-content">
+        <p class="modal-title">공지 사항</p>
+        <div class="content">
+          설날 연휴로 물량이 급증하여 배송이 지연됨을 알려드립니다. 문제가
+          생기면 정우씨에게 연락 주세요....brrrr...
+        </div>
+        <div class="closeArea" onclick="modalClose();">
+          <span style="font-size: 13pt">닫기</span>
+        </div>
+      </div>
+
+      <button onclick="modalToggle();">모달 창 띄우기</button>
+    </div>
+  </body>
+</html>

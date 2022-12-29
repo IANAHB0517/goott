@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>대혼돈의 Table</title>
+    <script>
+      let cnt = 0;
+      function click1() {
+        document.getElementsByTagName(
+          "td"
+        )[32].children[0].style.backgroundColor = "red"; //33
+      }
+      function click2() {
+        setInterval(changeColor, 1000);
+      }
+
+      function changeColor() {
+        if (cnt % 2 == 0) {
+          document.getElementsByClassName(
+            "tr"
+          )[3].children[3].children[0].style.backgroundColor = "blue";
+          cnt++;
+        } else {
+          document.getElementsByClassName(
+            "tr"
+          )[3].children[3].children[0].style.backgroundColor = "green";
+          cnt++;
+        }
+      }
+      function rollBack() {
+        document.getElementsByTagName("td")[6].style =
+          "width : 50px; height: 50px;";
+      }
+
+      function over1() {
+        setTimeout(rollBack, 5000);
+        document.getElementById(
+          "td1"
+        ).nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.width =
+          "500px";
+      }
+    </script>
+    <style>
+      button {
+        font-size: 20px;
+        border: none;
+        background-color: #fff;
+        width: 50px;
+        height: 50px;
+      }
+      table,
+      tr,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      td {
+        width: 50px;
+        height: 50px;
+        line-height: 2;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr class="tr">
+        <td id="td1"><button onclick="click1();">1</button></td>
+        <td><button onclick="click2();">2</button></td>
+        <td><button onclick="over1();">3</button></td>
+        <td><button onclick="click4();">4</button></td>
+        <td><button onclick="click5();">5</button></td>
+        <td id="td6"><button onclick="click6();">6</button></td>
+        <td><button onclick="click7();">7</button></td>
+      </tr>
+      <tr class="tr">
+        <td><button onclick="click8();">8</button></td>
+        <td><button onclick="click9();">9</button></td>
+        <td id="td10"><button onclick="click10();">10</button></td>
+        <td><button onclick="click11();">11</button></td>
+        <td><button onclick="click12();">12</button></td>
+        <td id="td13"><button onclick="click13();">13</button></td>
+        <td><button onclick="click14();">14</button></td>
+      </tr>
+      <tr class="tr">
+        <td><button onclick="click15();">15</button></td>
+        <td><button onclick="click16();">16</button></td>
+        <td><button onclick="click17();">17</button></td>
+        <td id="td18"><button onclick="click18();">18</button></td>
+        <td><button onclick="click19();">19</button></td>
+        <td><button onclick="click20();">20</button></td>
+        <td id="td21"><button onclick="click21();">21</button></td>
+      </tr>
+      <tr class="tr">
+        <td id="td22"><button onclick="click22();">22</button></td>
+        <td><button onclick="click23();">23</button></td>
+        <td><button onclick="click24();">24</button></td>
+        <td><button onclick="click25();">25</button></td>
+        <td id="td26"><button onclick="click26();">26</button></td>
+        <td><button onclick="click27();">27</button></td>
+        <td><button onclick="click28();">28</button></td>
+      </tr>
+      <tr class="tr">
+        <td><button onclick="click29();">29</button></td>
+        <td id="td30"><button onclick="click30();">30</button></td>
+        <td id="td31"><button onclick="click31();">31</button></td>
+        <td><button onclick="click32();">32</button></td>
+        <td><button onclick="click33();">33</button></td>
+        <td><button onclick="click34();">34</button></td>
+        <td><button onclick="click35();">35</button></td>
+      </tr>
+      <tr class="tr">
+        <td><button onclick="click36();">36</button></td>
+        <td id="td37"><button onclick="click37();">37</button></td>
+        <td><button onclick="click38();">38</button></td>
+        <td><button onclick="click39();">39</button></td>
+        <td id="td40"><button onclick="click40();">40</button></td>
+        <td><button onclick="click41();">41</button></td>
+        <td><button onclick="click42();">42</button></td>
+      </tr>
+      <tr class="tr">
+        <td id="td43"><button onclick="click43();">43</button></td>
+        <td><button onclick="click44();">44</button></td>
+        <td><button onclick="click45();">45</button></td>
+        <td><button onclick="click46();">46</button></td>
+        <td><button onclick="click47();">47</button></td>
+        <td><button onclick="click48();">48</button></td>
+        <td id="td49"><button onclick="click49();">49</button></td>
+      </tr>
+    </table>
+  </body>
+</html>

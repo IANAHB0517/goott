@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM 운행을 하기 위해 알아야 할, 태그의 기본 속성</title>
+    <script>
+      // 태그가 가지고 있는 모든 속성들에 접근 할 수 있다.
+      onload = function () {
+        let p = document.getElementById("firstP");
+        console.log(p);
+
+        document.write(`p.tagName : ${p.tagName} <br> `);
+        document.write(`p.id : ${p.id} <br> `);
+        document.write(`p.innerHTML : ${p.innerHTML} <br> `); //p태그 안에 있는 태그까지 포함한 내용
+        document.write(`p.innerText : ${p.innerText} <br> `); //p태그 안에 있는 태그를 뺀 순수한 내용(순수 text)
+        document.write(`p.className : ${p.className} <br> `);
+        document.write(`p.style.color : ${p.style.color} <br> `);
+        document.write(`p.style.border : ${p.style.border} <br> `);
+        // document.write(`p.onclick : ${p.onclick} <br> `);
+        // console.log(`p.onclick : ${p.onclick()} <br> `); // 왜 null로 찍히는지 모르겠다 하심
+        document.write(`p.children : ${p.children} <br> `);
+        console.log(p.children);
+        document.write(`p.childElementCount : ${p.childElementCount} <br> `);
+        document.write(`p.childNodes : ${p.childNodes} <br> `);
+        console.log(p.childNodes);
+      };
+    </script>
+  </head>
+
+  <body>
+    <h1>DOM 객체 p태그의 프로퍼티, 스타일,이벤트리스너, .....</h1>
+    <hr />
+    <p
+      id="firstP"
+      class="grouP"
+      style="color: blue; border: 1px dotted red"
+      onclick="this.style.backgroundColor='yellow';"
+    >
+      <!--객체도 속성이 될 수 있기 때문에 속성으로 객체를 가질 수도 있다-->
+      이것은 <span>문단 태그</span><b>입니다.</b>
+    </p>
+  </body>
+</html>

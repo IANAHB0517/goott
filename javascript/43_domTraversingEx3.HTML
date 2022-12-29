@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>원거리 + 근거리 접근 방식</title>
+    <script>
+      onload = function () {
+        let td5 = document.getElementById("td5");
+        console.log(td5.parentElement);
+
+        console.log(document.getElementsByClassName("tr")[1].children); // 클래스 이름이 tr인 태그중 2번째 태그의 자식들
+        console.log(document.getElementsByClassName("tr")[1].children[2]); // 클래스 이름이 tr인 태그중 2번째 자식들 중 3번째 자식
+
+        // previousElementSibling : 이전 이웃 요소
+        console.log(
+          document.getElementById("td9").previousElementSibling.innerHTML
+        );
+        // nextElementSibling : 다음 이웃 요소
+        console.log(
+          document.getElementById("td5").nextElementSibling.innerHTML
+        );
+
+        // <td>2</td>에  접근하여 2를 200 바꿔보세여
+        //태그에 접근해서 새로운 태그를 생성하거나, 내용을 조작하거나 속성의 값을 변경할 수 있다
+
+        document.getElementsByClassName("tr")[0].children[1].innerHTML = 200; //방법 1
+        // document.getElementById(
+        //   "td9"
+        // ).parentElement.previousElementSibling.previousElementSibling.children[1].innerHTML =
+        //   "2000"; // 방법 2
+
+        document.getElementsByTagName("td")[1].innerHTML = 20000;
+
+        document.getElementById("td5").nextElementSibling.innerHTML =
+          "<div><img src='img/jja.jpg'></div>";
+        console.log(document.getElementById("td5").nextElementSibling.children);
+
+        document.getElementById("td9").previousElementSibling.style.border =
+          "1px solid red";
+      };
+    </script>
+    <style>
+      table,
+      tr,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr class="tr">
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+      </tr>
+      <tr class="tr">
+        <td>4</td>
+        <td id="td5">5</td>
+        <td>6</td>
+      </tr>
+      <tr class="tr">
+        <td>7</td>
+        <td>8</td>
+        <td id="td9">9</td>
+      </tr>
+    </table>
+
+    <div>
+      <input type="radio" name="gender" value="F" /> Female
+      <input type="radio" name="gender" value="M" /> Male
+    </div>
+  </body>
+</html>
