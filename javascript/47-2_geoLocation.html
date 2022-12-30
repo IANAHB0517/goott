@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Navigator 객체의 geoLocation객체</title>
+    <script>
+      function getLocation() {
+        if (!navigator.geolocation) {
+          //geoLocation 객체가 null이냐 => 웹 브라우저가 geolocation을 지원하지 않느냐?
+          document.getElementById("output").innerHTML =
+            "이 브라우저는 위치정보를 지원하지 않습니다";
+        } else {
+          navigator.geolocation.getCurrentPosition(showPosition, outputError); //성공콜백함수,에러콜백함수 콜백함수 = 사용자가 요청하지 않아도 특정조건에서 발동되는 함수 getCurrentPositon을 호출하면 위치 정보를 얻는 권한을 물어봐 준다 따로 권한을 물어보기 위해 코드를 짤 필요는 없다 ex) input type ="file"
+        }
+      }
+
+      function showPosition(pos) {
+        console.log(pos);
+        let lat = pos.coords.latitude; //위도
+        let lng = pos.coords.longitude; //경도
+        let accuracy = pos.coords.accuracy; //정확도
+        let altitude = pos.coords.altitude; //고도
+        let date = new Date(pos.timestamp).toLocaleString();
+
+        document.getElementById(
+          "output"
+        ).innerHTML = ` 현재 위치는 ${lat} , ${lng} 입니다 <br> 시간 : ${date} <br> 좌표의 정확도는 ${accuracy}입니다<br> `;
+      }
+      function outputError() {
+        document.getElementById("output").innerHTML =
+          "위치 정보를 가져오는데 실패 했습니다!";
+      }
+    </script>
+  </head>
+  <body>
+    <button onclick="getLocation();">Try it</button>
+    <div id="output"></div>
+  </body>
+</html>

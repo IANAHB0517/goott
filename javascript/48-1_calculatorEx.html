@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>심플 계산기</title>
+
+    <script>
+      function display(val) {
+        document.getElementById("result").innerHTML += val;
+      }
+
+      function equal() {
+        let exp = document.getElementById("result").innerHTML;
+        let result = eval(exp);
+        document.getElementById("result").innerHTML += "=" + result;
+      }
+      function reset() {
+        document.getElementById("result").innerHTML = "";
+      }
+    </script>
+  </head>
+  <style>
+    input {
+      font-size: 30px;
+      border: none;
+      width: 90px;
+      height: 50px;
+    }
+    table,
+    tr,
+    td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    td {
+      background-color: rgb(119, 119, 119);
+      line-height: 2;
+      text-align: center;
+    }
+    #resultBox {
+      width: 100%;
+      height: 100px;
+      text-align: center;
+      font-size: 90px;
+      line-height: 1.3;
+      padding: 12px;
+    }
+    #result {
+      padding: 30px;
+      background-color: rgb(236, 236, 236);
+    }
+  </style>
+  <body>
+    <table>
+      <tr>
+        <td colspan="4"><div id="result"></div></td>
+        <!-- <td></td>
+        <td></td>
+        <td></td> -->
+      </tr>
+      <tr>
+        <td>
+          <input type="button" value="7" onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="8" onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="9" onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="X" onclick="display(this.value);" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" value="4" onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="5" onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="6" onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="-" onclick="display(this.value);" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" value="1" onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="2" onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="3" onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="+" onclick="display(this.value);" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" value="C" onclick="reset();" />
+        </td>
+        <td>
+          <input type="button" value="0" onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="." onclick="display(this.value);" />
+        </td>
+        <td>
+          <input type="button" value="=" onclick="equal();" />
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

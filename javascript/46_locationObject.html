@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>location 객체, history 객체</title>
+    <script>
+      //location 객체 : URL 주소를 표현하는 객체
+      console.log("현재 페이지의 URL 주소 : " + location.href);
+
+      function goSite() {
+        let url = document.getElementById("site").value;
+        location.href = url;
+      } // ** 중요
+
+      //history 객체 : user 가 방문했던 페이지 기록을 통해 페이지에 다시 이동 하도록 하는 것
+    </script>
+  </head>
+  <body>
+    <div>이동할 페이지를 선택하고 이동 버튼을 누르세요</div>
+    <select id="site">
+      <option value="https://www.naver.com">네이버</option>
+      <option value="https://www.daum.net">다음</option>
+      <option value="https://www.google.com">구글</option>
+    </select>
+    <button onclick="goSite();">이동</button>
+    <button onclick="history.back();">1 이전 페이지</button>
+    <button onclick="history.forward();">1 다음 페이지</button>
+    <button onclick="history.go(-2);">
+      <!--이전 버튼을 2번 누른결과-->
+      go 함수 안의 매개변수만큼 페이지 이동</button
+    ><!--유저가 보고 있던 페이지에서 회원 가입을 하고 나서 보고 있던 페이지로 되돌려 보내 줄 때 사용-->
+  </body>
+</html>
