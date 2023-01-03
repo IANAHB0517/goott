@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>많은 값 입력 받아 배열로 반환 하기</title>
+    <script>
+      let optionA = ["가지", "고기", "고리"];
+
+      function addOption(obj) {
+        console.log(obj.innerHTML);
+        if (event.keyCode == 13) {
+          optionA.push(obj.value);
+        }
+        console.log(optionA);
+
+        for (let item of optionA) {
+          document.getElementsByTagName("select")[0].innerHTML = "";
+          document.getElementsByTagName(
+            "select"
+          )[0].innerHTML += `<option>${item}<option>`;
+        }
+      }
+      console.log(optionA);
+    </script>
+  </head>
+  <body>
+    <form action="" method="get">
+      <select name="" id="">
+        <option>가지</option>
+        <option>고기</option>
+        <option>고리</option>
+      </select>
+      <button type="submit">제출</button>
+    </form>
+    <input type="text" onkeyup="addOption(this)" ; />
+  </body>
+</html>

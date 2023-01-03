@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="js/3_commonfs.js"></script>
+    <title>하루 동안 이 창 열지 않기</title>
+    <script>
+      window.onload = function (cookName) {
+        // "notice"라는 이름의 쿠키를 읽어봐서, 쿠키가 없거나 쿠키의 값이 "Y"가  아니면 => sub.html 파일을 열어야 함
+        // "notice"라는 이름의 쿠키를 읽어봐서, 쿠키가 없거나 쿠키의 값이 "Y"가  이면 => sub.html 파일을 안 열어야 함
+        // sub.html을 여는 것에 중점을 맞춰서 코드를 짜야 한다.
+        //쿠키를 읽어보자
+        if (readCookie("notice") != "Y") {
+          window.open("49-2_sub.html", "sub", "width=280px,height=350px;");
+        }
+      };
+    </script>
+  </head>
+  <body></body>
+</html>

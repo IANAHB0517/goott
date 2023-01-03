@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GET 방식으로 데이터 주고 받기(main)</title>
+    <script>
+      function send() {
+        let base = document.getElementById("base").value;
+        let height = document.getElementById("height").value;
+        console.log(base, height);
+        location.href = `51-2_sub.html?base=${base}&height=${height}`; // 쿼리스트링으로 데이터를 전달하며, 페이지 이동
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      밑변
+      <input type="text" id="base" />
+    </div>
+    <div>
+      높이
+      <input type="text" id="height" />
+    </div>
+    <div><button type="button" onclick="send();">전송</button></div>
+  </body>
+</html>

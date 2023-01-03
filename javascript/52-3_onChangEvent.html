@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>onChange 이벤트</title>
+    <script>
+      //onchange 이벤트 : 값이 입력이 완료되어서 값이 변했을 때 판별
+      function mySelect(obj) {
+        console.log(`${obj.value}가고 싶다`);
+      }
+
+      // 다른 방법으로 select 태그에서 유저가 선택한 값 얻어오기
+      function select2() {
+        let city2 = document.getElementById("city2");
+        // options 속성 : select 태그 안에 있는 option 태그들 (배열 처럼 운용)
+        // selectedIndex 속성 : 유저가 선택한 option 태그 번째
+        console.log(city2.options[city2.selectedIndex].value);
+      } // 체크 되어 있던 값을 알아야 할 때 사용
+    </script>
+  </head>
+  <body>
+    <div><span></span>자 입력중...</div>
+    <input
+      type="text"
+      id="txt1"
+      onchange="alert('!')"
+      placeholder="10자 이내로 입력하세요"
+    />
+
+    <select onchange="mySelect(this);" id="city">
+      <option>서울</option>
+      <option>뉴욕</option>
+      <option>런던</option>
+    </select>
+
+    <select onchange="select2();" id="city2">
+      <option>부산</option>
+      <option>대구</option>
+      <option>인천</option>
+    </select>
+  </body>
+</html>

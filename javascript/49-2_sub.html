@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="js/3_commonfs.js"></script>
+    <script src="js/3_commonfs.js"></script>
+    <title>하루 동안 이 창 열지 않기(main)</title>
+    <style>
+      .notice {
+        width: 230px;
+        height: 300px;
+        padding: 15px;
+        border: 1px solid black;
+        background-color: bisque;
+        position: absolute;
+      }
+
+      .content {
+        margin-top: 30px;
+      }
+      .bottom {
+        position: absolute;
+        left: 0;
+        bottom: 10px;
+      }
+
+      .close {
+        position: absolute;
+        right: -45px;
+        bottom: -3px;
+      }
+    </style>
+    <script>
+      function myClose() {
+        //함수 이름으로 window 객체가 가지고 있는 이름 을 쓰면 안됨 ex)close
+        //유저가 이 창을 닫을 때
+        //체크박스에 체크를 했다면 => 쿠키를 남기고 닫아야 함
+        //체크박스에 체크를 하지 않았다면 => 그냥 닫아야 함
+
+        if (document.getElementsByTagName("input")[0].checked == true) {
+          //체크 박스에 체크가 되어 있다면
+          //   alert("!!");
+          // 쿠키 저장
+          saveCookie("notice", "Y", 1);
+        }
+
+        window.close(); // 알림창 닫기
+      }
+    </script>
+  </head>
+  <body>
+    <div class="notice">
+      <div>공지 사항</div>
+      <div class="content">새해 복 많이 받으세요...</div>
+      <div class="bottom">
+        <input type="checkbox" />하루 동안 이 창 열지 않기
+        <input type="button" class="close" value="닫기" onclick="myClose();" />
+      </div>
+    </div>
+  </body>
+</html>
