@@ -12,7 +12,8 @@
 
       $(function () {
         function addBtn(obj) {
-          $(obj).parent().parent().parent().append(trToTd);
+          $(trToTd).insertAfter($(obj).parent().parent());
+     
         }
         function delBtn(obj) {
           $(obj).parent().parent().remove();
@@ -57,9 +58,7 @@
         <td><input type="text" /></td>
         <td><input type="text" /></td>
         <td><input type="text" /></td>
-        <td>
-          <button class="add">추가</button><button class="del">삭제</button>
-        </td>
+        <td><button class="add">추가</button><button class="del">삭제</button></td>
       </tr>
     </table>
     <button type="submit">전송</button>
