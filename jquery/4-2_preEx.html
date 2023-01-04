@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="js/jquery-3.6.3.min.js"></script>
+    <title>선행 과제</title>
+    <script>
+      let trToTd =
+        "<tr><td><input type='text'></td><td><input type='text'></td><td><input type='text'></td><td><button class='add'>추가</button><button class='del'>삭제</button></td>";
+
+      $(function () {
+        function addBtn(obj) {
+          $(obj).parent().parent().parent().append(trToTd);
+        }
+        function delBtn(obj) {
+          $(obj).parent().parent().remove();
+        }
+        $(document).on("click", ".add", function () {
+          addBtn(this);
+        });
+        $(document).on("click", ".del", function () {
+          delBtn(this);
+        });
+      });
+    </script>
+    <style>
+      table,
+      tr,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+      }
+      input {
+        border: none;
+        width: 70%;
+        height: 70%;
+        padding: 10px;
+      }
+      /* tr td:last-child {
+        display: flex;
+      } */
+    </style>
+  </head>
+  <body>
+    <!-- <form action="4-3_receive.html" method="get"> -->
+    <table>
+      <tr>
+        <th>상품명</th>
+        <th>수량</th>
+        <th>가격</th>
+        <th>비고</th>
+      </tr>
+      <tr>
+        <td><input type="text" /></td>
+        <td><input type="text" /></td>
+        <td><input type="text" /></td>
+        <td>
+          <button class="add">추가</button><button class="del">삭제</button>
+        </td>
+      </tr>
+    </table>
+    <button type="submit">전송</button>
+    <!-- </form> -->
+  </body>
+</html>

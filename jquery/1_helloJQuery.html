@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello, jQuery</title>
+    <script src="./js/jquery-3.6.3.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // window.onload() = function () {} 과 같다 웹 문서가 로딩되면
+
+        //   $("h1"). 태그를 선택함
+        $("h1").css("color", "pink");
+        // == document.getElementsByTagName("h1")[0].style.color = "pink";
+        // $("div").click(function () {
+        //   $(this).html("참 쉽다");
+        // });
+
+        $(".small").mouseover(function () {
+          $(".big").show(1000, function () {
+            $(".small").html("낙타났다!");
+          });
+        });
+
+        $(".small").mouseout(function () {
+          $(".big").hide(2500);
+        });
+      }); // 얘도 함수라서 이안에 함수를 쓰면 외부에서 볼 수 없다
+
+      //   function trytry(obj) {
+      //     obj.innerHTML = "이렇게 바껴요!!";
+      //   }
+    </script>
+  </head>
+  <body>
+    <h1>Hello, JQuery!</h1>
+    <!-- <div onclick="trytry(this);">
+      jQuery 는 자바스크립트 코딩을 좀더 빠르고 편하게 사용할 수 있도록 하는
+      라이브러리 입니다.
+    </div> -->
+    <div>
+      jQuery 는 자바스크립트 코딩을 좀더 빠르고 편하게 사용할 수 있도록 하는
+      라이브러리 입니다.
+    </div>
+    <div>
+      <img
+        src="../javascript/img/ham.jpg"
+        class="small"
+        width="50%"
+        onmouseover="disp();"
+        onmouseout="hide();"
+      />
+    </div>
+    <div>
+      <img
+        src="../javascript/img/ham.jpg"
+        class="big"
+        width="100%"
+        style="display: none"
+      />
+    </div>
+  </body>
+</html>

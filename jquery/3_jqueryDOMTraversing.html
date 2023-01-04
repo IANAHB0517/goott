@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- 구글 CDN을 이용해 jQuery 불러 오기 -->
+    <title>jQuery DOM 운행</title>
+    <script>
+      $(function () {
+        //next() : nextElemnetSibling
+        $(".tr td").eq(0).next().next().html();
+        //prev() : previousElemnetSibling
+        $("#td5").next().prev().prev().html();
+        //parent() : 부모태그
+        //children() : 자식요소들
+        $("#td5").next().parent().next().children().eq(2).html();
+
+        console.log($("tr td").eq(0).parent().next().children().eq(0).html());
+        $("tr td")
+          .eq(5)
+          .parent()
+          .next()
+          .children()
+          .eq(1)
+          .html("i still alive")
+          .parent()
+          .prev()
+          .children()
+          .css("background-color", "yellow");
+      });
+    </script>
+  </head>
+  <body>
+    <table border="1">
+      <tr class="tr">
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+      </tr>
+      <tr class="tr">
+        <td>4</td>
+        <td id="td5">5</td>
+        <td>6</td>
+      </tr>
+      <tr class="tr">
+        <td>7</td>
+        <td>8</td>
+        <td id="td9">9</td>
+      </tr>
+    </table>
+  </body>
+</html>

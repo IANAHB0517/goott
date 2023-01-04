@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="js/jquery-3.6.3.min.js"></script>
+    <title>jQuery each함수</title>
+    <script>
+      //자바스크립트의 forEach 함수
+
+      let ar = [3, 5, 7, 8, 9, 10];
+
+      //   for (let i = 0; i < ar.length; i++) {
+      //     document.write(ar[i] + "<br>");
+      //   }
+      //   for (let i of ar) {
+      //     document.write(i);
+      //   }
+      //   each의 용법
+      //1) 배열에 있는 모든 요소에 반복 작업을 하고자 할 때
+      $(function () {
+        $.each(ar, function (i, e) {
+          console.log(`${i}번 요소 : ${e} <br>`);
+        });
+        //   document.write("<hr>");
+        //2) 반복되는 태그 구조에서 각각의 태그에 반복 작업을 하고자 할 때
+        $("li").each(function (i, e) {
+          console.log(`${i}번째 요소 :${$(e).html()}`);
+          $(this).css("color", "red");
+        });
+        // $("li").each(function (i, e) {
+        //   document.write($(e).html);
+        // });
+        // $("li").each(function(i,e){
+
+        // })
+      });
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li>0번째 li</li>
+      <li>1번째 li</li>
+      <li>2번째 li</li>
+      <li>3번째 li</li>
+      <li>4번째 li</li>
+    </ul>
+  </body>
+</html>

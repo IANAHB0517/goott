@@ -15,8 +15,8 @@
         }
         console.log(optionA);
 
+        document.getElementsByTagName("select")[0].innerHTML = "";
         for (let item of optionA) {
-          document.getElementsByTagName("select")[0].innerHTML = "";
           document.getElementsByTagName(
             "select"
           )[0].innerHTML += `<option>${item}<option>`;
