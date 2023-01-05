@@ -13,7 +13,6 @@
       $(function () {
         function addBtn(obj) {
           $(trToTd).insertAfter($(obj).parent().parent());
-     
         }
         function delBtn(obj) {
           $(obj).parent().parent().remove();
@@ -22,7 +21,11 @@
           addBtn(this);
         });
         $(document).on("click", ".del", function () {
-          delBtn(this);
+          if ($("tr").length == 2) {
+            alert("이..이것만은...");
+          } else {
+            delBtn(this);
+          }
         });
       });
     </script>
@@ -40,13 +43,9 @@
         height: 70%;
         padding: 10px;
       }
-      /* tr td:last-child {
-        display: flex;
-      } */
     </style>
   </head>
   <body>
-    <!-- <form action="4-3_receive.html" method="get"> -->
     <table>
       <tr>
         <th>상품명</th>
@@ -58,10 +57,11 @@
         <td><input type="text" /></td>
         <td><input type="text" /></td>
         <td><input type="text" /></td>
-        <td><button class="add">추가</button><button class="del">삭제</button></td>
+        <td>
+          <button class="add">추가</button><button class="del">삭제</button>
+        </td>
       </tr>
     </table>
     <button type="submit">전송</button>
-    <!-- </form> -->
   </body>
 </html>
