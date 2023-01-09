@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <title>jQuery를 이용한 비동기 데이터 통신 예제</title>
+    <script>
+      function txtLoad() {
+        $.ajax({
+          url: "http://gottclass6.cafe24.com/lsj/hello.txt", // 데이터가 송수신될 서버의 주소
+          type: "GET", // 통신 방식 (get, post, put , delete)
+          dataType: "text", // 수신받을 데이터 타입(MIME TYPE)
+          success: function (data) {
+            // 통신이 성공하면 콜백함수 호출
+            $("#output").html(data);
+          },
+          error: function () {
+            // 통신이 제대로 수행 되지 않았을 때의 콜백 함수
+          },
+          complete: function () {
+            //통신이 끝났을 때 콜백함수
+          },
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <input type="button" value="로딩" onclick="txtLoad();" />
+    <div id="output"></div>
+  </body>
+</html>

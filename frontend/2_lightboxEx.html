@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="../plug-in/light-box/dist/css/lightbox.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="../plug-in/light-box/dist/js/lightbox.min.js"></script>
+    <title>jQuery pliug-in ex</title>
+    <script>
+      lightbox.option({
+        resizeDuration: 200,
+        wrapAround: true, // 이미지가 계속 돌아가도록? 난 계속 돌아가는데?
+        maxWidth: 100,
+      });
+    </script>
+  </head>
+  <body>
+    <a href="../batman.jpg" data-lightbox="image-1" data-title="배트맨"
+      >배트맨</a
+    >
+    <div>
+      <a href="../img/bu.jpg" data-lightbox="images">부대찌개</a>
+      <a href="../img/don.jpg" data-lightbox="images">돈까스</a>
+      <a href="../img/ham.jpg" data-lightbox="images">햄버거</a>
+    </div>
+  </body>
+</html>

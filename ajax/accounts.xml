@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<accounts>
+    <account>
+    <owner>홍길동</owner>
+    <accountNum>1111-43-9999</accountNum>
+    <balance>500</balance>
+    <bankName>우리은행</bankName>
+    <name>직장인비과세예금</name>
+    </account>
+   
+    <account>
+    <owner>홍김동</owner>
+    <accountNum>2111-48-2222</accountNum>
+    <balance>300</balance>
+    <bankName>우리은행</bankName>
+    <name>직장인비과세예금</name>
+    </account>
+
+    <account>
+    <owner>홍길은</owner>
+    <accountNum>1111-43-9999</accountNum>
+    <balance>500</balance>
+    <bankName>우리은행</bankName>
+    <name>직장인비과세예금</name>
+    </account>
+   
+    <account>
+    <owner>홍치동</owner>
+    <accountNum>2111-48-2222</accountNum>
+    <balance>300</balance>
+    <bankName>우리은행</bankName>
+    <name>직장인비과세예금</name>
+    </account>
+   
+</accounts>
