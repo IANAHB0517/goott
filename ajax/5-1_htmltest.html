@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      markerImages: [
+        null, // API에서 제공하는 기본 마커 이미지
+        {
+          src: "https://t1.daumcdn.net/localimg/localimages/07/2009/map/icon/ico_mn_13.png",
+          width: 31,
+          height: 35,
+          shape: "rect",
+          coords: "0,0,31,35",
+          hoverImage: {
+            src: "https://t1.daumcdn.net/localimg/localimages/07/2012/img/marker_normal.png",
+            width: 33,
+            height: 36,
+            offsetX: 12,
+            offsetY: 36,
+            spriteWidth: 644,
+            spriteHeight: 946,
+            spriteOriginX: 10,
+            spriteOriginY: 10,
+          },
+          dragImage: {
+            src: "https://t1.daumcdn.net/localimg/localimages/07/2012/attach/pc_img/ico_comm.png",
+            width: 20, // 마커 크기
+            height: 20, // 마커 크기
+            offsetX: 10, // 지도에 고정시킬 이미지 내 위치 좌표
+            offsetY: 20, // 지도에 고정시킬 이미지 내 위치 좌표
+            spriteWidth: 118, // 이미지 전체 크기
+            spriteHeight: 111, // 이미지 전체 크기
+            spriteOriginX: 0, // 이미지 중 마커로 사용할 위치
+            spriteOriginY: 90, // 이미지 중 마커로 사용할 위치
+          },
+        },
+      ];
+    </script>
+    <style>
+      li:nth-child(1) {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+    </ul>
+    <ul>
+      <li>11</li>
+      <li>22</li>
+      <li>33</li>
+      <li>44</li>
+    </ul>
+  </body>
+</html>

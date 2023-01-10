@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=13bc88b3e2fa2f8dee2744bd207622b8"
+    ></script>
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=13bc88b3e2fa2f8dee2744bd207622b8&libraries=services,clusterer,drawing"
+    ></script>
+    <title>
+      비동기 전송 방식으로 json을 가져와 파싱하여 출력하기 (날씨 정보)
+    </title>
+    <script>
+      // a80f6e5879bd35196c3426badc1d843e
+
+      let city = "seoul";
+      let temp = "metric";
+
+      $(function () {
+        transData();
+      });
+
+      function transData() {
+        $.ajax({
+          url: `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=a80f6e5879bd35196c3426badc1d843e&units=${temp}`, // 데이터가 송수신될 서버의 주소
+          type: "GET", // 통신 방식 (get, post, put , delete)
+          dataType: "json", // 수신받을 데이터 타입(MIME TYPE)
+          async: false, // 비동기 통신 : false -> 동기 통신방식으로 하겠다.
+          success: function (data) {
+            // 통신이 성공하면 콜백함수 호출
+            console.log(data);
+            dataParsing(data);
+            // parsingXML(data); // parsingXML 이라는 함수에 data를 넣어서 보내줌
+          },
+          error: function () {
+            // 통신이 제대로 수행 되지 않았을 때의 콜백 함수
+          },
+          complete: function () {
+            //통신이 끝났을 때 콜백함수
+          },
+        });
+      }
+
+      function dataParsing(data) {
+        let weatherArea = "";
+        // 변수저장
+        name = data.name;
+        lat = data.coord.lat;
+        lon = data.coord.lon;
+        feels_like = data.main.feels_like;
+        temp = data.main.temp;
+        temp_max = data.main.temp_max;
+        temp_min = data.main.temp_min;
+        humidity = data.main.humidity;
+        weather = data.weather[0].main;
+
+        console.log(
+          name,
+          lat,
+          lon,
+          feels_like,
+          temp,
+          humidity,
+          temp_max,
+          temp_min,
+          weather
+        );
+
+        // 도시
+        if (name == "Seoul") {
+          name = "서울";
+        } else if (name == "Busan ") {
+          name = "부산";
+        } else if (name == "Jeju ") {
+          name = "제주";
+        } else if (name == "Incheon ") {
+          name = "인천";
+        } else if (name == "New York ") {
+          name = "뉴욕";
+        } else {
+          name = "런던";
+        }
+        // 날씨
+        let weatherIcon = "";
+        if (weather == "Clouds") {
+          weatherIcon = "서울";
+        } else if (weather == "Clear ") {
+          weatherIcon = <i class="fa-solid fa-sun"></i>;
+        } else if (weather == "Rain ") {
+          weatherIcon = "제주";
+        } else if (weather == "Snow ") {
+          weatherIcon = "인천";
+        }
+        // 텍스트구성
+        weatherArea = `<h4>현재 : ${name}의 날씨는 <span class='{weather}'>${weatherIcon}</span> 체감 온도는 ${feels_like}입니다</h4><div>실제 온도는 ${temp}도 습도 ${humidity} 최고 온도${temp_max} 최저 온도${temp_min} 입니다.</div>`;
+
+        // 카카오맵
+        var container = document.getElementById("city"); // 지도를 그릴 영역
+        var options = {
+          center: new kakao.maps.LatLng(lat, lon), // 지도의 중심 좌표
+          level: 3, // 확대 축소 레벨
+          map: map, // drawing manager로 그리기 요소를 그릴 map 객체
+          drawingMode: [
+            // drawing manager로 제공할 그리기 요소 모드
+            kakao.maps.drawing.OverlayType.MARKER,
+            kakao.maps.drawing.OverlayType.POLYLINE,
+            kakao.maps.drawing.OverlayType.RECTANGLE,
+            kakao.maps.drawing.OverlayType.CIRCLE,
+            kakao.maps.drawing.OverlayType.POLYGON,
+          ],
+        };
+        var map = new kakao.maps.Map(container, options),
+          manager = new kakao.maps.drawing.DrawingManager({
+            map: map,
+            drawingMode: [kakao.maps.drawing.OverlayType.MARKER],
+            markerOptions: {
+              draggable: true,
+              markerImages: [null, Clouds{icon:weatherIcon}],
+            },
+          });
+
+        // 출력
+        $("#weather").html(weatherArea);
+      }
+
+      function Change() {
+        city = $("#selectBox").val();
+        // let tempRadio = document.getElementsByName("tempture");
+        // $.each(tempRadio, function (i, item) {
+        //   console.log($(item).eq(0).attr("checked"));
+        // });
+        // // temp = tempRadio[i].val();
+
+        // console.log(temp);
+        transData(city, temp);
+      }
+
+      $(document).on("change", "input[name='tempture']", function () {
+        console.log(this);
+        temp = $(this).val();
+        console.log(temp);
+      });
+      //   $("input[name='tempture']").change(function () {
+      //     console.log(this);
+      //     temp = $(this).val();
+      //     console.log(temp);
+      //   });
+      //   function tempChange(){
+
+      //   }
+    </script>
+    <style>
+      /* .clear{
+            
+        } */
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1>도시의 날씨 얻어오기</h1>
+      <div id="city" style="width: 500px; height: 400px"></div>
+      <div id="weather"></div>
+      <div id="choice">
+        <select name="cityChoiceSelect" id="selectBox">
+          <option name="cityChoice" value="seoul">서울</option>
+          <option name="cityChoice" value="incheon">인천</option>
+          <option name="cityChoice" value="busan">부산</option>
+          <option name="cityChoice" value="jeju">제주</option>
+          <option name="cityChoice" value="new york">뉴욕</option>
+          <option name="cityChoice" value="london">런던</option>
+        </select>
+        <span id="tempSelectBox">
+          <input
+            type="radio"
+            class="form-check-input"
+            id="radio1"
+            name="tempture"
+            value="metric"
+            checked
+          />
+          <label class="form-check-label" for="radio1">섭씨</label>
+
+          <input
+            type="radio"
+            class="form-check-input"
+            id="radio2"
+            name="tempture"
+            value="standard"
+          />
+          <label class="form-check-label" for="radio1">켈빈</label>
+          <input
+            type="radio"
+            class="form-check-input"
+            id="radio3"
+            name="tempture"
+            value="imperial"
+          />
+          <label class="form-check-label" for="radio1">화씨</label>
+        </span>
+        <button type="submit" onclick="Change();">날씨 보기</button>
+      </div>
+    </div>
+  </body>
+</html>

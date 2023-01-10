@@ -11,41 +11,132 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      let items = null;
       $(function () {
-        xmlParsing(transData());
-      });
+        // xmlParsing(transData());
+        transData();
 
+        $("#findNews").keyup(function (e) {
+          // e = 이벤트가 발생했을때의 정보를 매개변수 e에 넣어준다
+          if (e.keyCode == 13) {
+            searchNews($("#findNews").val());
+          }
+        });
+      });
+      function searchNews(findItem) {
+        let isfind = false;
+        let findNews = `<div class="list-group">`;
+        $.each(items, function (i, item) {
+          let title = $(item).children().eq(0).html();
+          let link = $(item).children().eq(1).html();
+          title = title.replace("<![CDATA[", "");
+          title = title.replace("]]]>", "");
+
+          if (title.indexOf(findItem) != -1) {
+            // title의 문자열에 findItem이 있다면
+            isfind = true;
+            findNews += `<a href="${link}" class="list-group-item list-group-item-action">${title}</a>`;
+          }
+        });
+        findNews += "</div>";
+        if (!isfind) {
+          $("#accordion").html(
+            "<a href='#' class='list-group-item list-group-item-action'>검색 결과가 없습니다</a>"
+          );
+        } else {
+          $("#accordion").html(findNews);
+        }
+      }
       function transData() {
-        // $.ajax({
-        //   url: "http://www.mbn.co.kr/rss/enter/", // 데이터가 송수신될 서버의 주소
-        //   type: "GET", // 통신 방식 (get, post, put , delete)
-        //   dataType: "xml", // 수신받을 데이터 타입(MIME TYPE)
-        //   async: false, // 비동기 통신 : false -> 동기 통신방식으로 하겠다.
-        //   success: function (data) {
-        //     // 통신이 성공하면 콜백함수 호출
-        //     console.log(data);
-        //     return data;
-        //     // parsingXML(data); // parsingXML 이라는 함수에 data를 넣어서 보내줌
-        //   },
-        //   error: function () {
-        //     // 통신이 제대로 수행 되지 않았을 때의 콜백 함수
-        //   },
-        //   complete: function () {
-        //     //통신이 끝났을 때 콜백함수
-        //   },
-        // });
+        $.ajax({
+          url: "https://www.mbn.co.kr/rss/enter/", // 데이터가 송수신될 서버의 주소
+          type: "GET", // 통신 방식 (get, post, put , delete)
+          dataType: "xml", // 수신받을 데이터 타입(MIME TYPE)
+          async: false, // 비동기 통신 : false -> 동기 통신방식으로 하겠다.
+          success: function (data) {
+            // 통신이 성공하면 콜백함수 호출
+            console.log(data);
+            xmlParsing(data);
+            // parsingXML(data); // parsingXML 이라는 함수에 data를 넣어서 보내줌
+          },
+          error: function () {
+            // 통신이 제대로 수행 되지 않았을 때의 콜백 함수
+          },
+          complete: function () {
+            //통신이 끝났을 때 콜백함수
+          },
+        });
       }
       function xmlParsing(xmlDoc) {
-        let items = xmlDoc.getElementsByTagName("item");
+        let channel = xmlDoc.getElementsByTagName("channel")[0];
+        items = channel.getElementsByTagName("item");
         console.log(items);
+
+        let output = "";
+        $.each(items, function (i, news) {
+          let title = $(news).children().eq(0).html();
+          let link = $(news).children().eq(1).html();
+          let description = $(news).children().eq(3).html();
+          let pubDate = $(news).children().eq(4).html();
+
+          console.log(title, description);
+
+          title = title.replace("<![CDATA[", "");
+          title = title.replace("]]]>", "");
+          description = description.replace("<![CDATA[", "");
+          description = description.replace("]]]>", "");
+          link = link.replace("<![CDATA[", "");
+          link = link.replace("]]]>", "");
+
+          output += `<div class="card"><div class="card-header"><a class="btn" data-bs-toggle="collapse" href="#news${i}">`;
+          output += `${title}`;
+          output += `</a></div><div id="news${i}" class="collapse" data-bs-parent="#accordion"><div class="card-body">`;
+          output += `<a href='${link}'>${description}</a><div class='pubDate'>`;
+          output += `${pubDate}</div>`;
+          output += ` </div></div></div>`;
+        });
+
+        $("#accordion").html(output);
       }
     </script>
     <title>mbn 뉴스 기사를 xml로 받아와 parsing 해보자</title>
+    <style>
+      /* * {
+        box-sizing: border-box;
+      } */
+
+      .card-body a {
+        text-decoration: none;
+        color: #333;
+        font-size: 0.8rem;
+      }
+      .card-body {
+        position: relative;
+        padding: 20px;
+      }
+      .pubDate {
+        color: #333;
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        margin-top: 20px;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
       <h1>MBN 연예 뉴스</h1>
-      <div id="output"></div>
+      <div class="searchData">
+        <div class="mb-3 mt-3 searchnews">
+          <input
+            type="text"
+            class="form-control"
+            id="findNews"
+            placeholder="검색할 뉴스를 쓰세요"
+          />
+        </div>
+      </div>
+      <div id="accordion"></div>
     </div>
   </body>
 </html>
