@@ -14,21 +14,51 @@
     <script>
       //공공포탈 키
       // 4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D
+
+      let pageNo = 778; // 현재 페이지를 기억 시키기 위한 변수
+      let numOfRows = 10;
+      let totalCount = 0;
+      let totalPage = 0;
+
       $(function () {
         getTourData();
+
+        if (numOfRows != 0) {
+          if (totalCount % numOfRows == 0) {
+            totalPage = parseInt(totalCount / numOfRows);
+          } else {
+            totalPage = parseInt(totalCount / numOfRows + 1);
+          }
+        } else {
+          numOfRows = 10;
+        }
+
+        $("#morePage").click(function () {
+          console.log(`pageNo:${pageNo}totalPage:${totalPage}`);
+          if (pageNo < totalPage) {
+            pageNo++;
+            getTourData();
+          } else if (pageNo == totalPage) {
+            alert("마지막 페이지 입니다.");
+            $(this).attr("disabled", true); // 버튼 비활성화 disabled 속성을 true로 해줌
+          }
+        });
       });
 
       function getTourData() {
         let baseUrl =
-          "http://apis.data.go.kr/B551011/KorService/areaBasedList?areaCode=1&MobileOS=ETC&MobileApp=testAPP&serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&_type=json";
+          "http://apis.data.go.kr/B551011/KorService/areaBasedList?areaCode=1&MobileOS=ETC&MobileApp=testAPP&serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&_type=json&pageNo=" +
+          pageNo;
 
         $(".loading").show();
+
         $.ajax({
           url: baseUrl, // 데이터가 송수신될 서버의 주소
           type: "GET", // 통신 방식 (get, post, put , delete)
           dataType: "json", // 수신받을 데이터 타입(MIME TYPE)
           success: function (data) {
             // 통신이 성공하면 콜백함수 호출
+            console.log(data);
             parsing(data);
           },
           error: function () {
@@ -44,6 +74,9 @@
       function parsing(json) {
         let tourAr = json.response.body.items.item;
         // console.log(tourAr);
+        totalCount = Number(json.response.body.totalCount);
+        numOfRows = Number(json.response.body.numOfRows);
+
         let output = `<div class="list-group">`;
         $.each(tourAr, function (i, tour) {
           //   console.log(tour);
@@ -61,9 +94,14 @@
         });
         output += `</a>`;
 
-        console.log(output);
-        $("#tourInfo").html(output);
+        // console.log(output);
+        $("#tourInfo").append(output);
       }
+
+      // function nextPage() {
+      //   pageNo++;
+      //   getTourData();
+      // }
     </script>
     <style>
       .tour {
@@ -134,8 +172,16 @@
       <div id="tourInfo"></div>
     </div>
 
+    <div class="d-grid">
+      <button type="button" id="morePage" class="btn btn-primary btn-block">
+        더 많은 페이지
+      </button>
+    </div>
     <div class="mt-5 p-4 bg-dark text-white text-center">
       <p>Copyright 2023. goottClass6 all right reserved.</p>
     </div>
+    <!-- <div class="nextPgae">
+
+    </div> -->
   </body>
 </html>

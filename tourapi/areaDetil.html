@@ -18,7 +18,9 @@
         if (contentid == null) {
           location.href = "areaBasedList.html";
         } else {
-          getTourData(contentid);
+          getTourData(contentid); // contentId의 추가 정보
+
+          getAdditionalImage(contentid); // contentId의 추가 이미지 데이터를 ajax로 호출하기 위한 함수
         }
       });
 
@@ -47,6 +49,67 @@
             $(".loading").hide();
           },
         });
+      }
+
+      function getAdditionalImage(contentId) {
+        let imgUrl =
+          "https://apis.data.go.kr/B551011/KorService/detailImage?MobileOS=ETC&MobileApp=tsetApp&serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&_type=json&contentId=" +
+          contentId +
+          "&imageYN=Y&subImageYN=Y";
+
+        $(".loading").show();
+        $.ajax({
+          url: imgUrl, // 데이터가 송수신될 서버의 주소
+          type: "GET", // 통신 방식 (get, post, put , delete)
+          dataType: "json", // 수신받을 데이터 타입(MIME TYPE)
+          success: function (data) {
+            // 통신이 성공하면 콜백함수 호출
+            // parsing(data);
+            console.log(data);
+            makeImgSlider(data);
+          },
+          error: function () {
+            // 통신이 제대로 수행 되지 않았을 때의 콜백 함수
+          },
+          complete: function () {
+            //통신이 끝났을 때 콜백함수
+            $(".loading").hide();
+          },
+        });
+        function makeImgSlider(data) {
+          // 함수의 은닉성 적법한 절차에 따라 접근해야만 하용할 수 있도록 만든다 -- 의존도가 높다
+          let imgAr = data.response.body.items.item;
+
+          if (data.response.body.items != "") {
+            // 데이터가 오지 않으면 item 배열이 생기지 않기 떄문에 그보다 윗 단계인 items와 비교한다.
+            let output = `<div class="carousel-indicators">`;
+            for (let i in imgAr) {
+              if (i == 0) {
+                output += `<button type="button" data-bs-target="#demo" data-bs-slide-to="${i}" class="active"></button>`;
+              } else {
+                output += `<button type="button" data-bs-target="#demo" data-bs-slide-to="${i}"></button>`;
+              }
+            }
+            output += `</div><div class="carousel-inner">`;
+
+            $.each(imgAr, function (i, addImg) {
+              if (i == 0) {
+                output += `<div class="carousel-item active">`;
+              } else {
+                output += `<div class="carousel-item">`;
+              }
+              output += `<img src="${addImg.originimgurl}" alt="${addImg.contentid}" class="d-block w-100"></div>`;
+            });
+
+            output += `</div>`;
+            output += `<button class="carousel-control-prev" type="button" data-bs-target="#demo"data-bs-slide="prev"><spanclass="carousel-control-prev-icon"></span></button><button class="carousel-control-next" type="button"data-bs-target="#demo" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>`;
+            $("#demo").html(output);
+          } else {
+            $("#demo").remove();
+          }
+
+          // console.log(output);
+        }
       }
     </script>
     <title>지역 기반 상세 페이지</title>
@@ -90,7 +153,12 @@
       </div>
     </nav>
 
-    <div class="container mt-5"></div>
+    <div class="container mt-5">
+      <!-- Carousel -->
+      <div id="demo" class="carousel slide" data-bs-ride="carousel">
+        <!-- Left and right controls/icons -->
+      </div>
+    </div>
 
     <div class="mt-5 p-4 bg-dark text-white text-center">
       <p>Copyright 2023. goottClass6 all right reserved.</p>
