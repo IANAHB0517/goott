@@ -13,6 +13,7 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <title>축제 공연 페이지</title>
 
@@ -21,9 +22,9 @@
 
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="assets/css/fontawesome.css" />
-    <link rel="stylesheet" href="assets/css/templatemo-plot-partyListing.css" />
     <link rel="stylesheet" href="assets/css/animated.css" />
     <link rel="stylesheet" href="assets/css/owl.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-plot-partyListing.css" />
     <!--
 
 TemplateMo 564 Plot Listing
@@ -31,6 +32,41 @@ TemplateMo 564 Plot Listing
 https://templatemo.com/tm-564-plot-listing
 
 -->
+    <style>
+      a img.itemImg {
+        width: 400px;
+      }
+      .itemCard {
+        display: flex;
+        margin-bottom: 15px;
+      }
+
+      .right-content {
+        padding: 15px;
+      }
+
+      .info,
+      .info span {
+        text-align: center;
+      }
+      .info img {
+        margin-left: 8px;
+        margin-right: 8px;
+      }
+
+      .pagingBtn {
+        display: flex;
+        justify-content: center;
+        /* margin: 0 auto; */
+      }
+      .pagingBtn .main-white-button {
+        margin: 0 2px;
+        text-transform: uppercase;
+        border: 1px solid #bcb4c0;
+        background-color: #bcb4c0;
+        color: #fff;
+      }
+    </style>
   </head>
 
   <body>
@@ -286,6 +322,29 @@ https://templatemo.com/tm-564-plot-listing
       </div>
     </div>
 
+    <div class="pagingBtn">
+      <input
+        type="button"
+        value="prev"
+        class="movePageMin main-white-button"
+        style="display: none"
+        onclick="pageMove(this);"
+      />
+      <span class="pageArea"
+        ><input
+          type="button"
+          value="1"
+          class="movePageNum main-white-button"
+          onclick="pageMove(this);"
+        />
+      </span>
+      <input
+        type="button"
+        value="next"
+        class="movePageAdd main-white-button"
+        onclick="pageMove(this);"
+      />
+    </div>
     <footer>
       <div class="container">
         <div class="row">
@@ -363,8 +422,137 @@ https://templatemo.com/tm-564-plot-listing
     <script src="assets/js/animation.js"></script>
     <script src="assets/js/imagesloaded.js"></script>
     <script src="assets/js/custom.js"></script>
-    <script src="assets/js/common.js"></script>
     <script src="assets/js/festivalFunc.js"></script>
-    <script src="font.css"></script>
+    <script src="assets/js/common.js"></script>
+    <!-- <script src="font.css"></script> -->
+    <script>
+      //온로드 영역
+      $(function () {
+        let output = ajaxCall(baseUrl);
+
+        $(document).on("click", ".movePage", function () {
+          pageMove(this);
+        });
+      });
+
+      // 날짜 얻어서 포맷 변경
+      let today = new Date();
+
+      let year = today.getFullYear();
+      let month = ("0" + (today.getMonth() + 1)).slice(-2);
+      let day = ("0" + today.getDate()).slice(-2);
+
+      let dateString = year + month + day;
+
+      // console.log(dateString); // 날짜 출력확인
+
+      // 페이징
+      let pageNo = 1;
+      let numOfRows = 10;
+      let totalPage = 0;
+      let totalCount = 0;
+
+      function pageListing(countData) {
+        pageCount = Math.floor(totalCount / numOfRows) + 1;
+        paging(pageCount);
+      }
+
+      function paging(pageCount) {
+        let pages = "";
+        for (let i = 0; i < pageCount; i++) {
+          pages += `<input type="button" value="${
+            i + 1
+          }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
+        }
+        $(".pageArea").html(pages);
+      }
+      function pageBtn() {
+        if (pageNo == 1) {
+          $(".movePageMin").css("background-color", "#fff");
+          $(".movePageMin").css("display", "none");
+        }
+        if (pageNo != 1) {
+          $(".movePageMin").css("background-color", "#bcb4c0");
+          $(".movePageMin").css("display", "block");
+        }
+        if (pageNo == pageCount) {
+          $(".movePageAdd").css("background-color", "#fff");
+          $(".movePageAdd").css("display", "none");
+        }
+        if (pageNo != pageCount) {
+          $(".movePageAdd").css("background-color", "#bcb4c0");
+          $(".movePageAdd").css("display", "block");
+        }
+      }
+
+      function pageMove(obj) {
+        clickedBtn = $(obj).val();
+
+        if (clickedBtn == "next" && pageNo < pageCount) {
+          pageNo++;
+        } else if (clickedBtn == "prev" && pageNo > 1) {
+          pageNo--;
+        } else if (isFinite(clickedBtn)) {
+          pageNo = clickedBtn;
+        }
+        pageBtn();
+        ajaxCall(baseUrl);
+        console.log(pageNo, numOfRows, pageCount, totalCount);
+      }
+
+      // URl 영역
+
+      let baseUrl = "";
+      baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${pageNo}&numOfRows=${numOfRows}`;
+
+      // `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&numOfRows=10&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=20230113`;
+      // &cat1=A02&cat2=A0208&cat3=A02080100
+
+      // console.log(dataAr);
+
+      function parsing(json) {
+        let item = "";
+        // console.log(json);
+        let dataAr = json.response.body.items.item;
+        totalCount = json.response.body.totalCount;
+
+        $.each(dataAr, function (i, data) {
+          let address = data.addr1;
+          let bookTour = data.booktour;
+          let eventStartDate = data.eventstartdate;
+          let eventEndDate = data.eventenddate;
+          let image1 = data.firstimage;
+          let image2 = data.firstimage2;
+          let areaCode = data.areacode;
+          let siGun = data.sigungucode;
+          let title = data.title;
+          let tel = data.tel;
+          let id = data.contentid;
+
+          item += `<div class="itemCard"><div class="item"><div class="left-image"><a href="festivalDetail.html?contentId${id}">`;
+          // console.log(image1.length == 0);
+          if (image1.length == 0) {
+            item +=
+              "<img src='img/noimg.png' alt='" + title + "' class='itemImg' />";
+          } else if (image1 != "" || image1 != null) {
+            item += `<img src="${image1}" alt="${title}" class="itemImg"/>`;
+          }
+          // if (image1 != "" || image1 != null) {
+          //   item += `<img src="${image1}" alt="${title}" class="itemImg"/>`;
+          // } else if (image1.length == 0) {
+          //   item +=
+          //     "<img src='img/noimg.png' alt='" + title + "' class='itemImg' />";
+          // } 이렇게는 안되는 이유는 무엇일까
+          item += `</a><div class="hover-content"><div class="main-white-button"><a href="festivalDetail.html?${id}" ><i class="fa fa-eye"></i> Learn More</a></div></div></div><div class="right-content align-self-center"><a href="festivalDetail.html?${id}"><h4>${title}</h4></a>`;
+          if (bookTour != "" || bookTour != null) {
+            item += `<h6>${bookTour}</h6>`;
+          }
+          item += `<span class="price"><div class="icon"><img src="iconImg/partyIcon2.png"alt=""/></div>${address}</span><span class="details telNum">${tel} </span><span class="info"><img src="iconImg/festivalIcon.png" alt="" />${eventStartDate} ~ ${eventEndDate}<img src="iconImg/partyIcon.png" alt="" /></span></div></div></div>`;
+        });
+
+        pageListing(totalCount);
+        $(".item").html(item);
+      }
+    </script>
   </body>
 </html>

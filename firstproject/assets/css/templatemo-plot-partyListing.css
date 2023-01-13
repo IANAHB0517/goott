@@ -198,7 +198,7 @@ p {
 }
 
 img {
-  margin-bottom: -3px;
+  margin-bottom: 3px;
   width: 100%;
   overflow: hidden;
 }
@@ -1455,7 +1455,6 @@ Category Post
   color: #8d99af;
   background-color: #fff;
   margin-right: 15px;
-  float: left;
 }
 
 .category-post .naccs .menu div h4 {
@@ -1492,7 +1491,7 @@ Category Post
   height: 132px;
   line-height: 132px;
   display: inline-block;
-  float: left;
+
   text-align: left;
   cursor: pointer;
   position: relative;
@@ -1611,7 +1610,7 @@ Category Post
   color: #8d99af;
   background-color: #fff;
   margin-right: 15px;
-  float: left;
+
   left: 0;
 }
 
@@ -1723,6 +1722,9 @@ Listing Page
 .listing-page ul.nacc li {
   width: 100%;
 }
+/* .item {
+  display: flex;
+} */
 
 .listing-page .item .listing-item {
   display: inline-flex;
@@ -1740,6 +1742,8 @@ Listing Page
   border-bottom-left-radius: 7px;
   position: relative;
   z-index: 1;
+
+  margin-bottom: 50px;
 }
 
 .listing-page .item .left-image .hover-content .main-white-button a i {
@@ -1766,6 +1770,7 @@ Listing Page
 }
 
 .listing-page .item .left-image img {
+  width: 300px;
   overflow: hidden;
   border-top-left-radius: 7px;
   border-bottom-left-radius: 7px;
@@ -1773,7 +1778,7 @@ Listing Page
 
 .listing-page .item .right-content {
   display: inline-block;
-  padding: 45px;
+  padding: 25px;
 }
 
 .listing-page .item .right-content h4 {
@@ -2128,5 +2133,10 @@ responsive
 /* 상진 추가분 */
 
 a {
+  color: #fff;
+}
+
+.pagingBtn .main-white-button {
+  background-color: #bcb4c0;
   color: #fff;
 }
