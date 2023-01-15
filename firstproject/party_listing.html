@@ -342,6 +342,13 @@ https://templatemo.com/tm-564-plot-listing
     <div class="pagingBtn">
       <input
         type="button"
+        value="minusTens"
+        class="movePageMin main-white-button"
+        style="display: none"
+        onclick="pageMove(this);"
+      />
+      <input
+        type="button"
         value="prev"
         class="movePageMin main-white-button"
         style="display: none"
@@ -358,6 +365,12 @@ https://templatemo.com/tm-564-plot-listing
       <input
         type="button"
         value="next"
+        class="movePageAdd main-white-button"
+        onclick="pageMove(this);"
+      />
+      <input
+        type="button"
+        value="plusTens"
         class="movePageAdd main-white-button"
         onclick="pageMove(this);"
       />
@@ -464,6 +477,7 @@ https://templatemo.com/tm-564-plot-listing
       // console.log(dateString); // 날짜 출력확인
 
       // 페이징
+      let currentPage = 1;
       let pageNo = 1;
       let pageTens = 0;
       let numOfRows = 10;
@@ -477,47 +491,70 @@ https://templatemo.com/tm-564-plot-listing
       }
 
       function paging(pageCount) {
-        let pages = "";
-        for (let i = 0; i < pageCount; i++) {
-          pages += `<input type="button" value="${
-            i + 1
-          }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
+        if (pageTens == 0) {
+          let pages = "";
+          for (let i = 0; i < pageCount; i++) {
+            pages += `<input type="button" value="${
+              i + 1
+            }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
+          }
+          $(".pageArea").html(pages);
+        } else if (pageTens > 1) {
+          for (let i = 0; i < 10; i++) {
+            pages += `<input type="button" value="${
+              pageTens * 10 + i
+            }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
+          }
+          $(".pageArea").html(pages);
         }
-        $(".pageArea").html(pages);
       }
       function pageBtn() {
-        if (pageNo == 1) {
+        if (currentPage == 1) {
           $(".movePageMin").css("background-color", "#fff");
           $(".movePageMin").css("display", "none");
         }
-        if (pageNo != 1) {
+        if (currentPage != 1) {
           $(".movePageMin").css("background-color", "#bcb4c0");
           $(".movePageMin").css("display", "block");
         }
-        if (pageNo == pageCount) {
+        // 10개 전으로 가기 버튼 비활성화 활성화 조건 걸기
+        if (currentPage == totalCount) {
           $(".movePageAdd").css("background-color", "#fff");
           $(".movePageAdd").css("display", "none");
         }
-        if (pageNo != pageCount) {
+        if (currentPage != totalCount) {
           $(".movePageAdd").css("background-color", "#bcb4c0");
           $(".movePageAdd").css("display", "block");
         }
+        // 10개 다음으로 가기 버튼 조건걸기
+      }
+
+      function calcPage() {
+        currentPage = pageTens * 10 + pageNo;
       }
 
       function pageMove(obj) {
         clickedBtn = $(obj).val();
 
         if (clickedBtn == "next" && pageNo < pageCount) {
-          pageNo += 1;
+          pageNo++;
+          calcPage();
         } else if (clickedBtn == "prev" && pageNo > 1) {
-          pageNo -= 1;
+          pageNo--;
+          calcPage();
         } else if (isFinite(clickedBtn)) {
-          pageNo = clickedBtn;
+          currentPage = clickedBtn;
+        } else if (clickedBtn == "plusTens") {
+          pageTens++;
+          calcPage();
+        } else if (clickedBtn == "minusTens") {
+          pageTens--;
+          calcPage();
         }
-        baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${pageNo}&numOfRows=${numOfRows}`;
+        baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${currentPage}&numOfRows=${numOfRows}`;
         pageBtn();
         ajaxCall(baseUrl);
-        console.log(pageNo, numOfRows, pageCount, totalCount, baseUrl);
+        console.log(currentPage, numOfRows, pageCount, totalCount, baseUrl);
         btnScrolling(this);
       }
 
