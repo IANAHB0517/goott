@@ -26,13 +26,30 @@
     <link rel="stylesheet" href="assets/css/owl.css" />
     <link rel="stylesheet" href="assets/css/templatemo-plot-partyListing.css" />
     <!--
-
 TemplateMo 564 Plot Listing
-
 https://templatemo.com/tm-564-plot-listing
-
 -->
     <style>
+      a {
+        color: #fff;
+      }
+
+      .pagingBtn .main-white-button {
+        background-color: #bcb4c0;
+        color: #fff;
+      }
+      @media (min-width: 992px) {
+        .stickyNav .menu {
+          position: sticky;
+          top: 90px;
+        }
+      }
+
+      .container {
+        margin-right: 0;
+        margin-left: 12vw;
+      }
+
       a img.itemImg {
         width: 400px;
       }
@@ -136,7 +153,7 @@ https://templatemo.com/tm-564-plot-listing
               <div class="grid">
                 <div class="row">
                   <!-- navBar -->
-                  <div class="col-lg-3">
+                  <div class="col-lg-3 stickyNav">
                     <div class="menu">
                       <div class="first-thumb">
                         <a href="index.html">
@@ -428,7 +445,7 @@ https://templatemo.com/tm-564-plot-listing
     <script>
       //온로드 영역
       $(function () {
-        let output = ajaxCall(baseUrl);
+        ajaxCall(baseUrl);
 
         $(document).on("click", ".movePage", function () {
           pageMove(this);
@@ -448,11 +465,13 @@ https://templatemo.com/tm-564-plot-listing
 
       // 페이징
       let pageNo = 1;
+      let pageTens = 0;
       let numOfRows = 10;
       let totalPage = 0;
       let totalCount = 0;
+      let pageGroups = 0;
 
-      function pageListing(countData) {
+      function pageListing() {
         pageCount = Math.floor(totalCount / numOfRows) + 1;
         paging(pageCount);
       }
@@ -489,20 +508,27 @@ https://templatemo.com/tm-564-plot-listing
         clickedBtn = $(obj).val();
 
         if (clickedBtn == "next" && pageNo < pageCount) {
-          pageNo++;
+          pageNo += 1;
         } else if (clickedBtn == "prev" && pageNo > 1) {
-          pageNo--;
+          pageNo -= 1;
         } else if (isFinite(clickedBtn)) {
           pageNo = clickedBtn;
         }
+        baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${pageNo}&numOfRows=${numOfRows}`;
         pageBtn();
         ajaxCall(baseUrl);
-        console.log(pageNo, numOfRows, pageCount, totalCount);
+        console.log(pageNo, numOfRows, pageCount, totalCount, baseUrl);
+        btnScrolling(this);
+      }
+
+      function btnScrolling() {
+        $("html, body").animate({ scrollTop: 450 }, 200);
       }
 
       // URl 영역
 
       let baseUrl = "";
+
       baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${pageNo}&numOfRows=${numOfRows}`;
 
       // `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&numOfRows=10&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=20230113`;
@@ -550,7 +576,7 @@ https://templatemo.com/tm-564-plot-listing
           item += `<span class="price"><div class="icon"><img src="iconImg/partyIcon2.png"alt=""/></div>${address}</span><span class="details telNum">${tel} </span><span class="info"><img src="iconImg/festivalIcon.png" alt="" />${eventStartDate} ~ ${eventEndDate}<img src="iconImg/partyIcon.png" alt="" /></span></div></div></div>`;
         });
 
-        pageListing(totalCount);
+        pageListing();
         $(".item").html(item);
       }
     </script>
