@@ -95,6 +95,53 @@ https://templatemo.com/tm-564-plot-listing
         background-color: #bcb4c0;
         color: #fff;
       }
+      .selectDate {
+        display: flex;
+        flex-direction: column;
+        /* text-align: center; */
+        width: 25vw;
+      }
+      .dateSelectArea input {
+        border: 0px;
+      }
+      .selectDate label {
+        color: #bcb4c0;
+      }
+      .selectDate input {
+        /* display: inline-block; */
+        margin-right: auto;
+      }
+      .dateSelectArea {
+        display: flex;
+        /* justify-content: space-; */
+        width: inherit;
+        line-height: 2.2;
+        font-size: 1.3rem;
+        margin-bottom: 3vh;
+      }
+      /* .dateSelectArea .dateAreaBtn {
+        border-radius: 15%;
+        background-color: #bcb4c0;
+      } */
+      #dateSubmitBtn {
+        border-radius: 10%;
+        /* border: 0px; */
+        background-color: #bcb4c0;
+        width: 15vw;
+        color: #fff;
+        font-size: 2rem;
+      }
+
+      .col-lg-9 {
+        padding-right: 0px;
+        padding-left: 60px;
+      }
+      .container {
+        margin-left: 15vw;
+      }
+      .warning {
+        color: red;
+      }
     </style>
   </head>
 
@@ -272,6 +319,35 @@ https://templatemo.com/tm-564-plot-listing
                     </div>
                   </div>
                   <div class="col-lg-9">
+                    <!-- <div class="warning" style="display: none">
+                      기간을 올바르게 입력하세요
+                    </div> -->
+                    <div class="dateSelectArea">
+                      <span class="selectDate">
+                        <label for="esd">검색일</label>
+                        <input
+                          type="date"
+                          name="eventSearchDate"
+                          id="esd"
+                          class="dateAreaBtn"
+                      /></span>
+                      <!-- <span class="selectDate">
+                        <label for="esd">행사 종료일</label>
+                        <input
+                          type="date"
+                          name="eventEndtDate"
+                          id="eed"
+                          class="dateAreaBtn"
+                      /></span> -->
+
+                      <input
+                        id="dateSubmitBtn"
+                        type="submit"
+                        value="검색"
+                        class="dateAreaBtn"
+                        onclick="calcDate()"
+                      />
+                    </div>
                     <div class="loading"></div>
                     <ul class="nacc">
                       <!-- first category listing of items -->
@@ -488,6 +564,28 @@ https://templatemo.com/tm-564-plot-listing
 
       let dateString = year + month + day;
 
+      // 원하는 날짜로 선택해서 축제양 늘리기
+      function calcDate() {
+        let searchDay = $("#esd").val();
+
+        console.log(searchDay);
+        // if (endDay > startDay) {
+        //   $(".warning").css("display", "block");
+        // } else {
+        //   $(".warning").css("display", "none");
+        // }
+
+        let startDay =;
+        let endDay = ;
+        if (searchDay > startDay && searchDay < endDay){
+
+        }
+      }
+
+      $(document).on("change", ".dateAreaBtn", function () {
+        $(".warning").css("display", "none");
+      });
+
       // console.log(dateString); // 날짜 출력확인
 
       // 페이징
@@ -617,7 +715,9 @@ https://templatemo.com/tm-564-plot-listing
         // console.log(json);
         let dataAr = json.response.body.items.item;
         totalCount = json.response.body.totalCount;
+        if(){ // 선택 날짜가 없을시 밑의 코드를 실행하도록 수정
 
+        }
         $.each(dataAr, function (i, data) {
           let address = data.addr1;
           let bookTour = data.booktour;
