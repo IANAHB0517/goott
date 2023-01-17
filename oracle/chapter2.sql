@@ -137,6 +137,7 @@ select sysdate, to_char(sysdate, 'yyyy-mm-dd am HH:mi:ss')from dual; -- hh24= 24
 
 select to_char(123456, '9999999' ) from dual; -- 9는 자릿수를 나타내며 자리수가 맞지 않아도 채우지 않는다.
 select to_char(123456, '0000000' ) from dual; -- 0은 자릿수를 나타내며 자리수가 맞지 않으면 0으로 채운다.
+select to_char(to_number(null), '0000000' ) from dual;
 
 select first_name, salary, to_char(salary, 'L999,999') from employees; --L 지역 화폐단위로 표시, 세자리마다 쉼표
 
@@ -163,6 +164,8 @@ select to_number('10,000','99,999') + to_number('20,000','99,999') from dual;
 select employee_id, first_name, to_char(round((salary * 12) + (salary * 12 * nvl(commission_pct,0)),2), 'L999,999') as "annual salary"
 from employees;
 
+select employee_id, first_name, to_char(round((salary*12) + (salary * 12 * nvl(commission_pct,0)),2), 'L999,999') as "annual salary"
+from employees;
 -- 2) decode 함수 : 프로그래밍 언어의 switch ~ case 문 같은 역할
 select first_name,department_id, decode(department_id, 90, 'Executive' ,60, 'IT', 100, 'Finance') from employees;
 
@@ -205,3 +208,15 @@ group by department_id;
 -- 직무별 급여 총액과 급여 평군
 select job_id, sum(salary) as "salary sum", trunc(avg(salary),2) as "salary avg" from employees
 group by job_id order by "salary avg" desc;
+
+-- having 절 : 그룹화를 시킨 컬럼에 조건을 부여 할 때 쓰는 절
+-- 부서별 평균 급여가 5000 이상인 부서번호와 부서별 평균 급여를 출력하세요
+select department_id, avg(salary) from employees
+--where avg(salary) >= 5000 -- (에러) 그룹화를 시킨 컬럼은 where절로 조건을 걸 수 없다.
+GROUP by department_id
+having avg(salary) >= 5000;
+
+-- 직급별 급여 최대값과 급여 최솟값을 구하되, 최대 급여가 7000 이상인 부서만 출력하세요
+select job_id ,max(salary), min(salary) from employees
+group by job_id
+having max(salary) >= 7000;

@@ -72,6 +72,7 @@ https://templatemo.com/tm-564-plot-listing
 
       .right-content {
         padding: 15px;
+        /* max-width: 450px; */
       }
 
       .info,
@@ -141,6 +142,10 @@ https://templatemo.com/tm-564-plot-listing
       }
       .warning {
         color: red;
+      }
+
+      .details {
+        max-width: 500px;
       }
     </style>
   </head>
@@ -556,30 +561,26 @@ https://templatemo.com/tm-564-plot-listing
       });
 
       // 날짜 얻어서 포맷 변경
-      let today = new Date();
+      let currentDate = new Date();
 
-      let year = today.getFullYear();
-      let month = ("0" + (today.getMonth() + 1)).slice(-2);
-      let day = ("0" + today.getDate()).slice(-2);
+      let year = currentDate.getFullYear();
+      let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+      let day = ("0" + currentDate.getDate()).slice(-2);
 
       let dateString = year + month + day;
 
       // 원하는 날짜로 선택해서 축제양 늘리기
       function calcDate() {
         let searchDay = $("#esd").val();
-
         console.log(searchDay);
-        // if (endDay > startDay) {
-        //   $(".warning").css("display", "block");
-        // } else {
-        //   $(".warning").css("display", "none");
-        // }
 
-        let startDay =;
-        let endDay = ;
-        if (searchDay > startDay && searchDay < endDay){
+        searchDay = searchDay.replace("-", "");
+        currentDate = searchDay.replace("-", "");
+        dateString = Number(currentDate);
+        console.log(dateString);
+        baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${currentPage}&numOfRows=${numOfRows}`;
 
-        }
+        ajaxCall(baseUrl);
       }
 
       $(document).on("change", ".dateAreaBtn", function () {
@@ -715,14 +716,12 @@ https://templatemo.com/tm-564-plot-listing
         // console.log(json);
         let dataAr = json.response.body.items.item;
         totalCount = json.response.body.totalCount;
-        if(){ // 선택 날짜가 없을시 밑의 코드를 실행하도록 수정
 
-        }
         $.each(dataAr, function (i, data) {
           let address = data.addr1;
           let bookTour = data.booktour;
-          let eventStartDate = data.eventstartdate;
-          let eventEndDate = data.eventenddate;
+          let eventStartDate = Number(data.eventstartdate);
+          let eventEndDate = Number(data.eventenddate);
           let image1 = data.firstimage;
           let image2 = data.firstimage2;
           let areaCode = data.areacode;
@@ -731,7 +730,24 @@ https://templatemo.com/tm-564-plot-listing
           let tel = data.tel;
           let id = data.contentid;
 
-          item += `<div class="itemCard"><div class="item"><div class="left-image"><a href="festivalDetail.html?contentId=${id}">`;
+          item += `<div class="itemCard`;
+
+          if (currentDate < eventEndDate && currentDate < eventStartDate) {
+            item += ` finished`;
+          } else if (
+            currentDate > eventStartDate &&
+            currentDate > eventEndDate
+          ) {
+            item += ` preparing`;
+          } else if (
+            currentDate > eventStartDate &&
+            currentDate < eventEndDate
+          ) {
+            item += ` proceeding`;
+          }
+
+          item += `"><div class="item"><div class="left-image"><a href="festivalDetail.html?contentId=${id}">`;
+
           // console.log(image1.length == 0);
           if (image1.length == 0) {
             item +=
