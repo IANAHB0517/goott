@@ -557,7 +557,8 @@ https://templatemo.com/tm-564-plot-listing
         $(document).on("click", ".movePage", function () {
           pageMove(this);
         });
-        btnHide();
+
+        // btnHide();
       });
 
       // 날짜 얻어서 포맷 변경
@@ -591,30 +592,32 @@ https://templatemo.com/tm-564-plot-listing
 
       // 페이징
       let currentPage = 1;
+
       let pageNo = 1;
       let pageTens = 0;
       let numOfRows = 10;
       let totalPage = 0;
       let totalCount = 0;
-      let pageGroups = 0;
+      let totalPageGroups = 0;
 
       function pageListing() {
         pageCount = Math.floor(totalCount / numOfRows) + 1;
-        pageGroups = Math.floor(pageCount / 10);
+        totalPageGroups = Math.floor(pageCount / 10);
         paging(pageCount);
+        pageBtn();
       }
 
       function paging(pageCount) {
-        if (pageTens == 0) {
-          let pages = "";
+        let pages = "";
+        if (pageCount < 10) {
           for (let i = 0; i < pageCount; i++) {
             pages += `<input type="button" value="${
               i + 1
             }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
           }
           $(".pageArea").html(pages);
-        } else if (pageTens > 1) {
-          for (let i = 0; i < 10; i++) {
+        } else if (totalPageGroups > 0) {
+          for (let i = 1; i < 11; i++) {
             pages += `<input type="button" value="${
               pageTens * 10 + i
             }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
@@ -632,11 +635,11 @@ https://templatemo.com/tm-564-plot-listing
           $(".movePageMin1").css("display", "block");
         }
         // 10개 전으로 가기 버튼 비활성화 활성화 조건 걸기
-        if (currentPage < 10) {
+        if (pageTens < 1) {
           $(".movePageMin10").css("background-color", "#fff");
           $(".movePageMin10").css("display", "none");
         }
-        if (currentPage > 10) {
+        if (pageTens > 0) {
           $(".movePageMin10").css("background-color", "#bcb4c0");
           $(".movePageMin10").css("display", "block");
         }
@@ -649,44 +652,69 @@ https://templatemo.com/tm-564-plot-listing
           $(".movePageAdd1").css("display", "block");
         }
         // 10개 다음으로 가기 버튼 조건걸기
-        if (Math.floor(currentPage / 10) == pageGroups) {
+        if (pageTens == totalPageGroups) {
           $(".movePageAdd10").css("background-color", "#fff");
           $(".movePageAdd10").css("display", "none");
         }
-        if (Math.floor(currentPage / 10) < pageGroups && pageGroups > 0) {
-          // pageGroups 정의하기
+        if (
+          (pageTens < totalPageGroups && totalPageGroups > 0) ||
+          pageCount > 10
+        ) {
           $(".movePageAdd10").css("background-color", "#bcb4c0");
           $(".movePageAdd10").css("display", "block");
         }
       }
 
       function calcPage() {
-        currentPage = pageTens * 10 + pageNo;
+        if (pageTens != 0) {
+          currentPage = pageTens * 10 + pageNo;
+        } else {
+          currentPage = pageNo;
+        }
+        if (currentPage > 10) {
+          pageTens = Math.floor(currentPage / 10);
+        }
+        pageNo = currentPage % 10;
+        console.log(pageNo);
       }
 
       function pageMove(obj) {
         clickedBtn = $(obj).val();
 
-        if (clickedBtn == "next" && pageNo < pageCount) {
-          pageNo++;
-          calcPage();
-        } else if (clickedBtn == "prev" && pageNo > 1) {
-          pageNo--;
-          calcPage();
+        if (clickedBtn == "next" && currentPage < pageCount) {
+          if (pageNo == 9) {
+            pageTens++;
+            pageNo = 0;
+          } else {
+            pageNo++;
+          }
+        } else if (clickedBtn == "prev" && currentPage > 1) {
+          if (pageNo == 0) {
+            pageTens--;
+            pageNo = 9;
+          } else {
+            pageNo--;
+          }
         } else if (isFinite(clickedBtn)) {
-          currentPage = clickedBtn;
+          pageNo = clickedBtn;
         } else if (clickedBtn == "plusTens") {
           pageTens++;
-          calcPage();
         } else if (clickedBtn == "minusTens") {
           pageTens--;
-          calcPage();
         }
-        pageNo = currentPage;
+        calcPage();
+
         baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${currentPage}&numOfRows=${numOfRows}`;
         pageBtn();
         ajaxCall(baseUrl);
-        console.log(currentPage, numOfRows, pageCount, totalCount, baseUrl);
+        console.log(
+          currentPage,
+          pageNo,
+          numOfRows,
+          pageCount,
+          totalCount,
+          baseUrl
+        );
         btnScrolling(this);
       }
 
@@ -694,17 +722,17 @@ https://templatemo.com/tm-564-plot-listing
         $("html, body").animate({ scrollTop: 450 }, 200);
       }
 
-      function btnHide() {
-        if (pageGroups < 1) {
-          $(".movePageAdd10").css("display", "none");
-        }
-      }
+      // function btnHide() {
+      //   if (totalPageGroups < 1) {
+      //     $(".movePageAdd10").css("display", "none");
+      //   }
+      // }
 
       // URl 영역
 
       let baseUrl = "";
 
-      baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${pageNo}&numOfRows=${numOfRows}`;
+      baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${currentPage}&numOfRows=${numOfRows}`;
 
       // `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&numOfRows=10&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=20230113`;
       // &cat1=A02&cat2=A0208&cat3=A02080100
