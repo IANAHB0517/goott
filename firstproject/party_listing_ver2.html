@@ -617,9 +617,9 @@ https://templatemo.com/tm-564-plot-listing
           }
           $(".pageArea").html(pages);
         } else if (totalPageGroups > 0) {
-          for (let i = 1; i < 11; i++) {
+          for (let i = 0; i < 10; i++) {
             pages += `<input type="button" value="${
-              pageTens * 10 + i
+              Number(pageTens * 10) + Number(i + 1)
             }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
           }
           $(".pageArea").html(pages);
@@ -643,11 +643,11 @@ https://templatemo.com/tm-564-plot-listing
           $(".movePageMin10").css("background-color", "#bcb4c0");
           $(".movePageMin10").css("display", "block");
         }
-        if (currentPage == totalCount) {
+        if (currentPage == pageCount) {
           $(".movePageAdd1").css("background-color", "#fff");
           $(".movePageAdd1").css("display", "none");
         }
-        if (currentPage != totalCount) {
+        if (currentPage != pageCount) {
           $(".movePageAdd1").css("background-color", "#bcb4c0");
           $(".movePageAdd1").css("display", "block");
         }
@@ -667,7 +667,7 @@ https://templatemo.com/tm-564-plot-listing
 
       function calcPage() {
         if (pageTens != 0) {
-          currentPage = pageTens * 10 + pageNo;
+          currentPage = Number(pageTens * 10) + Number(pageNo);
         } else {
           currentPage = pageNo;
         }
@@ -696,7 +696,12 @@ https://templatemo.com/tm-564-plot-listing
             pageNo--;
           }
         } else if (isFinite(clickedBtn)) {
-          pageNo = clickedBtn;
+          if (clickedBtn > 9) {
+            pageTens = Math.floor(clickedBtn / 10);
+            pageNo = clickedBtn % 10;
+          } else {
+            pageNo = clickedBtn;
+          }
         } else if (clickedBtn == "plusTens") {
           pageTens++;
         } else if (clickedBtn == "minusTens") {

@@ -82,10 +82,10 @@ select round(3.141592,2)from dual; --3.14
 select round(3.141592,3)from dual; --3.142
 select round(314.1592,-2)from dual;  --300 십의 자리에서 반올림하여 백의 자리부터 나타내라 (표시할 자릿수가 음수가 되면 수숫점의 정부부분으로 반올림됨)
 
---4) 특정 자릴수에서 잘라내는 trunc()
-select trunc(3.141592, 2) from dual;
+--4) 특정 자리수에서 잘라내는 trunc()
+select trunc(3.141592, 2) from dual; --3.14
 select trunc(3.141592, 4) from dual; --3.1415
-select trunc(314.1592,-2)from dual;  --300 십의 자리에서 sofla하여 백의 자리부터 나타내라 (표시할 자릿수가 음수가 되면 수숫점의 정부부분으로 반올림됨)
+select trunc(314.1592,-2)from dual;  --300 십의 자리에서 내림하여 백의 자리부터 나타내라 (표시할 자릿수가 음수가 되면 수숫점의 정부부분으로 반올림됨)
 
 --5) 나머지 값을 반환하는 mod()-- 자바스크립트의 % 연산자
 select mod(34,2) from dual; --0
@@ -124,6 +124,8 @@ select sysdate, round(sysdate, 'month') from dual; -- 23/02/01
 
 -- 7) 특정 기준으로 버리는 trunc 함수
 select sysdate, trunc(sysdate, 'month') from dual; -- 23/01/01
+select sysdate - 100,  trunc(sysdate -100, 'month') from dual; -- 22/01/01 (해당 날짜가 속한 달의 초기값 (22년 10월 1일을 반환))
+select sysdate - 40,  trunc(sysdate -40, 'year') from dual; -- 22/01/01 (해당 날짜가 속한 해의 초기값 (22년 1월 1일을 반환))
 ------------------------------------------------------------------------------------------------------------------------
 
 --- 변환 함수 : 데이터 타입을 변환 시키고자 할 때 사용
@@ -152,6 +154,7 @@ where hire_date= to_date(20060103,'yyyymmdd');
 -- 3) to_number() : 숫자형으로 변환
 select '10000' + '20000' from dual;
 select to_number('10,000','99,999') + to_number('20,000','99,999') from dual;
+select to_char(10000 + 20000, '999,000') from dual;
 
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -203,7 +206,7 @@ select variance(salary) from employees;
 
 -- 소속 부서별 급여 총액 과 급여 평군 구해보자
 select department_id, sum(salary), trunc(avg(salary),2) from employees
-group by department_id;
+group by department_id ;
 
 -- 직무별 급여 총액과 급여 평군
 select job_id, sum(salary) as "salary sum", trunc(avg(salary),2) as "salary avg" from employees

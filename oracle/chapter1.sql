@@ -174,7 +174,9 @@ from employees where first_name like '__r%';
 --- 직무에 _가 포함된 사원들의 모든 정보를 출력
 select *
 from employees
-where job_id like '%_%'; -- 이거 잘 모르겠음 물어보자
+where job_id like '%' || '_' || '%';
+--where job_id like '%_%'; -- 이거 잘 모르겠음 물어보자
+where job_id like '%' || '_' || '%'; -- 조합 순서에 따라서 첫째 자리가 아닌 상태로 _를 포함하는 모든 문자열
 
 
 --- (7) null을 위한 연산자
