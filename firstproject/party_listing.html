@@ -570,43 +570,71 @@ https://templatemo.com/tm-564-plot-listing
       //온로드 영역
       $(function () {
         ajaxCall(baseUrl);
+        readCookies();
 
         $(document).on("click", ".movePage", function () {
           pageMove(this);
         });
 
-        // btnHide();
         //WishEvent
         $(".wishIcon").on("click", function () {
+          let getTitle = $(this).parent().next().children().eq(0).html();
+          let getImg = $(this)
+            .parent()
+            .parent()
+            .prev()
+            .children()
+            .eq(0)
+            .children()
+            .eq(0)
+            .attr("src");
+          getTitle = encodeURIComponent(getTitle);
+          console.log(getImg);
           if ($(this).css("fill") == "rgb(220, 220, 220)") {
             $(this).css("fill", "red");
-            addCookie($(this).attr("id"), getTitle, getImg);
+            addCookie($(this).attr("id"), getImg, getTitle);
           } else {
             $(this).css("fill", "gainsboro");
-            remCookie($(this).attr("id"));
+            remCookie($(this).attr("id"), getImg, getTitle);
           }
           // console.log($(this).css("fill"));
         });
       });
 
-      let getTitle = $(this).parent().next().children().eq(0).html();
-      let getImg = $(this).parent().prev().children().children().attr("src");
       //쿠키 영역
       let cookieDate = new Date();
       cookieDate.setDate(cookieDate.getDate() + 60);
 
-      function addCookie(cookieId, imgurl, title) {
+      function readCookies() {
+        let cookAr = document.cookie;
+        console.log(cookAr);
+        let checkAr = cookAr.split(";");
+        console.log(checkAr);
+        let findFlag = false;
+       for (let i = 0; i < checkAr.length; i++) {
+        let cookId = checkAr[i].split("=")[0].trim();
+        if (cookId == "")
+
+       }
+
+      }
+
+      function addCookie(cookieId, imgUrl, title) {
+        console.log(cookieId, imgUrl, title);
         let festCookie = "";
         festCookie =
-          `myWish~${cookieId}=festival~${getImg}~${getTitle};expires=` +
+          `myWish~${cookieId}=festival~${imgUrl}~${title};expires=` +
           cookieDate.toUTCString();
-        // console.log(festCookie);
+        console.log(festCookie);
         document.cookie = festCookie;
       }
 
-      function remCookie(cookieId) {
-        let cookAr = document.cookie;
-        console.log(cookAr);
+      function remCookie(cookieId, imgUrl, title) {
+        let exdate = new Date();
+        let festCookie =
+          `myWish~${cookieId}=festival~${imgUrl}~${title};expires=` +
+          exdate.toUTCString();
+        document.cookie = festCookie;
       }
 
       // 날짜 얻어서 포맷 변경
@@ -842,7 +870,7 @@ https://templatemo.com/tm-564-plot-listing
           //   item +=
           //     "<img src='img/noimg.png' alt='" + title + "' class='itemImg' />";
           // } 이렇게는 안되는 이유는 무엇일까
-          item += `</a><div class="hover-content"><div class="main-white-button"><a href="festivalDetail.html?${id}" ><i class="fa fa-eye"></i> Learn More</a></div></div></div><div class="right-content align-self-center"><div class="cookieArea"><div  id="wishCookie=${id}" class="wishIcon">${Heart}</div></div><a href="festivalDetail.html?${id}"><h4>${title}</h4></a>`;
+          item += `</a><div class="hover-content"><div class="main-white-button"><a href="festivalDetail.html?${id}" ><i class="fa fa-eye"></i> Learn More</a></div></div></div><div class="right-content align-self-center"><div class="cookieArea"><div  id="${id}" class="wishIcon">${Heart}</div></div><a href="festivalDetail.html?${id}"><h4>${title}</h4></a>`;
           if (bookTour != "" || bookTour != null) {
             item += `<h6>${bookTour}</h6>`;
           }
