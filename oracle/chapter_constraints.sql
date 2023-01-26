@@ -246,3 +246,139 @@ drop table emp01;
  );
  
  insert into dept01 values(10, '총무부', '부산' );
+ ---------------------------------------------------------------------------------------------------------------
+ -- 테이블 단위 기술 방법
+ ---------------------------------------------------------------------------------------------------------------
+ 
+ create table dept01(
+ deptno number(4),
+ dname nvarchar2(20),
+ loc nvarchar2(10),
+ 
+ constraint dept01_deptno_pk primary key(deptno),
+ constraint dept01_dname_uq unique(dname)
+ );
+ 
+ create table emp01(
+ empno number(4),
+ ename nvarchar2(20) constraint emp01_ename_nn not null,
+ salary number(5),
+ deptno number(4),
+ 
+ constraint emp01_empno_pk primary key(empno),
+ constraint emp01_sal_ck check(salary >0),
+ constraint emp01_deptno_fk foreign key(deptno) references dept01(deptno)
+ );
+ 
+ insert into emp01 values('300' ,'에러난사원' ,  -1 , 50 );
+ 
+ insert into dept01 (dname, deptno)  values('총무부', 10);
+ insert into dept01 (dname, deptno)  values('개발부', 50);
+ select * from dept01;
+ 
+ insert into emp01 values(100, '홍길돌', 5000, 50);
+ insert into emp01 values(200, '둘리', 5000, 50);
+ 
+ update emp01 set salary = 3000 where empno = 200;
+  select * from emp01;
+ 
+ 
+ ---------------------------------------------------------------------------------------------------------------
+ -- 복합키
+ ---------------------------------------------------------------------------------------------------------------
+ 
+ create table member(
+ email varchar2(40),
+ password varchar2(15) CONSTRAINT mamber_psw_nn not null,
+ name nvarchar2(12) constraint member_name_nn not null,
+ mobile char(13),
+ addr nvarchar2(50),
+ 
+ constraint member_combo_pk primary key(email, mobile)
+ );
+ 
+ insert into member values('a@a.com', '1234', '홍길동', '010-1234-5678', null);
+ insert into member values('a@a.com', '1234', '홍길숭', '010-3456-5678', null);
+ -- 아래는 제약 조건 위반 (이메일과 전화번호가 unique 하지 않음)
+ insert into member values('a@a.com', '1234', '홍길길', '010-3456-5678', null); -- and 조건으로 두개가 다 같아야 위배된다, 둘중 하나라도 다르면 통과된다.
+ insert into member values('kkkkk@hahaha.com', '1234', '홍깔깔', '010-3456-9876', null);
+ 
+ select * from member;
+ 
+ --로그인 처리
+ select * from member where email = '유저가 입력한 이메일' and mobile = '유저가 입력한 모바일' and password='유저가 입력한 비번';
+ select * from member where email = 'a@a.com' and mobile = '010-3456-5678' and password='1234'; -- 프라이 머리키가 두개 이기 때문에 두개의 키와 설정한 비밀번호를 입력해야한다(어떤 부분에서 틀렸는지 알려주지 않아야한다)
+ 
+ 
+ ---------------------------------------------------------------------------------------------------------------
+ -- 제약 조건 수정
+ ---------------------------------------------------------------------------------------------------------------
+ 
+ select * from member;
+ 
+ alter table member
+ add gender char(3);
+ 
+ alter table member
+ add constraint member_gender_ck check(gender in ('남','여'));
+ 
+ update member set addr = '우리나라'; -- 데이터가 이미 들어가 있기 때문에 제약 조건을 변경할 수 없어서 값을 변경함
+ 
+ alter table member
+ modify addr constraint member_addr_nn not null;
+ 
+ alter table member
+ drop constraint member_addr_nn;
+ 
+ -- 제약 조건 일시적 비활성화
+ alter table member
+ disable constraint member_name_nn;
+ 
+ insert into member member values('1@1.com', '4234', null,'010-3451-2342', null, '남' );
+ update member set name = '웹' where email='1@1.com';
+ 
+ 
+ alter table member
+ enable constraint member_name_nn;
+ 
+ 
+ drop table member;
+ 
+ create table member(
+ userid varchar2(12),
+ pwd varchar2(15) constraint member_pwd_nn not null,
+ constraint member_userid_pk primary key(userid)
+ );
+ 
+ insert into member values('dooly', '12345');
+ insert into member values('gogill', '1335');
+ 
+ select * from member;
+ 
+ create table board(
+ no number(10),
+ writer varchar2(12),
+ title varchar2(40),
+ constraint board_no_pk primary key(no),
+ constraint board_writer_fk foreign key(writer) references member(userid) on delete cascade -- 회원이 탈퇴할 경우 글을 삭제함
+ );
+ 
+ create table board(
+ no number(10),
+ writer varchar2(12),
+ title varchar2(40),
+ constraint board_no_pk primary key(no),
+ constraint board_writer_fk foreign key(writer) references member(userid) on delete set null -- 회원이 탈퇴할 경우 글쓴이를 null로 처리함
+ );
+ 
+ 
+ insert into board values(1,'dooly', '1빠' );
+ insert into board values(2,'gogill', '2빠' );
+ insert into board values(3,'dooly', '점심시간' );
+ 
+ select * from board order by no desc;
+ 
+ delete from member where userid='dooly';
+ 
+ drop table board;
+ drop table member;

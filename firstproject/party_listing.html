@@ -147,6 +147,23 @@ https://templatemo.com/tm-564-plot-listing
       .details {
         max-width: 500px;
       }
+
+      .cookieArea {
+        display: flex;
+        justify-content: end;
+      }
+
+      .wishIcon {
+        /* width: 40px; */
+        /* font-size: 3rem; */
+        /* fill: red; */
+        fill: gainsboro;
+      }
+
+      svg {
+        width: 50px;
+        height: 50px;
+      }
     </style>
   </head>
 
@@ -559,7 +576,38 @@ https://templatemo.com/tm-564-plot-listing
         });
 
         // btnHide();
+        //WishEvent
+        $(".wishIcon").on("click", function () {
+          if ($(this).css("fill") == "rgb(220, 220, 220)") {
+            $(this).css("fill", "red");
+            addCookie($(this).attr("id"), getTitle, getImg);
+          } else {
+            $(this).css("fill", "gainsboro");
+            remCookie($(this).attr("id"));
+          }
+          // console.log($(this).css("fill"));
+        });
       });
+
+      let getTitle = $(this).parent().next().children().eq(0).html();
+      let getImg = $(this).parent().prev().children().children().attr("src");
+      //쿠키 영역
+      let cookieDate = new Date();
+      cookieDate.setDate(cookieDate.getDate() + 60);
+
+      function addCookie(cookieId, imgurl, title) {
+        let festCookie = "";
+        festCookie =
+          `myWish~${cookieId}=festival~${getImg}~${getTitle};expires=` +
+          cookieDate.toUTCString();
+        // console.log(festCookie);
+        document.cookie = festCookie;
+      }
+
+      function remCookie(cookieId) {
+        let cookAr = document.cookie;
+        console.log(cookAr);
+      }
 
       // 날짜 얻어서 포맷 변경
       let currentDate = new Date();
@@ -794,7 +842,7 @@ https://templatemo.com/tm-564-plot-listing
           //   item +=
           //     "<img src='img/noimg.png' alt='" + title + "' class='itemImg' />";
           // } 이렇게는 안되는 이유는 무엇일까
-          item += `</a><div class="hover-content"><div class="main-white-button"><a href="festivalDetail.html?${id}" ><i class="fa fa-eye"></i> Learn More</a></div></div></div><div class="right-content align-self-center"><a href="festivalDetail.html?${id}"><h4>${title}</h4></a>`;
+          item += `</a><div class="hover-content"><div class="main-white-button"><a href="festivalDetail.html?${id}" ><i class="fa fa-eye"></i> Learn More</a></div></div></div><div class="right-content align-self-center"><div class="cookieArea"><div  id="wishCookie=${id}" class="wishIcon">${Heart}</div></div><a href="festivalDetail.html?${id}"><h4>${title}</h4></a>`;
           if (bookTour != "" || bookTour != null) {
             item += `<h6>${bookTour}</h6>`;
           }
@@ -804,6 +852,8 @@ https://templatemo.com/tm-564-plot-listing
         pageListing();
         $(".item").html(item);
       }
+
+      let Heart = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"/></svg>`;
     </script>
   </body>
 </html>
