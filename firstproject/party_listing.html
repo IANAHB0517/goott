@@ -164,6 +164,10 @@ https://templatemo.com/tm-564-plot-listing
         width: 50px;
         height: 50px;
       }
+
+      .stickyNav .menu {
+        height: 40%;
+      }
     </style>
   </head>
 
@@ -475,10 +479,10 @@ https://templatemo.com/tm-564-plot-listing
       <input
         type="button"
         value="next"
-        class="movePageAdd main-white-button"
+        class="movePageAdd1 main-white-button"
         onclick="pageMove(this);"
       />
-      <label for=".movePageAdd1"></label>
+
       <input
         type="button"
         value="plusTens"
@@ -577,7 +581,7 @@ https://templatemo.com/tm-564-plot-listing
         });
 
         //WishEvent
-        $(".wishIcon").on("click", function () {
+        $(document).on("click", ".wishIcon", function () {
           let getTitle = $(this).parent().next().children().eq(0).html();
           let getImg = $(this)
             .parent()
@@ -611,12 +615,11 @@ https://templatemo.com/tm-564-plot-listing
         let checkAr = cookAr.split(";");
         console.log(checkAr);
         let findFlag = false;
-      //  for (let i = 0; i < checkAr.length; i++) {
-      //   let cookId = checkAr[i].split("=")[0].trim();
-      //   if (cookId == "")
+        //  for (let i = 0; i < checkAr.length; i++) {
+        //   let cookId = checkAr[i].split("=")[0].trim();
+        //   if (cookId == "")
 
-      //  }
-
+        //  }
       }
 
       function addCookie(cookieId, imgUrl, title) {
@@ -695,8 +698,11 @@ https://templatemo.com/tm-564-plot-listing
         } else if (totalPageGroups > 0) {
           for (let i = 0; i < 10; i++) {
             pages += `<input type="button" value="${
-              Number(pageTens * 10) + Number(i + 1)
+              Number(pageTens * 10) + Number(i)
             }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
+            if (Number(pageTens * 10) + Number(i) == pageCount) {
+              break;
+            }
           }
           $(".pageArea").html(pages);
         }
@@ -720,6 +726,7 @@ https://templatemo.com/tm-564-plot-listing
           $(".movePageMin10").css("display", "block");
         }
         if (currentPage == pageCount) {
+          // alert("!");
           $(".movePageAdd1").css("background-color", "#fff");
           $(".movePageAdd1").css("display", "none");
         }
@@ -728,12 +735,13 @@ https://templatemo.com/tm-564-plot-listing
           $(".movePageAdd1").css("display", "block");
         }
         // 10개 다음으로 가기 버튼 조건걸기
-        if (pageTens == totalPageGroups) {
+        if (pageTens >= totalPageGroups) {
           $(".movePageAdd10").css("background-color", "#fff");
           $(".movePageAdd10").css("display", "none");
         }
         if (
-          (pageTens < totalPageGroups && totalPageGroups > 0) ||
+          pageTens < totalPageGroups &&
+          totalPageGroups > 0 &&
           pageCount > 10
         ) {
           $(".movePageAdd10").css("background-color", "#bcb4c0");
@@ -750,6 +758,7 @@ https://templatemo.com/tm-564-plot-listing
         if (currentPage > 10) {
           pageTens = Math.floor(currentPage / 10);
         }
+
         pageNo = currentPage % 10;
         console.log(pageNo);
       }
@@ -783,10 +792,16 @@ https://templatemo.com/tm-564-plot-listing
         } else if (clickedBtn == "minusTens") {
           pageTens--;
         }
+
+        calcPage();
+        if (currentPage > pageCount) {
+          currentPage = pageCount;
+          pageTens = Math.floor(currentPage / 10);
+          pageNo = currentPage % 10;
+        }
         calcPage();
 
         baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${currentPage}&numOfRows=${numOfRows}`;
-        pageBtn();
         ajaxCall(baseUrl);
         console.log(
           currentPage,
@@ -794,8 +809,11 @@ https://templatemo.com/tm-564-plot-listing
           numOfRows,
           pageCount,
           totalCount,
+          totalPageGroups,
+          pageTens,
           baseUrl
         );
+
         btnScrolling(this);
       }
 
@@ -855,7 +873,7 @@ https://templatemo.com/tm-564-plot-listing
             item += ` proceeding`;
           }
 
-          item += `"><div class="item"><div class="left-image"><a href="festivalDetail.html?contentId=${id}&evnetStart=${eventStartDate}&eventEnd=${eventEndDate}">`;
+          item += `"><div class="item"><div class="left-image"><a href="festival_Detail.html?contentId=${id}&evnetStart=${eventStartDate}&eventEnd=${eventEndDate}">`;
 
           // console.log(image1.length == 0);
           if (image1.length == 0) {
@@ -870,7 +888,7 @@ https://templatemo.com/tm-564-plot-listing
           //   item +=
           //     "<img src='img/noimg.png' alt='" + title + "' class='itemImg' />";
           // } 이렇게는 안되는 이유는 무엇일까
-          item += `</a><div class="hover-content"><div class="main-white-button"><a href="festivalDetail.html?${id}" ><i class="fa fa-eye"></i> Learn More</a></div></div></div><div class="right-content align-self-center"><div class="cookieArea"><div  id="${id}" class="wishIcon">${Heart}</div></div><a href="festivalDetail.html?${id}"><h4>${title}</h4></a>`;
+          item += `</a><div class="hover-content"><div class="main-white-button"><a href="festival_Detail.html?${id}" ><i class="fa fa-eye"></i> Learn More</a></div></div></div><div class="right-content align-self-center"><div class="cookieArea"><div  id="${id}" class="wishIcon">${Heart}</div></div><a href="festival_Detail.html?${id}"><h4>${title}</h4></a>`;
           if (bookTour != "" || bookTour != null) {
             item += `<h6>${bookTour}</h6>`;
           }

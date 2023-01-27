@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>문화시설</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome_culture.css" />
+    <link
+      rel="stylesheet"
+      href="assets/css/templatemo-plot-listing_culture.css"
+    />
+    <link rel="stylesheet" href="assets/css/animated_culture.css" />
+    <link rel="stylesheet" href="assets/css/owl_culture.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      let pageNumber = 1;
+      let totalPage = 0;
+      let totalCard = 0;
+      let numOfRows = 12;
+
+      let searchVal = "";
+
+      $(function () {
+        //온로드.
+        cultureData();
+
+        pageCheck();
+        $("#nextPage").click(function () {
+          if (pageNumber < totalPage) {
+            pageNumber++; //1페이지 증가
+            console.log(pageNumber);
+
+            if (searchVal != "") {
+              searchData(searchVal);
+              console.log(totalPage);
+            } else {
+              cultureData();
+            }
+          }
+        });
+      });
+
+      function modalFun() {
+        if (pageNumber == totalPage) {
+          // alert("마지막 페이지 입니다!");
+
+          $("#nextPage").css("display", "none"); //더보기 버튼 숨김
+          $("#modalBtn").css("display", "block"); //모달버튼 나타남
+        }
+      }
+
+      //유저가 검색한 검색어 val 가져오기
+      function searchFun() {
+        searchVal = $("#searchValId").val();
+        console.log(searchVal);
+        searchData(searchVal);
+      }
+
+      function pageCheck() {
+        if (numOfRows != 0) {
+          if (totalCard % numOfRows == 0) {
+            totalPage = Math.floor(totalCard / numOfRows);
+          } else {
+            totalPage = Math.floor(totalCard / numOfRows) + 1;
+          }
+        } else {
+          numOfRows = 12;
+        }
+      }
+
+      //키워드 검색조회
+      function searchData(searchVal) {
+        let searchUrl =
+          "http://apis.data.go.kr/B551011/KorService/searchKeyword?MobileOS=ETC&MobileApp=AppTest&serviceKey=6J5Zx65Dwh579pVoIqafwQGnNO7bREwHXMCXJx8PqVRBfDl2OfHSbETSKxXYV5qCS0fQT2uD0VNYfKgYPJnwWQ%3D%3D&_type=json&contentTypeId=14&keyword=" +
+          searchVal +
+          "&numOfRows=" +
+          numOfRows +
+          "&pageNo=" +
+          pageNumber;
+
+        console.log(searchUrl);
+        $.ajax({
+          url: searchUrl,
+          type: "GET",
+          dataType: "json",
+          async: false,
+
+          success: function (data) {
+            //통신 성공
+            console.log(data);
+            parsing(data);
+          },
+          complete: function () {
+            //통신 끝
+          },
+        });
+      }
+
+      //지역기반 관광정보 조회
+      function cultureData() {
+        let cultureUrl =
+          "http://apis.data.go.kr/B551011/KorService/areaBasedList?MobileOS=ETC&MobileApp=AppTest&serviceKey=6J5Zx65Dwh579pVoIqafwQGnNO7bREwHXMCXJx8PqVRBfDl2OfHSbETSKxXYV5qCS0fQT2uD0VNYfKgYPJnwWQ%3D%3D&_type=json&contentTypeId=14&numOfRows=" +
+          numOfRows +
+          "&pageNo=" +
+          pageNumber;
+
+        $.ajax({
+          url: cultureUrl,
+          type: "GET",
+          dataType: "json",
+          async: false,
+
+          success: function (data) {
+            //통신 성공
+            console.log(data);
+            parsing(data);
+          },
+          complete: function () {
+            //통신 끝
+          },
+        });
+      }
+
+      function parsing(json) {
+        let cultureArr = json.response.body.items.item;
+        totalCard = Number(json.response.body.totalCount);
+        console.log(totalCard);
+        console.log(cultureArr);
+        pageCheck(); // 현재 페이지 체크
+        modalFun(); //페이지가 마지막 페이지와 같으면 모달창 띄움
+
+        let card = `<div class="container mt-3">`;
+        $.each(cultureArr, function (i, cultureArrData) {
+          console.log(cultureArrData);
+          //찜하기 온클릭 시
+          card += `<span><span id="${cultureArrData.contentid}" class="heartBtn"><i  class="fa-solid fa-heart";"></i></span>`;
+
+          card += `<a href="culture_detail.html?contentid=${cultureArrData.contentid}"><div class="card img-fluid " >`;
+          if (
+            cultureArrData.firstimage == "" ||
+            cultureArrData.firstimage == null
+          ) {
+            //이미지 없을 때
+            card += `<img class="card-img-top cardImage" src="img/noimage.png"  style="width:100%">`;
+          } else {
+            //이미지 있을 때
+            card += `<img class="card-img-top cardImage" src='${cultureArrData.firstimage}'  style="width:100%">`;
+          }
+          card += `<div class="card-img-overlay"></div>`;
+
+          card += `<div class=" align-self-center card-text"><b>${cultureArrData.title}</b><span class="price"><div class="mapIcon"><img src="iconImg/visitIcon.png" alt="" /></div>${cultureArrData.addr1}</span></div></div></a></span>`;
+        });
+        card += `</div>`;
+
+        if (pageNumber == 1 && searchVal != "") {
+          //searchVal(검색어)가 있으면
+          $("#cardArea").html(card); //덮어씌워라
+        } else {
+          $("#cardArea").append(card); // 아니면 append: 끝에 카드 추가
+        }
+      }
+
+      $(document).on("click", ".heartBtn", function () {
+        //클릭된! 하나의 하트 버튼
+        saveCookie(
+          $(this).attr("id"),
+          $(this).next().children().eq(0).children().eq(0).attr("src"),
+          $(this)
+            .next()
+            .children()
+            .eq(0)
+            .children()
+            .eq(2)
+            .children()
+            .eq(0)
+            .html()
+        );
+
+        console.log($(this).css("color"));
+        if ($(this).css("color") == "rgb(33, 37, 41)") {
+          //하트의 컬러가 검은색이면
+          $(this).css("color", "red"); //그 하트 버튼의 컬러를 빨간색으로 변경해라
+        } else {
+          //하트의 컬러가 검은색이 아니면(빨간색이면)
+          $(this).css("color", "rgb(33, 37, 41)"); //검은색으로 변경해라
+        }
+      });
+
+      function saveCookie(id, img, title) {
+        let now = new Date(); //현재시간, 날짜 객체
+        now.setDate(now.getDate() + 90); //now.getDate(): 현재일시 + 90일 = 쿠키 만료일은 90 일 후
+        let myCookie = "";
+        myCookie =
+          `myWish~${id}=culture~${img}~${encodeURIComponent(title)};expires=` +
+          now.toUTCString(); //toLocaleString: 현재 우리나라 지역 단위로 표현, 스트링으로.
+        console.log(myCookie);
+
+        document.cookie = myCookie; //쿠키 저장
+      }
+    </script>
+    <style>
+      @font-face {
+        font-family: "NanumSquareNeo-Variable";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2")
+          format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      .col-lg-9,
+      .row {
+        width: 100%;
+        margin-left: 5px;
+        /* 카드들이 왼쪽으로 치우쳐서 줌 */
+      }
+      .cardImage {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      * {
+        font-family: "NanumSquareNeo-Variable";
+      }
+      a {
+        color: black;
+      }
+      a:hover {
+        color: black;
+      }
+
+      .mt-3 {
+        display: flex;
+        /* 가로 배치 */
+        flex-wrap: wrap;
+        /* 부모요소의 width 값만큼 배치 */
+        justify-content: space-around;
+        /* 컨텐츠의 사이 간격을 줌 */
+        width: 100%;
+      }
+      .card-img-overlay {
+        /* 카드 사이즈 조절 */
+        height: 273px;
+      }
+
+      .img-fluid {
+        /* 카드 사이즈 */
+        margin-bottom: 10%;
+        width: 300px;
+        height: 280px;
+      }
+      li.active {
+        width: 1200px;
+      }
+      .card-text {
+        text-align: center;
+        padding: 15px;
+        line-height: 2;
+      }
+      .mapIcon {
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+      }
+      .price {
+        display: flex;
+        font-size: 13px;
+      }
+      b {
+        font-size: 19px;
+      }
+
+      .heartBtn {
+        z-index: 5;
+        padding-left: 255px;
+        padding-top: 17px;
+
+        font-size: 1.5rem;
+
+        position: absolute;
+        /* 부모요소에 relative 자리에 붙음*/
+      }
+      .navIcon {
+        width: 25px;
+        height: 25px;
+      }
+      .square {
+        background-color: #c2cdd3;
+        width: 200px;
+        height: 65px;
+        line-height: 4;
+        text-align: center;
+        border-radius: 7px;
+        margin-bottom: 10px;
+      }
+
+      .iconBack {
+        /* 카테고리 뒷배경 동그라미 */
+        /* background-color: rgb(255, 255, 255); */
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+      }
+      .offcanvas {
+        /* 카테고리 사이드 가로 사이즈 */
+        --bs-offcanvas-width: 300px;
+      }
+
+      .btnFixed {
+        /* nav바 나오는 아이콘 */
+        position: fixed;
+        top: 50%;
+        left: 0;
+        z-index: 2;
+        width: 50px;
+        height: 100px;
+        border-radius: 0px 100px 100px 0px;
+        font-size: 20px;
+        background-color: #bbd1dd;
+        border: none;
+        /* 테두리 없애기 */
+        opacity: 0.7;
+      }
+      .btn-primary {
+        --bs-btn-hover-bg: #97b6c7;
+        --bs-btn-active-bg: #97b6c7;
+      }
+      .btn-check:focus + .btn-primary,
+      .btn-primary:focus {
+        background-color: #bbd1dd;
+        box-shadow: none;
+      }
+      /* .show {
+        position: fixed;
+        top: 53%;
+        left: 4%;
+        width: 160px;
+      } */
+      .mainSearch {
+        margin-bottom: 60px;
+      }
+      #nextPage {
+        background: #4ea7db;
+        --bs-btn-active-bg: #4ea7db;
+        --bs-btn-border-color: #4ea7db;
+        --bs-btn-bg: #4ea7db;
+        --bs-btn-hover-border-color: #4ea7db;
+        --bs-btn-disabled-bg: #4ea7db;
+        --bs-btn-disabled-border-color: #4ea7db;
+        --bs-btn-active-border-color: #4ea7db;
+      }
+      .btn-primary:active:focus {
+        box-shadow: 0 0 0 0.25rem rgb(78 167 219 / 50%);
+      }
+      .row.mainSearch {
+        border: 1px solid #4ea7db;
+        display: flex;
+        align-items: center;
+        border-radius: 40px;
+        padding: 15px 0;
+      }
+      .row.mainSearch select,
+      .row.mainSearch input,
+      .row.mainSearch button {
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        border: none;
+        background-color: #fff;
+      }
+      /* .row.mainSearch button {
+        background-color: #4ea7db;
+      } */
+    </style>
+  </head>
+
+  <body>
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+      <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots"></div>
+      </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header
+      class="header-area header-sticky wow slideInDown"
+      data-wow-duration="0.75s"
+      data-wow-delay="0s"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <nav class="main-nav">
+              <!-- ***** Logo Start ***** -->
+              <a href="index.html" class="logo"></a>
+              <!-- ***** Logo End ***** -->
+              <!-- ***** Menu Start ***** -->
+              <ul class="nav">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="#">contact-us</a></li>
+                <li><a href="#">something</a></li>
+
+                <li><a href="wish_listing.html">찜</a></li>
+              </ul>
+              <a class="menu-trigger">
+                <span>Menu</span>
+              </a>
+              <!-- ***** Menu End ***** -->
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ***** Header Area End ***** -->
+
+    <!-- <div class="container mt-3">
+      <div class="toast show">
+        <div class="toast-header">
+          <strong class="me-auto"> ← 메뉴를 보려면 여기를 클릭하세요.</strong>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="page-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="top-text header-text">
+              <h6>Cultural facility information</h6>
+              <h2>문화시설</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="offcanvas offcanvas-start" id="demo">
+      <div class="offcanvas-header">
+        <h1 class="offcanvas-title">category</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="col-lg-3">
+          <!-- 좌측 네비바 start-->
+          <div class="menu">
+            <!-- 네비 홈 -->
+            <div class="first-thumb">
+              <a href="index.html">
+                <div class="thumb square">
+                  <span class="iconBack"
+                    ><img
+                      src="assets/images/search-icon-01.png"
+                      alt=""
+                      class="navIcon"
+                  /></span>
+                  홈
+                </div>
+              </a>
+            </div>
+            <!-- 네비 관광지 -->
+            <div>
+              <a href="visit_listing.html">
+                <div class="thumb square">
+                  <span class="iconBack"
+                    ><img
+                      src="assets/images/search-icon-02.png"
+                      alt=""
+                      class="navIcon"
+                  /></span>
+                  관광지
+                </div>
+              </a>
+            </div>
+            <!-- 네비 문화시설 -->
+            <div class="active">
+              <a href="culture_listing.html">
+                <div class="thumb square">
+                  <span class="iconBack"
+                    ><img
+                      src="assets/images/search-icon-03.png"
+                      alt=""
+                      class="navIcon"
+                  /></span>
+                  문화시설
+                </div>
+              </a>
+            </div>
+            <!-- 네비 축제공연행사 -->
+            <div>
+              <a href="party_listing.html">
+                <div class="thumb square">
+                  <span class="iconBack"
+                    ><img
+                      src="assets/images/search-icon-03.png"
+                      alt=""
+                      class="navIcon"
+                  /></span>
+                  축제공연행사
+                </div>
+              </a>
+            </div>
+            <!-- 네비 여행코스 -->
+            <div>
+              <a href="travel_listing.html">
+                <div class="thumb square">
+                  <span class="iconBack"
+                    ><img
+                      src="assets/images/search-icon-03.png"
+                      alt=""
+                      class="navIcon"
+                  /></span>
+                  여행코스
+                </div>
+              </a>
+            </div>
+            <!-- 네비 레포츠 -->
+            <div>
+              <a href="leports_listing.html">
+                <div class="thumb square">
+                  <span class="iconBack"
+                    ><img
+                      src="assets/images/search-icon-03.png"
+                      alt=""
+                      class="navIcon"
+                  /></span>
+                  레포츠
+                </div>
+              </a>
+            </div>
+            <!-- 네비 숙박 -->
+            <div>
+              <a href="stay_listing.html">
+                <div class="thumb square">
+                  <span class="iconBack"
+                    ><img
+                      src="assets/images/search-icon-03.png"
+                      alt=""
+                      class="navIcon"
+                  /></span>
+                  숙박
+                </div>
+              </a>
+            </div>
+            <!-- 네비 쇼핑 -->
+            <div>
+              <a href="shopping_listing.html">
+                <div class="thumb square">
+                  <span class="iconBack"
+                    ><img
+                      src="assets/images/search-icon-03.png"
+                      alt=""
+                      class="navIcon"
+                  /></span>
+                  쇼핑
+                </div>
+              </a>
+            </div>
+            <!-- 네비 음식점 -->
+            <div>
+              <a href="food_listing.html">
+                <div class="thumb square">
+                  <span class="iconBack"
+                    ><img
+                      src="assets/images/search-icon-03.png"
+                      alt=""
+                      class="navIcon"
+                  /></span>
+                  음식점
+                </div>
+              </a>
+            </div>
+            <!-- 네비 찜 -->
+            <div class="last-thumb">
+              <a href="wish_listing.html">
+                <div class="thumb square">
+                  <span class="iconBack"
+                    ><img
+                      src="assets/images/search-icon-04.png"
+                      alt=""
+                      class="navIcon"
+                  /></span>
+                  찜
+                </div>
+              </a>
+            </div>
+          </div>
+          <!-- 좌측 네비바 end-->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt-3">
+      <button
+        class="btn btn-primary btnFixed"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#demo"
+      >
+        〉〉
+      </button>
+    </div>
+
+    <div class="listing-page">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="naccs">
+              <div class="grid">
+                <div class="row">
+                  <!-- 검생창 -->
+                  <div class="col-lg-9">
+                    <div class="col-lg-12 searchTable">
+                      <div
+                        id="search-form"
+                        name="gs"
+                        method="submit"
+                        role="search"
+                        action="#"
+                      >
+                        <div class="row mainSearch">
+                          <div class="col-lg-3 align-self-center">
+                            <fieldset>
+                              <select
+                                name="area"
+                                class="form-select"
+                                aria-label="Area"
+                                id="chooseCategory"
+                              >
+                                <option selected>전체보기</option>
+                                <option value="A02060100">박물관</option>
+                                <option value="A02060200">기념관</option>
+                                <option value="A02060300">전시관</option>
+                                <option value="A02060400">컨벤션센터</option>
+                                <option value="A02060500">미술관/화랑</option>
+                                <option value="A02060600">공연장</option>
+                                <option value="A02060700">문화원</option>
+                                <option value="A02060800">외국문화원</option>
+                                <option value="A02060900">도서관</option>
+                                <option value="A02061000">대형서점</option>
+                              </select>
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-3 align-self-center">
+                            <fieldset>
+                              <input
+                                id="searchValId"
+                                type="address"
+                                name="address"
+                                class="searchText"
+                                placeholder="검색어를 입력하세요..."
+                                autocomplete="on"
+                                required
+                              />
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-3 align-self-center">
+                            <fieldset>
+                              <select
+                                name="price"
+                                class="form-select"
+                                aria-label="Default select example"
+                                id="chooseCategory"
+                              >
+                                <option selected>12개씩 보기</option>
+                                <option value="8">8개씩 보기</option>
+                              </select>
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-3">
+                            <fieldset>
+                              <button
+                                class="main-button"
+                                onclick="searchFun();"
+                              >
+                                <i class="fa fa-search"></i>
+                                Search Now
+                              </button>
+                            </fieldset>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <ul class="nacc">
+                      <!-- first category listing of items -->
+                      <li class="active">
+                        <div>
+                          <div class="col-lg-12">
+                            <div class="item">
+                              <div class="row" id="cardArea">
+                                <!-- 카드 start -->
+                                <!-- <div class="col-lg-12">
+                                  <div class="listing-item">
+                                    <div class="left-image">
+                                      <a href="#"
+                                        ><img
+                                          src="assets/images/listing-01.jpg"
+                                          alt=""
+                                      /></a>
+                                      <div class="hover-content">
+                                        <div class="main-white-button">
+                                          <a href="contact.html"
+                                            ><i class="fa fa-eye"></i> Contact
+                                            Now</a
+                                          >
+                                        </div>
+                                      </div>
+                                    </div>
+                                     카드 오른쪽 설명란 start 
+                                    <div
+                                      class="right-content align-self-center"
+                                    >
+                                      <a href="#"><h4>소분류>제목</h4></a>
+                                      <h6>
+                                        ------------------------------------------
+                                      </h6>
+                                      <span class="price"
+                                        ><div class="icon">
+                                          <img
+                                            src="assets/images/listing-icon-01.png"
+                                            alt=""
+                                          />
+                                        </div>
+                                        $600 / month included tax</span
+                                      >
+                                    </div>
+                                  </div>
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <div>
+                        <div class="d-grid">
+                          <button
+                            type="button"
+                            id="nextPage"
+                            class="btn btn-primary btn-block"
+                          >
+                            더보기
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-primary btn-block"
+                            data-bs-toggle="modal"
+                            data-bs-target="#myModal"
+                            style="display: none"
+                            id="modalBtn"
+                          >
+                            더보기
+                          </button>
+                        </div>
+                      </div>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">경고</h4>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">마지막 페이지 입니다.</div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 공통 푸터 -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="about">
+              <div class="logo">
+                <img src="assets/images/black-logo.png" alt="" />
+              </div>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adicingi elit, sed do
+                eiusmod tempor incididunt ut et dolore magna aliqua.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="helpful-links">
+              <h4>Helpful Links</h4>
+              <div class="row">
+                <div class="col-lg-6">
+                  <ul>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">Reviews</a></li>
+                    <li><a href="#">Listing</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                  </ul>
+                </div>
+                <div class="col-lg-6">
+                  <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Awards</a></li>
+                    <li><a href="#">Useful Sites</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="contact-us">
+              <h4>Contact Us</h4>
+              <p>27th Street of New Town, Digital Villa</p>
+              <div class="row">
+                <div class="col-lg-6">
+                  <a href="#">010-020-0340</a>
+                </div>
+                <div class="col-lg-6">
+                  <a href="#">090-080-0760</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="sub-footer">
+              <p>
+                Copyright © 2021 Plot Listing Co., Ltd. All Rights Reserved.
+                <br />
+                Design:
+                <a
+                  rel="nofollow"
+                  href="https://templatemo.com"
+                  title="CSS Templates"
+                  >TemplateMo</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/animation.js"></script>
+    <script src="assets/js/imagesloaded.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <!-- <script src="font.css"></script> -->
+    <script
+      src="https://kit.fontawesome.com/9f33808b48.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <script
+      type="text/javascript"
+      src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=3292b3c080f763fb8c714ecc585e6b82"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="slick/slick.css"/> -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <script src="assets/js/commonJS.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>숙박 listing Page</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/stay_templatemo-plot-listing.css" />
+    <link rel="stylesheet" href="assets/css/animated.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+    <style>
+      @font-face {
+        font-family: "NanumSquareNeo-Variable";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2")
+          format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      * {
+        font-family: "NanumSquareNeo-Variable";
+      }
+
+      #title {
+        background-color: #acb6c8;
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      #nav1 {
+        width: 500px;
+      }
+      @media only screen and (max-width: 700px) {
+        #nav1 {
+          width: 80%;
+        }
+      }
+    </style>
+    <script>
+      // A5FWp3xAnDjS5xM3zMln9Gn1DzuUsAZB4R424%2BSVVBRD1Op4YVIW67rjkTgXl6f1A0MFoYzbm99lvWznmiK%2FTg%3D%3D
+
+      $(function () {
+        let contentId = getParameter("contentid");
+        if (contentId == null) {
+          location.href = "stay_listing.html";
+        } else {
+          getInfo(contentId); // 공통 정보
+          getAdditionalImage(contentId);
+        }
+        $("#basic").click(function () {
+          getInfo(contentId);
+        });
+        $("#useInfo").click(function () {
+          getuseInfo(contentId);
+        });
+        $("#detailInfo").click(function () {
+          getdetailInfo(contentId);
+        });
+      });
+
+      // 추가 이미지 얻어오기
+      function getAdditionalImage(contentId) {
+        let url =
+          "http://apis.data.go.kr/B551011/KorService/detailImage?MobileOS=ETC&MobileApp=AppTest&serviceKey=A5FWp3xAnDjS5xM3zMln9Gn1DzuUsAZB4R424%2BSVVBRD1Op4YVIW67rjkTgXl6f1A0MFoYzbm99lvWznmiK%2FTg%3D%3D&_type=json&imageYN=Y&subImageYN=Y&contentId=" +
+          contentId;
+
+        $.ajax({
+          url: url, // 데이터가 송수신될 서버의 주소
+          type: "GET",
+          datatype: "json",
+          async: false,
+          success: function (data) {
+            console.log(data);
+            imageslider(data);
+          },
+        });
+      }
+      // 이미지
+      function imageslider(json) {
+        let output = "";
+        if (json.response.body.items != "") {
+          // 추가 이미지가 있다.
+          output = `<div class="carousel-indicators" >`;
+          for (let i in json.response.body.items.item) {
+            if (i == 0) {
+              output += `<button type="button" data-bs-target="#demo" data-bs-slide-to="${i}" class="active"></button>`;
+            } else {
+              output += `<button type="button" data-bs-target="#demo" data-bs-slide-to="${i}"></button>`;
+            }
+          }
+          output += `</div><div class="carousel-inner">`;
+
+          $.each(json.response.body.items.item, function (i, addImg) {
+            if (i == 0) {
+              output += `<div class="carousel-item active">`;
+            } else {
+              output += `<div class="carousel-item">`;
+            }
+            output += `<img src="${addImg.originimgurl}" alt="${addImg.contentid}" class="d-block w-100"></div>`;
+          });
+          output += `</div>`;
+          output += `<button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button><button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span></button>`;
+
+          $("#demo").html(output);
+        } else {
+          output +=
+            '<div><img src="assets/images/stay_noimage.png" class="d-block w-100" style="width:30%"></div>';
+          $("#demo").html(output);
+        }
+      }
+
+      // 기본정보
+      function getInfo(contentId) {
+        let url =
+          "https://apis.data.go.kr/B551011/KorService/detailCommon?MobileOS=1&MobileApp=1&serviceKey=A5FWp3xAnDjS5xM3zMln9Gn1DzuUsAZB4R424%2BSVVBRD1Op4YVIW67rjkTgXl6f1A0MFoYzbm99lvWznmiK%2FTg%3D%3D&_type=json&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&contentId=" +
+          contentId;
+
+        $.ajax({
+          url: url, // 데이터가 송수신될 서버의 주소
+          type: "GET",
+          datatype: "json",
+          async: false,
+          success: function (data) {
+            console.log(data);
+            basicInfo(data);
+          },
+        });
+      }
+
+      function basicInfo(json) {
+        let stayAr = json.response.body.items.item;
+        let title = `<b>${stayAr[0].title}</b>`;
+        let bottom = `${stayAr[0].overview}`;
+        let output = `<table class="table">
+          <tr><th>우편번호</th><td>${stayAr[0].zipcode}</td>
+          </tr><tr><th>전화번호</th><td>${stayAr[0].tel}</td>
+          </tr><tr><th>홈페이지</th><td>${stayAr[0].homepage}</td>
+          </tr><tr><th>주소</th><td>${stayAr[0].addr1}</td></tr></table>`;
+        $("#title").html(title);
+        $("#bottomdetail").html(bottom);
+        $("#nav1").html(output);
+
+        // 지도
+        let mapx = stayAr[0].mapx;
+        let mapy = stayAr[0].mapy;
+        console.log(mapx, mapy);
+        getmap(mapx, mapy);
+      }
+
+      function getmap(mapx, mapy) {
+        let mapContainer = document.getElementById("map"), // 지도를 표시할 div
+          mapOption = {
+            center: new kakao.maps.LatLng(mapy, mapx), // 지도의 중심좌표
+            level: 3, // 지도의 확대 레벨
+          };
+
+        // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+        let map = new kakao.maps.Map(mapContainer, mapOption);
+
+        // 마커가 표시될 위치입니다
+        var markerPosition = new kakao.maps.LatLng(mapy, mapx);
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+          position: markerPosition,
+        });
+
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+
+        // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+        var mapTypeControl = new kakao.maps.MapTypeControl();
+
+        // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+        // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+        map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+        // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+        var zoomControl = new kakao.maps.ZoomControl();
+        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+      }
+
+      function openmap() {
+        if (hide.style.display == "none") {
+          hide.style.display = "";
+          show.innerText = "지도 접기 ▲";
+        } else {
+          hide.style.display = "none";
+          show.innerText = "지도보기 ▼";
+        }
+      }
+
+      // 이용안내
+      function getuseInfo(contentId) {
+        let url =
+          "http://apis.data.go.kr/B551011/KorService/detailIntro?MobileOS=1&MobileApp=1&serviceKey=A5FWp3xAnDjS5xM3zMln9Gn1DzuUsAZB4R424%2BSVVBRD1Op4YVIW67rjkTgXl6f1A0MFoYzbm99lvWznmiK%2FTg%3D%3D&_type=json&contentTypeId=32&contentId=" +
+          contentId;
+
+        $.ajax({
+          url: url, // 데이터가 송수신될 서버의 주소
+          type: "GET",
+          datatype: "json",
+          async: false,
+          success: function (data) {
+            console.log(data);
+            useInfo(data);
+          },
+        });
+      }
+
+      function useInfo(json) {
+        let stayAr = json.response.body.items.item;
+        // let publicpc
+        // if(stayAr[0].publicpc == "1"){
+
+        // }
+
+        let output = `<table class="table">
+          <tr><th>문의 및 안내</th><td>${stayAr[0].infocenterlodging}</td>
+          </tr><tr><th>규모</th><td><a href = "${stayAr[0].scalelodging}"></a></td>
+          </tr><tr><th>수용 가능 인원</th><td>${stayAr[0].accomcountlodging}</td></tr>
+          <tr><th>객실수</th><td>${stayAr[0].roomcount}</td></tr>
+          <tr><th>주차 가능 여부</th><td>${stayAr[0].parkinglodging}</td></tr>
+          <tr><th>조리 가능 여부</th><td>${stayAr[0].chkcooking}</td></tr>
+          <tr><th>체크인</th><td>${stayAr[0].checkintime}</td></tr>
+          <tr><th>체크아웃</th><td>${stayAr[0].checkouttime}</td></tr>
+          <tr><th>픽업서비스</th><td>${stayAr[0].pickup}</td></tr>
+          <tr><th>식음료장</th><td>${stayAr[0].foodplace}</td></tr>
+          <tr><th>환불규정</th><td>${stayAr[0].refundregulation}</td></tr></table>`;
+
+        $("#nav1").html(output);
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+      <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header
+      class="header-area header-sticky wow slideInDown"
+      data-wow-duration="0.75s"
+      data-wow-delay="0s"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <nav class="main-nav">
+              <!-- ***** Logo Start ***** -->
+              <a href="index.html" class="logo"> </a>
+              <!-- ***** Logo End ***** -->
+              <!-- ***** Menu Start ***** -->
+              <ul class="nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="category.html">Category</a></li>
+                <li><a href="stay_listing.html" class="active">Listing</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li>
+                  <div class="main-white-button">
+                    <a href="#"><i class="fa fa-plus"></i> Add Your Listing</a>
+                  </div>
+                </li>
+              </ul>
+              <a class="menu-trigger">
+                <span>Menu</span>
+              </a>
+              <!-- ***** Menu End ***** -->
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <div class="page-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="top-text header-text">
+              <h6>hotel/hanok/hostel/resort</h6>
+              <h2>숙박<span class="detail"></span></h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      style="
+        border: solid #acb6c8;
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+        background-color: rgb(242, 241, 241);
+      "
+    >
+      <div class="container mt-3">
+        <h6 id="title"></h6>
+        <!-- 이미지 -->
+        <!-- Carousel -->
+        <div
+          id="demo"
+          class="carousel slide"
+          data-bs-ride="carousel"
+          style="width: 50%; margin: 20px; float: left"
+        ></div>
+      </div>
+      <div>
+        <!-- nav바 -->
+        <div style="padding-top: 20px; float: left">
+          <ul
+            class="nav nav-tabs"
+            style="background-color: #acb6c8; border-radius: 10px"
+          >
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="basic"
+                data-bs-toggle="tab"
+                href="#nav1"
+                >기본정보</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="useInfo" data-bs-toggle="tab" href="#"
+                >이용안내</a
+              >
+            </li>
+          </ul>
+
+          <!-- 기본정보 -->
+          <div
+            class="container mt-3 detailTable"
+            id="nav1"
+            style="
+              overflow: scroll;
+              height: 350px;
+              margin-bottom: 20px;
+              border: solid #acb6c8;
+              border-radius: 8px;
+            "
+          ></div>
+        </div>
+
+        <!-- 지도 -->
+        <div
+          style="
+            clear: both;
+            background-color: #acb6c8;
+            border-radius: 10px;
+            width: 85%;
+            padding: 10px;
+            margin: auto;
+          "
+        >
+          <a href="#none" id="show" onclick="openmap()">지도 펼쳐보기 ▼</a>
+
+          <div id="hide" style="display: none">
+            <div
+              id="map"
+              style="width: 80%; height: 350px; margin-left: 8%; clear: both"
+            ></div>
+          </div>
+        </div>
+
+        <!-- 숙박설명 -->
+        <div
+          style="
+            padding: 500;
+            clear: both;
+            background-color: #acb6c8;
+            width: 70%px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+          "
+        >
+          <h4 style="text-align: left">개요</h4>
+          <p id="bottomdetail" style="text-align: left"></p>
+        </div>
+      </div>
+    </div>
+    <footer></footer>
+
+    <!-- Scripts -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/animation.js"></script>
+    <script src="assets/js/imagesloaded.js"></script>
+    <script src="assets/js/custom.js"></script>
+  </body>
+</html>
