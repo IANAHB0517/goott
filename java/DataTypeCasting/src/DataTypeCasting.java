@@ -35,7 +35,7 @@ public class DataTypeCasting {
 		
 		
 		// 문자는 내부적으로 아스키 코드 값이 있기 때문에 아래와 같은 코딩이 가능
-		char c = 'a';
+		char c = '김';
 		System.out.println(c); // a
 		System.out.println((int)c); // 문자는 내부적으로 아스키 코드 값이 있고, 그 값의 정수 값으로 바뀜
 		
