@@ -51,7 +51,7 @@ public class ArrayEx3 {
 		
 		//why? 원본 배열의 주소값과 사번 배열의 주소값이 같다(= 같은 객체)
 		
-		// String 타입의 특성
+		// String 타입의 특성 // new로 하면 hash코드 값은 같게 나오는데 다른 주소라고 나온다 물어보자
 		String str1 = "대한민국"; // 코딩을 쉽게 하기위한 단축법
 //		String str1 = new String("대한민국");
 		String str2 = "대한민국"; // 얘 일때는 같은 주소
@@ -98,9 +98,9 @@ public class ArrayEx3 {
 		
 		String userid = "abcd1234";
 		if (userid == "abcd1234") { // 변수와 문자열의 주소가 같다.
-			System.out.println("같은 값");
+			System.out.println("같은 주소");
 		} else {
-			System.out.println("다른 값");
+			System.out.println("다른 주소");
 		}
 		
 		if (userid.equals("abcd1234")) { // userid 가 참조하는 문자열의 값과 괄호안의 값이 같은가?
