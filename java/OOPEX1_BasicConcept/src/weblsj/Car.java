@@ -13,6 +13,12 @@ public class Car {
 	//  메서드가 호출되면 할 일	
 	// 	}
 	
+	
+	
+	
+	
+	
+	
 	// Car 객체의 속성 값을 화면에 출력한다.
 	public void displayCar() {
 		System.out.println("브랜드명 : " + brandName);
