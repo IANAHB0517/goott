@@ -2,9 +2,9 @@ package weblsj;
 
 public class MobilePhone {
 	// 속성 (멤버 변수는 자동 초기화)
-	String brandName;
-	String modelName;
-	int mainMemory;
+	private String brandName;
+	private String modelName;
+	private int mainMemory;
 	
 	// int i =0; // 멤버변수로 적용됨
 	// i++; // 메서드를 작성불가
@@ -48,6 +48,46 @@ public class MobilePhone {
 	
 	
 	// 메서드
+	
+	// getter 
+	String getBrandName() {
+		return this.brandName;
+	};
+	
+	String getModelName() {
+		return this.modelName;
+	};
+	
+	String getMainMemory() { // int 타입의 변수를 불러와서 문자를 붙여 출력하기 위해 타입을 바꾸고 뒤에 문자열을 붙여준다.
+		return this.mainMemory + "GB";
+	};
+	
+	String getAttrs() {
+		return "brandName : " +	this.brandName + " modelName : " + this.modelName +  " mainMemory : " + this.mainMemory;
+	}
+	
+	// setter
+	void setBrandName(String brandName) {
+		this.brandName = brandName;
+	};
+	
+	void setModelName(String modelName) {
+		this.modelName = modelName;
+	};
+	
+	boolean setMainMemory(int mainMemory) {
+		// 메인 메모리의 용량을 1tb까지만 허용한다면 이렇게 setter를 구현할 수 도 있다.
+		boolean result = false;
+		if (mainMemory <= 1024) {
+			this.mainMemory = mainMemory;			
+			result = true;
+		} 
+		return result;
+	};
+	
+	
+	
+	
 	
 	public String toString() {
 		return "[" + this.getClass().getName() + " : " + this.hashCode() + "] = brandName : " +
