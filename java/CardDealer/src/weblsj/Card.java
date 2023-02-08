@@ -1,5 +1,12 @@
 package weblsj;
 
+/**
+ * @Class Name : Card,
+ * @author goott,
+ * @date : 2023. 2. 8.,
+ * @packages : weblsj,
+ * @Description : 트럼프 각각에 대한 객체
+ */
 public class Card {
 	// 카드 각각의 무늬와 숫자는 (값) 달라진다. 그래서 instance 멤버 변수로 만든다.
 	private int kind; // 카드 무늬

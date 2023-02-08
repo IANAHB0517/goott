@@ -8,7 +8,8 @@ insert into rent( USER_NUM, VIDEO_CODE, GENRE_CODE, RENTDATE , RETURN_DUE_DATE)
 values ( '25', 'CO20195555' , 'Comed' , now()  , date_add(now(), INTERVAL +3 day ));
 
 insert into rent( USER_NUM, VIDEO_CODE, GENRE_CODE, RENTDATE , RETURN_DUE_DATE)
-values ( '13', 'HO19940101' , 'Horror' ,  date_add(now(), INTERVAL -243 day )  , date_add(now(), INTERVAL -240 day ));
+values ( '13', 'HO19940101' , 'Horror' ,  date_add(now(), INTERVAL -230 day )  , date_add(now(), INTERVAL -227 day ));
+
 
 
 -- NUM을 독립적인 파라이머리 키로 사용 하면서 부터 NUM 컬럼에 값을 넣어주면 중복 될 경우 데이터가 입력 되지 않는다.
@@ -63,7 +64,7 @@ COMMIT;
 select * from member where CHK_BLACK = 'Y';
 
 -- 인기목록 조회
-select distinct VIDEO_CODE from rent group by VIDEO_CODE;
+select VIDEO_CODE from rent group by VIDEO_CODE;
 -- select * from (count(VIDEO_CODE)) order by 
 
 -- where Lank <= 10;
@@ -108,3 +109,4 @@ select distinct VIDEO_CODE from rent group by VIDEO_CODE;
 
 -- ddl
 -- alter table rent drop PRIMARY KEY RENT_REC;
+
