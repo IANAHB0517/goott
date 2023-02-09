@@ -74,7 +74,22 @@ Delimiter ;
 -- 	update video set return_due_date = new.rentdate + 3 where video
 -- end
 
+Delimiter $$
+-- 김소영씨 코드
+set @date1 = '2023-01-09' ; -- 대여날짜(rentdate)
+set @period = (select lend_time from genre where genre_code = (select genre_code from video where video_title = @vname));  -- 대여기간
+set @duedate = date_add(@date1, interval  @period day) ; -- 반납예정일 (return_due_date)
+set @returndate = date_add(@date1, interval 3 day);  -- 실제 반납일 
+
+$$    
+Delimiter ;
+
+-- set @date = '2023-01-09' -- 변수 사용 2023-01-09 이라는 날짜를 @date에 넣어줌;
+
+set @video = 'CH20010001';
+set @video_genre = (select GENRE_CODE from video where VIDEO_CODE = @video);
+set @rent_date = (now());
+set @return_date = (date_add(@rent_date, interval 3 day));
 
 
-set @date = '2023-01-09' -- 변수 사용 2023-01-09 이라는 날짜를 @date에 넣어줌
 

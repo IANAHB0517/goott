@@ -38,6 +38,8 @@ update member set ADDR = '서울시 파전이 많은곳' where USER_NAME = '비�
 update member set deleted_at = sysdate() where USER_NUM = 50;
 
 
+
+
 -- 비디오 CRUD
 select * from video;
 insert into video (VIDEO_CODE, GENRE_CODE, VIDEO_TITLE, MOVIE_RATED, RELEASE_DATE, DIRECTOR) values ('HO19940101', 'Horror', '어서와요 훈련소에', '19', 1994-01-01 ,  '2소대장');
@@ -58,20 +60,61 @@ update genre set RENTAL_FEE = 1500, LATE_FEE = 100 , LEND_TIME = 10 where GENRE_
 
 
 
+-- PL/SQL
+
+insert member (USER_NAME, PHONE_NUM, BIRTHDAY) values ('원동건', '010-1090-0405', '1994-01-05');
+UPDATE member set GENDER = 'male' where USER_NUM =54;
+
+set @video = 'AC20010001';
+set @video_genre = (select GENRE_CODE from video where VIDEO_CODE = @video);
+set @rent_date = date_add(now(), interval -2180 day);
+set @return_due_date = (date_add(@rent_date, interval 3 day));
+
+insert into rent( USER_NUM, VIDEO_CODE, GENRE_CODE, RENTDATE ,ISRETURN , RETURN_DUE_DATE, RETURN_DATE)
+values ('54', @video, @video_genre, @rent_date,'Y' ,  @return_due_date, @return_due_date);
+
+insert into rent( USER_NUM, VIDEO_CODE, GENRE_CODE, RENTDATE ,ISRETURN , RETURN_DUE_DATE )
+values ('54', @video, @video_genre, @rent_date,'N' ,  @return_due_date );
+
+update rent set ISRETURN = 'Y' where VIDEO_CODE = @video;
+
+update rent set GENRE_CODE = 'Action' where VIDEO_CODE = @video;
+
+update rent set VIDEO_CODE = 'AC20010001' where VIDEO_CODE = @video;
+
+update video set VIDEO_CODE = 'AC20010001' where VIDEO_CODE = @video;
+
+delete from rent where USER_NUM = 54;
+
+update video set GENRE_CODE = 'Action' where VIDEO_CODE = 'AC20010001';
+
+update video set TOTAL_VIEW = 0 where VIDEO_CODE = 'AC20010001';
+
+delete from genre where GENRE_CODE = 'Chow Sing-Chi';
+
+update rent set CHECK_LATE = 'Y' where NUM = 118;
+
+
+
+
+
+
+rollback;
+
 COMMIT;
 
 -- 블랙리스트 조회
 select * from member where CHK_BLACK = 'Y';
 
 -- 인기목록 조회
-select VIDEO_CODE from rent group by VIDEO_CODE;
--- select * from (count(VIDEO_CODE)) order by 
+select VIDEO_TITLE , TOTAL_VIEW from video order by TOTAL_VIEW desc limit 5;
 
--- where Lank <= 10;
 
 -- 매출확인 
 
 -- 연체관리
+
+select distinct user_num ,  DATEDIFF (RENTDATE,now() ) as 연체일수 from rent where ISRETURN = 'N' and RETURN_DATE is null ;
 
 -- 회원나이별 선호장르
 
