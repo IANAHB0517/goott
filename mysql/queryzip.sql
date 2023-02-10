@@ -94,6 +94,13 @@ delete from genre where GENRE_CODE = 'Chow Sing-Chi';
 
 update rent set CHECK_LATE = 'Y' where NUM = 118;
 
+update rent set CHECK_LATE = 'Y' where VIDEO_CODE = 'HO19940101';
+
+update rent set RETURN_DATE = '2022-06-21' where NUM = 34;
+
+update rent set RETURN_DATE = '2022-06-26' where NUM = 27;
+
+
 
 
 
@@ -103,8 +110,6 @@ rollback;
 
 COMMIT;
 
--- 블랙리스트 조회
-select * from member where CHK_BLACK = 'Y';
 
 -- 인기목록 조회
 select VIDEO_TITLE , TOTAL_VIEW from video order by TOTAL_VIEW desc limit 5;
@@ -113,12 +118,35 @@ select VIDEO_TITLE , TOTAL_VIEW from video order by TOTAL_VIEW desc limit 5;
 -- 매출확인 
 
 -- 연체관리
+-- 회원이 연체한 비디오 코드와 연체 일수
+select distinct user_num ,video_code ,  DATEDIFF (now(), RENTDATE ) as 연체일수 from rent where ISRETURN = 'N' and RETURN_DATE is null;
 
-select distinct user_num ,  DATEDIFF (RENTDATE,now() ) as 연체일수 from rent where ISRETURN = 'N' and RETURN_DATE is null ;
+-- 연체 중인 회원의 정보
+select * from member where user_num in (select distinct user_num from rent where ISRETURN = 'N' and RETURN_DATE is null);
+
+select m.user_name, m.phone_num, video_title , r.연체일수 from
+ (select distinct user_num ,video_code ,  DATEDIFF (now(), RENTDATE ) as 연체일수 from rent where ISRETURN = 'N' and RETURN_DATE is null) r,
+ (select * from member where user_num in (select distinct user_num from rent where ISRETURN = 'N' and RETURN_DATE is null)) m,
+ video v
+ where m.user_num = r.user_num
+ and r.video_code = v.video_code;
+ 
+
+-- (select v.VIDEO_TITLE from video v ,rent r where r.VIDEO_CODE = v.VIDEO_CODE and VIDEO_CODE =  )
 
 -- 회원나이별 선호장르
 
+
+
 -- 회원별 추천 장르
+
+-- 회원 별 가장 많이본 영화
+-- select r.user_num , r.video_code, g.genre_name from rent r, genre g where r.genre_code = r.genre_code;
+
+-- select video_title from (select genre_name, genre_code  from genre) g, video v where g.genre_code = v.genre_code;
+
+
+-- select user_name from rent r natural join member m (select genre_name from genre limit 3);
 
 -- 장르별 인기비디오 top5
 
@@ -147,6 +175,10 @@ select distinct user_num ,  DATEDIFF (RENTDATE,now() ) as 연체일수 from rent
 -- 가장 많이 연체되는 비디오 top10
 
 -- 올해 가장 매출액이 높은 월과 낮은 월 조회
+
+-- 회원 나이대별 저장
+
+set @tw = (select * from member where birthday between '2004-01-01' and '1994-01-01')
 
 
 
