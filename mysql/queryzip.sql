@@ -1,3 +1,8 @@
+
+
+use gottclass6;
+
+
 -- 대여기록 CRUD
 select * from rent;
 
@@ -139,21 +144,92 @@ select m.user_name, m.phone_num, video_title , r.연체일수 from
 
 
 -- 회원별 추천 장르
+select  * 
+from 
+(select m.user_name as 회원명, r.genre_code 장르 , count(*) count
+ from member m , rent r where m.USER_NUM = r.USER_NUM group by 회원명) target
+where target.count > 5
+order by count desc
+;
+-- select user_num, GENRE_CODE, count(*) count from rent group by GENRE_CODE;
 
 -- 회원 별 가장 많이본 영화
--- select r.user_num , r.video_code, g.genre_name from rent r, genre g where r.genre_code = r.genre_code;
+select m.user_name user , v.video_title , count(r.video_code) count from member m , rent r , video v 
+where m.user_num = r.user_num and
+r.video_code = v.video_code
+group by user
+order by count desc;
 
--- select video_title from (select genre_name, genre_code  from genre) g, video v where g.genre_code = v.genre_code;
+select r.video_code, m.user_name from rent r , member m where r.USER_NUM = m.USER_NUM;
+select * from member where user_name ='박내일' ;
 
 
--- select user_name from rent r natural join member m (select genre_name from genre limit 3);
-
+-- select video_code , user_num  ,  count(*) count from rent group by USER_NUM order by count desc;
 -- 장르별 인기비디오 top5
+(select video_code, genre_code , count(*) count from rent where GENRE_CODE = 'Drama' group by video_code order by count desc limit 5 )
+union
+(select video_code, genre_code , count(*) count from rent where GENRE_CODE = 'Animation' group by video_code order by count desc  limit 5 )
+union
+(select video_code, genre_code , count(*) count from rent where GENRE_CODE = 'Action' group by video_code order by count desc  limit 5 )
+;
+ 
+--  select video_code ,genre_code, count(*) as count from rent group by video_code order by count desc;
+ 
+ -- select genre_code, count(*) as count from rent group by genre_code order by count desc;
+ 
+ -- 장르별 인기순위 
+ 
+ 
+ (select genre_code, count(*) as count from rent group by genre_code order by count desc) ;
+
+
 
 -- 신간(대여료 +1000), 연체료 +200, 대여일2, 시간기준 출시일로 부터 1달
 
 -- 영화 인기도(대여횟수)가 딱 가운데 순위인 영화의 감독 작품중에 가장 잘 나가는 영화
 
+set @avgCount = (select round(avg(t.count)) avg from (select video_code, count(video_code) count from rent group by video_code) t);
+select  @avgCount from dual;
+
+-- 대여 횟수가 평균인 비디오
+select VIDEO_CODE, count(video_code) Count from rent
+		group by video_code
+		having Count = @avgCount;
+        
+-- 해당 비디오의 감독
+select v.video_code , v.director from (
+		select VIDEO_CODE, count(video_code) Count from rent
+		group by video_code
+		having Count = @avgCount
+) as VideoTarget , video v
+where VideoTarget.video_code = v.video_code;
+
+
+-- 해당 감독들의 영화
+select v.VIDEO_CODE, v.video_title, v.director 
+from  video as v inner join
+				(select v.video_code , v.director from (
+					select VIDEO_CODE, count(video_code) Count from rent
+					group by video_code
+					having Count = @avgCount
+				) as VideoTarget , video v
+				where VideoTarget.video_code = v.video_code) as getD
+using (director)
+;
+select directorsVideo.* , 
+
+	(select v.VIDEO_CODE, v.video_title, v.director 
+	from  video as v inner join
+					(select v.video_code , v.director from (
+						select VIDEO_CODE, count(video_code) Count from rent
+						group by video_code
+						having Count = @avgCount
+					) as VideoTarget , video v
+					where VideoTarget.video_code = v.video_code) as getD
+	using (director)) as directorsVideo
+
+
+(select round(avg(t.count)) avg from (select video_code, count(video_code) count from rent group by video_code) t) as avgCount;
 -- 한 장르를 많이 빌린 사람들에 대해서, 전화번호 조회
 
 -- 연체율이 가장 높은 장르에서 가장 인기 없는 감독의 영화중에 최신작
