@@ -26,13 +26,42 @@
     <link rel="stylesheet" href="assets/css/owl.css" />
     <link rel="stylesheet" href="assets/css/templatemo-plot-partyListing.css" />
     <!--
-
 TemplateMo 564 Plot Listing
-
 https://templatemo.com/tm-564-plot-listing
-
 -->
     <style>
+      @font-face {
+        font-family: "NanumSquareNeo-Variable";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2")
+          format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      * {
+        font-family: "NanumSquareNeo-Variable";
+      }
+
+      a {
+        color: #fff;
+      }
+
+      .pagingBtn .main-white-button {
+        background-color: #bcb4c0;
+        color: #fff;
+      }
+      @media (min-width: 992px) {
+        .stickyNav .menu {
+          position: sticky;
+          top: 90px;
+        }
+      }
+
+      .container {
+        margin-right: 0;
+        margin-left: 20vw;
+      }
+
       a img.itemImg {
         width: 400px;
       }
@@ -43,6 +72,7 @@ https://templatemo.com/tm-564-plot-listing
 
       .right-content {
         padding: 15px;
+        /* max-width: 450px; */
       }
 
       .info,
@@ -65,6 +95,78 @@ https://templatemo.com/tm-564-plot-listing
         border: 1px solid #bcb4c0;
         background-color: #bcb4c0;
         color: #fff;
+      }
+      .selectDate {
+        display: flex;
+        flex-direction: column;
+        /* text-align: center; */
+        width: 25vw;
+      }
+      .dateSelectArea input {
+        border: 0px;
+      }
+      .selectDate label {
+        color: #bcb4c0;
+      }
+      .selectDate input {
+        /* display: inline-block; */
+        margin-right: auto;
+      }
+      .dateSelectArea {
+        display: flex;
+        /* justify-content: space-; */
+        width: inherit;
+        line-height: 2.2;
+        font-size: 1.3rem;
+        margin-bottom: 3vh;
+      }
+      /* .dateSelectArea .dateAreaBtn {
+        border-radius: 15%;
+        background-color: #bcb4c0;
+      } */
+      #dateSubmitBtn {
+        border-radius: 10%;
+        /* border: 0px; */
+        background-color: #bcb4c0;
+        width: 15vw;
+        color: #fff;
+        font-size: 2rem;
+      }
+
+      .col-lg-9 {
+        padding-right: 0px;
+        padding-left: 60px;
+      }
+      .container {
+        margin-left: 15vw;
+      }
+      .warning {
+        color: red;
+      }
+
+      .details {
+        max-width: 500px;
+      }
+
+      .cookieArea {
+        display: flex;
+        justify-content: end;
+      }
+
+      .wishIcon {
+        /* width: 40px; */
+        /* font-size: 3rem; */
+        /* fill: red; */
+        fill: gainsboro;
+      }
+
+      svg {
+        width: 50px;
+        height: 50px;
+      }
+
+      .stickyNav .menu {
+        height: 40%;
       }
     </style>
   </head>
@@ -136,7 +238,7 @@ https://templatemo.com/tm-564-plot-listing
               <div class="grid">
                 <div class="row">
                   <!-- navBar -->
-                  <div class="col-lg-3">
+                  <div class="col-lg-3 stickyNav">
                     <div class="menu">
                       <div class="first-thumb">
                         <a href="index.html">
@@ -243,6 +345,35 @@ https://templatemo.com/tm-564-plot-listing
                     </div>
                   </div>
                   <div class="col-lg-9">
+                    <!-- <div class="warning" style="display: none">
+                      기간을 올바르게 입력하세요
+                    </div> -->
+                    <div class="dateSelectArea">
+                      <span class="selectDate">
+                        <label for="esd">검색일</label>
+                        <input
+                          type="date"
+                          name="eventSearchDate"
+                          id="esd"
+                          class="dateAreaBtn"
+                      /></span>
+                      <!-- <span class="selectDate">
+                        <label for="esd">행사 종료일</label>
+                        <input
+                          type="date"
+                          name="eventEndtDate"
+                          id="eed"
+                          class="dateAreaBtn"
+                      /></span> -->
+
+                      <input
+                        id="dateSubmitBtn"
+                        type="submit"
+                        value="검색"
+                        class="dateAreaBtn"
+                        onclick="calcDate()"
+                      />
+                    </div>
                     <div class="loading"></div>
                     <ul class="nacc">
                       <!-- first category listing of items -->
@@ -325,8 +456,15 @@ https://templatemo.com/tm-564-plot-listing
     <div class="pagingBtn">
       <input
         type="button"
+        value="minusTens"
+        class="movePageMin10 main-white-button"
+        style="display: none"
+        onclick="pageMove(this);"
+      />
+      <input
+        type="button"
         value="prev"
-        class="movePageMin main-white-button"
+        class="movePageMin1 main-white-button"
         style="display: none"
         onclick="pageMove(this);"
       />
@@ -341,7 +479,14 @@ https://templatemo.com/tm-564-plot-listing
       <input
         type="button"
         value="next"
-        class="movePageAdd main-white-button"
+        class="movePageAdd1 main-white-button"
+        onclick="pageMove(this);"
+      />
+
+      <input
+        type="button"
+        value="plusTens"
+        class="movePageAdd10 main-white-button"
         onclick="pageMove(this);"
       />
     </div>
@@ -428,82 +573,265 @@ https://templatemo.com/tm-564-plot-listing
     <script>
       //온로드 영역
       $(function () {
-        let output = ajaxCall(baseUrl);
+        ajaxCall(baseUrl);
+        readCookies();
 
         $(document).on("click", ".movePage", function () {
           pageMove(this);
         });
+
+        //WishEvent
+        $(document).on("click", ".wishIcon", function () {
+          let getTitle = $(this).parent().next().children().eq(0).html();
+          let getImg = $(this)
+            .parent()
+            .parent()
+            .prev()
+            .children()
+            .eq(0)
+            .children()
+            .eq(0)
+            .attr("src");
+          getTitle = encodeURIComponent(getTitle);
+          console.log(getImg);
+          if ($(this).css("fill") == "rgb(220, 220, 220)") {
+            $(this).css("fill", "red");
+            addCookie($(this).attr("id"), getImg, getTitle);
+          } else {
+            $(this).css("fill", "gainsboro");
+            remCookie($(this).attr("id"), getImg, getTitle);
+          }
+          // console.log($(this).css("fill"));
+        });
       });
 
-      // 날짜 얻어서 포맷 변경
-      let today = new Date();
+      //쿠키 영역
+      let cookieDate = new Date();
+      cookieDate.setDate(cookieDate.getDate() + 60);
 
-      let year = today.getFullYear();
-      let month = ("0" + (today.getMonth() + 1)).slice(-2);
-      let day = ("0" + today.getDate()).slice(-2);
+      function readCookies() {
+        let cookAr = document.cookie;
+        console.log(cookAr);
+        let checkAr = cookAr.split(";");
+        console.log(checkAr);
+        let findFlag = false;
+        //  for (let i = 0; i < checkAr.length; i++) {
+        //   let cookId = checkAr[i].split("=")[0].trim();
+        //   if (cookId == "")
+
+        //  }
+      }
+
+      function addCookie(cookieId, imgUrl, title) {
+        console.log(cookieId, imgUrl, title);
+        let festCookie = "";
+        festCookie =
+          `myWish~${cookieId}=festival~${imgUrl}~${title};expires=` +
+          cookieDate.toUTCString();
+        console.log(festCookie);
+        document.cookie = festCookie;
+      }
+
+      function remCookie(cookieId, imgUrl, title) {
+        let exdate = new Date();
+        let festCookie =
+          `myWish~${cookieId}=festival~${imgUrl}~${title};expires=` +
+          exdate.toUTCString();
+        document.cookie = festCookie;
+      }
+
+      // 날짜 얻어서 포맷 변경
+      let currentDate = new Date();
+
+      let year = currentDate.getFullYear();
+      let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+      let day = ("0" + currentDate.getDate()).slice(-2);
 
       let dateString = year + month + day;
+
+      // 원하는 날짜로 선택해서 축제양 늘리기
+      function calcDate() {
+        let searchDay = $("#esd").val();
+        console.log(searchDay);
+
+        searchDay = searchDay.replace("-", "");
+        currentDate = searchDay.replace("-", "");
+        dateString = Number(currentDate);
+        console.log(dateString);
+        baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${currentPage}&numOfRows=${numOfRows}`;
+
+        ajaxCall(baseUrl);
+      }
+
+      $(document).on("change", ".dateAreaBtn", function () {
+        $(".warning").css("display", "none");
+      });
 
       // console.log(dateString); // 날짜 출력확인
 
       // 페이징
+      let currentPage = 1;
+
       let pageNo = 1;
+      let pageTens = 0;
       let numOfRows = 10;
       let totalPage = 0;
       let totalCount = 0;
+      let totalPageGroups = 0;
 
-      function pageListing(countData) {
+      function pageListing() {
         pageCount = Math.floor(totalCount / numOfRows) + 1;
+        totalPageGroups = Math.floor(pageCount / 10);
         paging(pageCount);
+        pageBtn();
       }
 
       function paging(pageCount) {
         let pages = "";
-        for (let i = 0; i < pageCount; i++) {
-          pages += `<input type="button" value="${
-            i + 1
-          }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
+        if (pageCount < 10) {
+          for (let i = 0; i < pageCount; i++) {
+            pages += `<input type="button" value="${
+              i + 1
+            }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
+          }
+          $(".pageArea").html(pages);
+        } else if (totalPageGroups > 0) {
+          for (let i = 0; i < 10; i++) {
+            pages += `<input type="button" value="${
+              Number(pageTens * 10) + Number(i)
+            }"  class="movePageNum main-white-button" onclick="pageMove(this);" />`;
+            if (Number(pageTens * 10) + Number(i) == pageCount) {
+              break;
+            }
+          }
+          $(".pageArea").html(pages);
         }
-        $(".pageArea").html(pages);
       }
       function pageBtn() {
-        if (pageNo == 1) {
-          $(".movePageMin").css("background-color", "#fff");
-          $(".movePageMin").css("display", "none");
+        if (currentPage == 1) {
+          $(".movePageMin1").css("background-color", "#fff");
+          $(".movePageMin1").css("display", "none");
         }
-        if (pageNo != 1) {
-          $(".movePageMin").css("background-color", "#bcb4c0");
-          $(".movePageMin").css("display", "block");
+        if (currentPage != 1) {
+          $(".movePageMin1").css("background-color", "#bcb4c0");
+          $(".movePageMin1").css("display", "block");
         }
-        if (pageNo == pageCount) {
-          $(".movePageAdd").css("background-color", "#fff");
-          $(".movePageAdd").css("display", "none");
+        // 10개 전으로 가기 버튼 비활성화 활성화 조건 걸기
+        if (pageTens < 1) {
+          $(".movePageMin10").css("background-color", "#fff");
+          $(".movePageMin10").css("display", "none");
         }
-        if (pageNo != pageCount) {
-          $(".movePageAdd").css("background-color", "#bcb4c0");
-          $(".movePageAdd").css("display", "block");
+        if (pageTens > 0) {
+          $(".movePageMin10").css("background-color", "#bcb4c0");
+          $(".movePageMin10").css("display", "block");
         }
+        if (currentPage == pageCount) {
+          // alert("!");
+          $(".movePageAdd1").css("background-color", "#fff");
+          $(".movePageAdd1").css("display", "none");
+        }
+        if (currentPage != pageCount) {
+          $(".movePageAdd1").css("background-color", "#bcb4c0");
+          $(".movePageAdd1").css("display", "block");
+        }
+        // 10개 다음으로 가기 버튼 조건걸기
+        if (pageTens >= totalPageGroups) {
+          $(".movePageAdd10").css("background-color", "#fff");
+          $(".movePageAdd10").css("display", "none");
+        }
+        if (
+          pageTens < totalPageGroups &&
+          totalPageGroups > 0 &&
+          pageCount > 10
+        ) {
+          $(".movePageAdd10").css("background-color", "#bcb4c0");
+          $(".movePageAdd10").css("display", "block");
+        }
+      }
+
+      function calcPage() {
+        if (pageTens != 0) {
+          currentPage = Number(pageTens * 10) + Number(pageNo);
+        } else {
+          currentPage = pageNo;
+        }
+        if (currentPage > 10) {
+          pageTens = Math.floor(currentPage / 10);
+        }
+
+        pageNo = currentPage % 10;
+        console.log(pageNo);
       }
 
       function pageMove(obj) {
         clickedBtn = $(obj).val();
 
-        if (clickedBtn == "next" && pageNo < pageCount) {
-          pageNo++;
-        } else if (clickedBtn == "prev" && pageNo > 1) {
-          pageNo--;
+        if (clickedBtn == "next" && currentPage < pageCount) {
+          if (pageNo == 9) {
+            pageTens++;
+            pageNo = 0;
+          } else {
+            pageNo++;
+          }
+        } else if (clickedBtn == "prev" && currentPage > 1) {
+          if (pageNo == 0) {
+            pageTens--;
+            pageNo = 9;
+          } else {
+            pageNo--;
+          }
         } else if (isFinite(clickedBtn)) {
-          pageNo = clickedBtn;
+          if (clickedBtn > 9) {
+            pageTens = Math.floor(clickedBtn / 10);
+            pageNo = clickedBtn % 10;
+          } else {
+            pageNo = clickedBtn;
+          }
+        } else if (clickedBtn == "plusTens") {
+          pageTens++;
+        } else if (clickedBtn == "minusTens") {
+          pageTens--;
         }
-        pageBtn();
+
+        calcPage();
+        if (currentPage > pageCount) {
+          currentPage = pageCount;
+          pageTens = Math.floor(currentPage / 10);
+          pageNo = currentPage % 10;
+        }
+        calcPage();
+
+        baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${currentPage}&numOfRows=${numOfRows}`;
         ajaxCall(baseUrl);
-        console.log(pageNo, numOfRows, pageCount, totalCount,baseUrl);
+        console.log(
+          currentPage,
+          pageNo,
+          numOfRows,
+          pageCount,
+          totalCount,
+          totalPageGroups,
+          pageTens,
+          baseUrl
+        );
+
+        btnScrolling(this);
       }
+
+      function btnScrolling() {
+        $("html, body").animate({ scrollTop: 450 }, 200);
+      }
+
+      // function btnHide() {
+      //   if (totalPageGroups < 1) {
+      //     $(".movePageAdd10").css("display", "none");
+      //   }
+      // }
 
       // URl 영역
 
       let baseUrl = "";
-      baseUrl = "https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=" +dateString + "&pageNo="+pageNo + "&numOfRows=" +numOfRows;
+
+      baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${currentPage}&numOfRows=${numOfRows}`;
 
       // `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&numOfRows=10&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=20230113`;
       // &cat1=A02&cat2=A0208&cat3=A02080100
@@ -519,8 +847,8 @@ https://templatemo.com/tm-564-plot-listing
         $.each(dataAr, function (i, data) {
           let address = data.addr1;
           let bookTour = data.booktour;
-          let eventStartDate = data.eventstartdate;
-          let eventEndDate = data.eventenddate;
+          let eventStartDate = Number(data.eventstartdate);
+          let eventEndDate = Number(data.eventenddate);
           let image1 = data.firstimage;
           let image2 = data.firstimage2;
           let areaCode = data.areacode;
@@ -529,7 +857,24 @@ https://templatemo.com/tm-564-plot-listing
           let tel = data.tel;
           let id = data.contentid;
 
-          item += `<div class="itemCard"><div class="item"><div class="left-image"><a href="festivalDetail.html?contentId${id}">`;
+          item += `<div class="itemCard`;
+
+          if (currentDate < eventEndDate && currentDate < eventStartDate) {
+            item += ` finished`;
+          } else if (
+            currentDate > eventStartDate &&
+            currentDate > eventEndDate
+          ) {
+            item += ` preparing`;
+          } else if (
+            currentDate > eventStartDate &&
+            currentDate < eventEndDate
+          ) {
+            item += ` proceeding`;
+          }
+
+          item += `"><div class="item"><div class="left-image"><a href="festival_Detail.html?contentId=${id}&evnetStart=${eventStartDate}&eventEnd=${eventEndDate}">`;
+
           // console.log(image1.length == 0);
           if (image1.length == 0) {
             item +=
@@ -543,16 +888,18 @@ https://templatemo.com/tm-564-plot-listing
           //   item +=
           //     "<img src='img/noimg.png' alt='" + title + "' class='itemImg' />";
           // } 이렇게는 안되는 이유는 무엇일까
-          item += `</a><div class="hover-content"><div class="main-white-button"><a href="festivalDetail.html?${id}" ><i class="fa fa-eye"></i> Learn More</a></div></div></div><div class="right-content align-self-center"><a href="festivalDetail.html?${id}"><h4>${title}</h4></a>`;
+          item += `</a><div class="hover-content"><div class="main-white-button"><a href="festival_Detail.html?${id}" ><i class="fa fa-eye"></i> Learn More</a></div></div></div><div class="right-content align-self-center"><div class="cookieArea"><div  id="${id}" class="wishIcon">${Heart}</div></div><a href="festival_Detail.html?${id}"><h4>${title}</h4></a>`;
           if (bookTour != "" || bookTour != null) {
             item += `<h6>${bookTour}</h6>`;
           }
           item += `<span class="price"><div class="icon"><img src="iconImg/partyIcon2.png"alt=""/></div>${address}</span><span class="details telNum">${tel} </span><span class="info"><img src="iconImg/festivalIcon.png" alt="" />${eventStartDate} ~ ${eventEndDate}<img src="iconImg/partyIcon.png" alt="" /></span></div></div></div>`;
         });
 
-        pageListing(totalCount);
+        pageListing();
         $(".item").html(item);
       }
+
+      let Heart = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"/></svg>`;
     </script>
   </body>
 </html>

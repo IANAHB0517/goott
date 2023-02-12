@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>enCode, deCode</title>
+    <script>
+      let url = "https://www.naver.com?q=날씨";
+      document.write(`원래 문자열 : ${url} <br/>`);
+      // 웹에서 사용하는 모든 숫자, 문자를 제외한 나머지를 인코딩
+      document.write(`원래 문자을 encodeURI : ${encodeURI(url)} <br/>`);
+
+      document.write(
+        `원래 문자을 decodeURI : ${decodeURI(encodeURI(url))} <br/>`
+      );
+
+      document.write(`원래 문자을 encodeURI : ${encodeURI(url)} <br/>`);
+
+      // 영문자 숫자를 제외한 모든 글자 (특수문자까지) 인코딩
+      document.write(
+        `원래 문자을 encodeURI : ${encodeURIComponent(url)} <br/>`
+      );
+      document.write(
+        `원래 문자을 decodeURI : ${decodeURIComponent(
+          encodeURIComponent(url)
+        )} <br/>`
+      );
+
+      //encodeURI
+    </script>
+  </head>
+  <body></body>
+</html>
