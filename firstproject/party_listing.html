@@ -497,13 +497,13 @@ https://templatemo.com/tm-564-plot-listing
         }
         pageBtn();
         ajaxCall(baseUrl);
-        console.log(pageNo, numOfRows, pageCount, totalCount);
+        console.log(pageNo, numOfRows, pageCount, totalCount,baseUrl);
       }
 
       // URl 영역
 
       let baseUrl = "";
-      baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${pageNo}&numOfRows=${numOfRows}`;
+      baseUrl = "https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=" +dateString + "&pageNo="+pageNo + "&numOfRows=" +numOfRows;
 
       // `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&numOfRows=10&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=20230113`;
       // &cat1=A02&cat2=A0208&cat3=A02080100
