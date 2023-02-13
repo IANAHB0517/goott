@@ -194,6 +194,9 @@ union
 
 -- 영화 인기도(대여횟수)가 딱 가운데 순위인 영화의 감독 작품중에 가장 잘 나가는 영화
 
+
+select user_num, count(*) from rent group by user_num;
+
 select round(avg(t.count)) avg from (select video_code, count(video_code) count from rent group by video_code) t;
 
 set @avgCount = (select round(avg(t.count)) avg from (select video_code, count(video_code) count from rent group by video_code) t);
@@ -214,7 +217,7 @@ where VideoTarget.video_code = v.video_code;
 
 
 -- 해당 감독들의 영화
-select v.VIDEO_CODE, v.video_title, v.director 
+select v.VIDEO_CODE, v.video_title, v.director , v.total_view
 from  video as v inner join
 				(select v.video_code , v.director from (
 					select VIDEO_CODE, count(video_code) Count from rent
@@ -223,44 +226,95 @@ from  video as v inner join
 				) as VideoTarget , video v
 				where VideoTarget.video_code = v.video_code) as getD
 using (director)
+order by total_view desc
 ;
-select directorsVideo.* , 
-
-	(select v.VIDEO_CODE, v.video_title, v.director 
-	from  video as v inner join
-					(select v.video_code , v.director from (
-						select VIDEO_CODE, count(video_code) Count from rent
-						group by video_code
-						having Count = @avgCount
-					) as VideoTarget , video v
-					where VideoTarget.video_code = v.video_code) as getD
-	using (director)) as directorsVideo
-
-
-(select round(avg(t.count)) avg from (select video_code, count(video_code) count from rent group by video_code) t) as avgCount;
 -- 한 장르를 많이 빌린 사람들에 대해서, 전화번호 조회
+
+
 
 -- 연체율이 가장 높은 장르에서 가장 인기 없는 감독의 영화중에 최신작
 
 -- 특정 회원이 가장 많이 본 영화 장르 중에 인기도가 가장 높은 영화가 뭔가요
 
+
+-- 특정 회원이 가장 많이 본 영화 장르 중에 인기도가 가장 높은 영화가 뭔가요
+select r.GENRE_CODE, r.video_code , count(r.video_code) count
+from video v , rent r,
+	(select f1.user_num, f1.genre_code, f1.video_code, f1.count from
+		(select * ,count(user_num) count 
+		from rent group by user_num 
+		order by  user_num desc) as f1
+	where user_num = 12 
+	order by f1.count desc limit 1) as target1
+where target1.genre_code = v.genre_code and  v.video_code = r.video_code
+group by video_code limit 1
+
+;
+
+
+-- 특정 회원이 가장 좋아하는 영화의 장르 코드 , 비디오, 시청횟수
+select f1.user_num, f1.genre_code, f1.video_code, f1.count from
+	(select * ,count(user_num) count 
+    from rent group by user_num 
+    order by  user_num desc) as f1
+where user_num = 12 
+order by f1.count desc limit 1
+
+;
+
 -- 20대 여자들이 선호하는(대여 횟수가 높은) 영화 top1의 감독을 알려주세요
+
+
 
 -- 장르별로 특정 요일에 할인
 
+select genre_name, RENTAL_FEE -500 as 대여로 from genre where genre_code = 'Comed';
+
 -- 제목이가장 긴 영화 와 가장 짧은 영화가 무엇인가요
+select VIDEO_CODE,  VIDEO_TITLE, floor(length(VIDEO_TITLE)/3) as 글자수  from video order by 글자수 desc limit 1;
+select VIDEO_CODE,  VIDEO_TITLE,  floor(length(VIDEO_TITLE)/3) as 글자수  from video order by 글자수 limit 1;
+
+
+
 
 -- 장르별 매출액이 많은 상위 3개의 장르에 대해서, 최근 한달 간 대여가 없는 고객의 전화번호 조회
+-- 0213
+select m.USER_NAME, m.PHONE_NUM , r.rentdate from member m  inner join rent r 
+on r.user_num = m.user_num
+where datediff(now() ,rentdate) > 90
+;
+
+select datediff(now() ,rentdate ) from rent;
+
 
 -- 2번 회원 : 제가 볼 수 있는 등급이며 대여료가 2500원인 비디오는 무엇이 있나요?
 
+select * 
+from video v natural join genre g 
+where v.MOVIE_RATED <= (SELECT FLOOR( (CAST(REPLACE(CURRENT_DATE,'-','') AS UNSIGNED) - CAST(REPLACE( (select BIRTHDAY from member where user_num = 2),'-','') AS UNSIGNED)) / 10000 ) as engAge)
+and g.RENTAL_FEE = 2500;
+
+  (SELECT FLOOR( (CAST(REPLACE(CURRENT_DATE,'-','') AS UNSIGNED) - CAST(REPLACE( (select BIRTHDAY from member where user_num = 2),'-','') AS UNSIGNED)) / 10000 ) as engAge) ;  
+
 -- 23번 회원 : 저희 가족(핸드폰번호가 같음)이 그동안 대여한 비디오명과 대여한 날짜 전부 알려주세요.
+select * from rent r, (select user_num from member
+where PHONE_NUM = (select PHONE_NUM from member where user_num = 23)) f
+where r.user_num = f.user_num
+order by r.rentdate ;
+
 
 -- 가장 많이 연체되는 비디오 top10
 
+select video_code,datediff(return_date ,return_due_date ) as 연체일  from rent
+where datediff(return_date ,return_due_date ) > 0
+order by 연체일 desc limit 10
+;
+
 -- 올해 가장 매출액이 높은 월과 낮은 월 조회
 
+
 -- 회원 나이대별 저장
+
 
 set @tw = (select * from member where birthday between '2004-01-01' and '1994-01-01')
 
