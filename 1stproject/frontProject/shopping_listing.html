@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> -->
+
+      <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="assets/js/commonJS.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/animation.js"></script>
+    <script src="assets/js/imagesloaded.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/91ae090a0d.js" crossorigin="anonymous"></script>
+
+    <title>Shopping Listing</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/shopping-plot-listing.css" />
+    <link rel="stylesheet" href="assets/css/animated.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+    <!--
+
+TemplateMo 564 Plot Listing
+
+https://templatemo.com/tm-564-plot-listing
+
+-->
+
+    <script>
+      // w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D
+
+      // 대분류
+      // http://apis.data.go.kr/B551011/KorService/categoryCode?serviceKey=w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D&contentTypeId=38&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json
+
+      // (쇼핑: contentTypeId=38)(서울: areaCode=1)
+      // http://apis.data.go.kr/B551011/KorService/areaBasedList?MobileOS=ETC&MobileApp=AppTest&serviceKey=w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D&_type=json&areaCode=1&contentTypeId=38&
+
+      // 공통정보조회 (detailCommon  )
+      // catcodeYN=Y (분류코드조회)
+      // addrinfoYN=Y (주소정보조회)
+      // overviewYN=Y (개요 조회)
+      // http://apis.data.go.kr/B551011/KorService/detailCommon?MobileOS=ETC&MobileApp=AppTest&serviceKey=w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D&_type=json&contentTypeId=38&contentId=
+
+      // 소개정보조회 (detailIntro)
+      // http://apis.data.go.kr/B551011/KorService/detailIntro?MobileOS=ETC&MobileApp=AppTest&serviceKey=w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D&_type=json&contentTypeId=38&contentId=
+
+      // 반복정보조회   (detailInfo)
+      // http://apis.data.go.kr/B551011/KorService/detailInfo?MobileOS=ETC&MobileApp=AppTest&serviceKey=w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D&_type=json&contentTypeId=38&contentId=
+
+      // 이미지정보조회 (detailImage)
+      // http://apis.data.go.kr/B551011/KorService/detailImage?MobileOS=ETC&MobileApp=AppTest&serviceKey=w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D&_type=json&contentTypeId=38&contentId=
+
+      // 키워드 조회
+      // http://apis.data.go.kr/B551011/KorService/searchKeyword?MobileOS=ETC&MobileApp=AppTest&serviceKey=w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D&_type=json&contentTypeId=38&keyword=
+
+      let pageNo = 1; // 현재 페이지 번호를 저장할 변수
+      const NUM_OF_ROWS = 8;
+      let totalCount = 0;
+      let totalPage = 0;
+
+      $(function () {
+        getTourData(); // 데이터 가져오기
+
+        if (numOfRows != 0) {
+          if (totalCount % numOfRows == 0) {
+            totalPage = totalCount / numOfRows;
+          } else {
+            totalPage = parseInt(totalCount / numOfRows) + 1;
+          }
+        } else {
+          numOfRows = NUM_OF_ROWS;
+        }
+
+        $("#morePage").click(function () {
+          // 다음 페이지로 버튼 클릭시
+
+          if (pageNo < totalPage) {
+            pageNo++; // 1 페이지 증가
+            getTourData();
+            console.log(
+              "pageNo: " + pageNo + ", totalPage :" + totalPage
+            );
+          } else {
+            //getTourData();
+            // alert("마지막 페이지!");
+            console.log(
+              "pageNo: " + pageNo + ", totalPage :" + totalPage
+            );
+
+            $(this).attr("disabled", true); // 버튼 비활성화
+          }
+         });
+
+         // 키워드 검색하기
+         $(".searchBtn").click(function() {
+        let userKeyword = $("#inputKeyword").val();
+        $(".shopCatalog").empty(); 
+        getSearchData(userKeyword);
+         });
+
+       }); // document.ready 닫기
+
+      function getTourData() {
+        //let baseUrl ="http://apis.data.go.kr/B551011/KorService/areaBasedList?MobileOS=ETC&MobileApp=AppTest&serviceKey=w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D&_type=json&contentTypeId=38&areaCode=1&pageNo=" + pageNo +          "&numOfRows=" +          NUM_OF_ROWS;
+        let baseUrl =
+          "http://apis.data.go.kr/B551011/KorService/areaBasedList?MobileOS=ETC&MobileApp=AppTest&serviceKey=w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D&_type=json&contentTypeId=38&pageNo=" +
+          pageNo +
+          "&numOfRows=" +
+          NUM_OF_ROWS;
+
+        $(".loading").show(); 
+
+        $.ajax({
+          url: baseUrl, // 데이터가 송수신될 서버의 주소
+          type: "GET", // 통신 방식(GET, POST, PUT, DELETE)
+          datatype: "json", // 수신받을 데이터 타입 (MIME TYPE)
+          async: false, // 동기 통신 방식으로 하겠다. (default: true) -- 함수만
+          success: function (data) {
+            // 통신이 성공하면 수행할 함수 (콜백 함수) -- 우리한테 중요한건 성공했을 때!
+            console.log(data);
+            parsingJson(data);
+          },
+          complete: function () {
+            $(".loading").hide();
+          },
+        });
+      }    
+  
+      function getSearchData(searchKeyword) {
+        let baseUrl =
+          "http://apis.data.go.kr/B551011/KorService/searchKeyword?MobileOS=ETC&MobileApp=AppTest&serviceKey=w%2B3Su7MMs3zNCjwrX0UAioTFSnaE6eltyygFY%2FelYtRvJdMkyqLt7CSdLBup70oK12MWS4UIgdE1ua4B4WAHFA%3D%3D&_type=json&contentTypeId=38&keyword=" +
+          searchKeyword +
+          "&pageNo=" +
+          pageNo +
+          "&numOfRows=" +
+          NUM_OF_ROWS;
+
+        $(".loading").show();
+
+        $.ajax({
+          url: baseUrl, // 데이터가 송수신될 서버의 주소
+          type: "GET", // 통신 방식(GET, POST, PUT, DELETE)
+          datatype: "json", // 수신받을 데이터 타입 (MIME TYPE)
+          async: false, // 동기 통신 방식으로 하겠다. (default: true) -- 함수만
+          success: function (data) {
+            // 통신이 성공하면 수행할 함수 (콜백 함수) -- 우리한테 중요한건 성공했을 때!
+            console.log(data);
+            
+            // 검색결과가 없는 경우
+            if (data.response.body.numOfRows == 0) {
+              $(".modal-title").html("검색 결과");
+              $(".modal-body").html("검색 결과가 없습니다. 다른 검색어를 입력해주세요.");
+              $("#myModal").show();
+              $("#morePage").hide();
+              getTourData();  
+            } else {
+            
+            console.log("Parsing again.....");
+            parsingJson(data);
+          }
+        }            
+          ,
+          complete: function () {
+            $(".loading").hide();
+          }
+        });
+      }
+
+
+      function parsingJson(json) {
+        let tourAr = json.response.body.items.item;
+        console.log(tourAr);
+        totalCount = json.response.body.totalCount;
+        numOfRows = json.response.body.numOfRows;
+
+        let outputC = "";
+        $.each(tourAr, function (i, tour) {
+          outputC += `<a href="shopping_detail.html?contentid=${tour.contentid}" >`;
+          if (tour.firstimage2 == "" || tour.firstimage2 == null) {
+            // 이미지가 없을 경우
+            outputC += `<div class="card box-shadow" ><img class="card-img-top" src="img/noimg.png" alt="${tour.title}" style="width:100%" />`;
+            outputC += `<div class="card-body"><h5 class="card-title">${tour.title}</h5>`;
+            outputC += `<p class="card-text">${tour.addr1}</p></div></div>`;
+          } else {
+            // 이미지가 있는 경우
+            outputC += `<div class="card  box-shadow" ><img class="card-img-top" src="${tour.firstimage}" alt="${tour.title}" style="width:100%" />`;
+            outputC += `<div class="card-body"><h5 class="card-title">${tour.title}</h5>`;
+            outputC += `<p class="card-text">${tour.addr1}</p></div></div>`;
+          }
+          //output += `<div class='tourTitle'>${tour.title}</div>`;
+          outputC += "</a>";
+        });
+        $(".shopCatalog").append(outputC);
+        // $(".shopCatalog").css("padding", "1px");
+        $(".card-img-top").css("height", "300px");
+        $(".card-body").css("height", "100px");
+        // $(".card-body").css("background-color", "lightblue");
+        // $(".card-title").css("color", "purple");
+        $(".card").css("margin", "10px");
+      }
+
+
+      function modalClose() {
+        $("#myModal").hide();
+        $("#inputKeyword").val("");  // 유저가 입력한 값 지우기
+        $("#inputKeyword").focus();
+      }
+
+      
+      $(function(){
+  $('#back-to-top').on('click',function(e){
+      e.preventDefault();
+      $('html,body').animate({scrollTop:0},600);
+  });
+  
+  $(window).scroll(function() {
+    if ($(document).scrollTop() > 100) {
+      $('#back-to-top').addClass('show');
+    } else {
+      $('#back-to-top').removeClass('show');
+    }
+  });
+});
+
+    </script>
+    <style>
+      @font-face {
+        font-family: "NanumSquareNeo-Variable";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2")
+          format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      * {
+        font-family: "NanumSquareNeo-Variable";
+      }
+
+      #shopCatalog {
+        margin-top: 2px;
+      }
+      .card {
+        float: left;
+        margin-right: 20px;
+        width: 450px;
+      }
+
+      .card-body {
+        background-color: rgb(244, 246, 206);
+      }
+
+      .card-title {
+        color: rgba(4, 21, 95, 0.601);
+        font-weight: bold;
+      } 
+/* 
+      .d-grid {
+        clear: left;
+      } */
+
+      .box-shadow{
+	-webkit-box-shadow: 0 1px 1px rgba(72,78,85,.6);
+	box-shadow: 0 1px 1px rgba(72,78,85,.6);
+	-webkit-transition: all .2s ease-out;
+	-moz-transition: all .2s ease-out;
+	-ms-transition: all .2s ease-out;
+	-o-transition: all .2s ease-out;
+	transition: all .2s ease-out;
+}
+
+.box-shadow:hover{
+	-webkit-box-shadow: 0 20px 40px rgba(72,78,85,.6);
+	box-shadow: 0 20px 40px rgba(72,78,85,.6);
+	-webkit-transform: translateY(-15px);
+	-moz-transform: translateY(-15px);
+	-ms-transform: translateY(-15px);
+	-o-transform: translateY(-15px);
+	transform: translateY(-15px);
+}
+
+.card{
+	border-radius: 25px;
+	
+}
+
+.card img {
+  border-radius: 25px;
+	/* border-top-left-radius: 25px;
+	border-top-right-radius: 25px;
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px; */
+}
+
+.card-body {
+  border-radius: 25px;
+	/* border-top-left-radius: 25px;
+	border-top-right-radius: 25px;
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px; */
+}
+
+#fixed {
+        position: fixed;
+        right: 80px;
+        bottom: 120px;
+        /* background-color: brown; */
+      } 
+
+     
+      #wrap{
+  margin:0 auto;
+  width:300px;
+}
+#back-to-top {
+  display: inline-block;
+  background-color: #6664d5;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 4px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  transition: background-color .3s, 
+    opacity .5s, visibility .5s;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+}
+#back-to-top::after {
+  content: "\f077";
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 2em;
+  line-height: 50px;
+  color: #fff;
+}
+#back-to-top:hover {
+  cursor: pointer;
+  background-color: #333;
+}
+#back-to-top:active {
+  background-color: #555;
+}
+#back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}      
+    </style>
+  </head>
+
+  <body>
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+      <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header
+      class="header-area header-sticky wow slideInDown"
+      data-wow-duration="0.75s"
+      data-wow-delay="0s"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <nav class="main-nav">
+              <!-- ***** Logo Start ***** -->
+              <a href="index.html" class="logo"> </a>
+              <!-- ***** Logo End ***** -->
+              <!-- ***** Menu Start ***** -->
+              <ul class="nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="category.html">Category</a></li>
+                <li>
+                  <a href="listing.html" class="active">Listing</a>
+                </li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li>
+                  <div class="main-white-button">
+                    <a href="#"
+                      ><i class="fa fa-plus"></i> Add Your Listing</a
+                    >
+                  </div>
+                </li>
+              </ul>
+              <a class="menu-trigger">
+                <span>Menu</span>
+              </a>
+              <!-- ***** Menu End ***** -->
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <div class="page-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="top-text header-text">
+              <h6>Check Out Our Shopping List</h6>
+              <h2>쇼핑 (Shopping)</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="listing-page">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="naccs">
+              <div class="grid">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="menu">
+                      <div class="first-thumb ">
+                        <div class="thumb">
+                          <a href="index.html">
+                            <span class="icon"
+                              ><img
+                                src="assets/images/search-icon-01.png"
+                                alt=""
+                            /></span>
+                            홈</a
+                          >
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="visit_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="assets/images/search-icon-02.png"
+                                alt=""
+                            /></span>
+                          </a>
+                          관광지
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="culture_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="assets/images/search-icon-03.png"
+                                alt=""
+                            /></span>
+                            문화시설
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="party_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="assets/images/search-icon-03.png"
+                                alt=""
+                            /></span>
+                            축제공연행사
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="travel_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="assets/images/search-icon-03.png"
+                                alt=""
+                            /></span>
+                            여행코스
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="leports_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="assets/images/search-icon-03.png"
+                                alt=""
+                            /></span>
+                            레포츠
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="stay_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="assets/images/search-icon-03.png"
+                                alt=""
+                            /></span>
+                            숙박
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb active">
+                          <a href="shopping_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="iconImg/shoppingIcon2.png"
+                                alt=""
+                            /></span>
+                            쇼핑
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="food_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="assets/images/search-icon-03.png"
+                                alt=""
+                            /></span>
+                            음식점
+                          </a>
+                        </div>
+                      </div>
+                      <div class="last-thumb">
+                        <div class="thumb">
+                          <a href="wish_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="assets/images/search-icon-04.png"
+                                alt=""
+                            /></span>
+                            찜
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+
+                  <!-- 쇼핑 리스트 시작 shopping category listing of items-->
+                  <div class="col-lg-9">
+                    <ul class="nacc">
+                    <!-- 키워드 검색 -->
+                    <div class="search-container">
+                      <form>
+                        <input type="text" placeholder="키워드 검색..." name="search" id="inputKeyword" style="font-size: 20px">
+                        <button type="button" class="btn btn-secondary searchBtn"><i class="fa fa-search"></i></button>
+
+                      </form>
+
+                      <!-- 카탈로그 -->
+                      <!-- first category listing of items -->
+                      <li class="active">
+                        <div class="shopCatalog">                      
+                    
+                        </div>
+                      </li>
+                    </ul>
+
+                                        
+                    <div class="col-lg-12">
+                      <button type="button" id="morePage" class="btn btn-primary btn-block" style="width: 100%">다음 페이지로</button>
+                    </div>
+
+                    <div id="wrap">
+                      <a id="back-to-top"></a>
+                    </div>  
+
+                    <!-- 모달 창-->
+                    <div class="modal" id="myModal">
+                      <div class="modal-dialog modal-dialog-centered"> 
+                        <div class="modal-content">
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title"></h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="modalClose();"></button>
+                          </div>
+                
+                          <!-- Modal body -->
+                          <div class="modal-body">Modal body..</div>
+                
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="modalClose();">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 모달창 끝 -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 다음 페이지 로딩을 위한 "더 보기" 버튼-->
+    <!-- <div class="d-grid">
+      <button
+        type="button"
+        id="morePage"
+        class="btn btn-primary btn-block"
+      >
+        다음 페이지로
+      </button>
+    </div> -->
+
+  
+
+  <!-- footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-4">
+            <div class="about">
+              <div class="logo">
+                <img src="assets/images/black-logo.png" alt="" />
+              </div>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adicingi elit,
+                sed do eiusmod tempor incididunt ut et dolore magna
+                aliqua.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="helpful-links">
+              <h4>Helpful Links</h4>
+              <div class="row">
+                <div class="col-lg-6">
+                  <ul>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">Reviews</a></li>
+                    <li><a href="#">Listing</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                  </ul>
+                </div>
+                <div class="col-lg-6">
+                  <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Awards</a></li>
+                    <li><a href="#">Useful Sites</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="contact-us">
+              <h4>Contact Us</h4>
+              <p>27th Street of New Town, Digital Villa</p>
+              <div class="row">
+                <div class="col-lg-6">
+                  <a href="#">010-020-0340</a>
+                </div>
+                <div class="col-lg-6">
+                  <a href="#">090-080-0760</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="sub-footer">
+              <p>
+                Copyright © 2021 Plot Listing Co., Ltd. All Rights
+                Reserved.
+                <br />
+                Design:
+                <a
+                  rel="nofollow"
+                  href="https://templatemo.com"
+                  title="CSS Templates"
+                  >TemplateMo</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/animation.js"></script>
+    <script src="assets/js/imagesloaded.js"></script>
+    <script src="assets/js/custom.js"></script>
+  </body>
+</html>

@@ -27,6 +27,6 @@ public class Sock {
 	}
 	
 	public String toString() {
-		return this.ingredient1 + "그리고" + this.ingredient2 + "이 황금비율로 섞여있습니다.";
+		return this.ingredient1 + " 그리고 " + this.ingredient2 + "이 황금비율로 섞여있습니다.";
 	}
 }

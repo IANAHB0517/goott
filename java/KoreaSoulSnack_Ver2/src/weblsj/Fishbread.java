@@ -3,7 +3,7 @@ package weblsj;
 public class Fishbread extends Snack{
 	private String store;
 	
-	Fishbread(String kind, Banjook b, Sock c, int size, int price , String store) {
+	Fishbread(String kind, Banjook b, Sock c, int size, int price , String store) throws IngredientDifferentException {
 		super(kind, b, c, size, price);
 		this.store = store;
 	}

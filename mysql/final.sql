@@ -1,3 +1,9 @@
+use gottclass6;
+select * from rent;
+select * from video;
+select * from member;
+select * from genre;
+
 -- 20대 여성이 선호하는 영화 top 1의 감독
 select v.video_title , v.director  ,twff.count from video v inner join (select video_code, count(video_code) as count
 from rent r inner join
@@ -74,7 +80,7 @@ from video v , rent r,
 		(select * ,count(user_num) count 
 		from rent group by user_num 
 		order by  user_num desc) as f1
-	where user_num = 10 
+	where user_num = 3 
 	order by f1.count desc limit 1) as target1
 where target1.genre_code = v.genre_code and  v.video_code = r.video_code
 group by video_code limit 1) as t
@@ -113,7 +119,7 @@ order by count desc;
 
 
 -- 연체 중인 회원의 정보
-select * from member where user_num in (select user_num from rent where ISRETURN = 'N' and RETURN_DATE is null);
+select * from member where user_num in (select user_num from rent where ISRETURN = 'N' and RETURN_DATE is null) group by user_num;
 
 
 -- 회원이 연체한 비디오 코드와 연체 일수

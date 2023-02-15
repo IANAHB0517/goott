@@ -4,7 +4,7 @@ public class Banjook {
 	private String ingredient1;
 	private String ingredient2;
 	
-	private Banjook(String ing1, String ing2) {
+	public Banjook(String ing1, String ing2) {
 		ingredient1 = ing1;
 		ingredient2 = ing2;
 	}
@@ -27,7 +27,7 @@ public class Banjook {
 
 	@Override
 	public String toString() {
-		return  ingredient1 + "와(과)" + ingredient2 + "이 황금비율로 섞여있다.";
+		return  this.ingredient1 + "와(과) " + this.ingredient2 + "이 황금비율로 섞여있다.";
 	}
 	
 	

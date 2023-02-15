@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+    />
+    <script src="assets/js/commonJS.js"></script>
+
+    <title>숙박 listing Page</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/stay_templatemo-plot-listing.css" />
+    <link rel="stylesheet" href="assets/css/animated.css" />
+    <link rel="stylesheet" href="assets/css/owl.css" />
+    <script>
+      // A5FWp3xAnDjS5xM3zMln9Gn1DzuUsAZB4R424%2BSVVBRD1Op4YVIW67rjkTgXl6f1A0MFoYzbm99lvWznmiK%2FTg%3D%3D
+      
+    let pageNo = 1; // 현재 페이지 번호를 저장할 변수
+    let numOfRows = 12;
+    let totalCount = 0;
+    let totalPage = 0;
+    $(function () {
+      getStayData();
+
+      $("#amount").html(`숙박 : 총 ${totalCount} 개`)
+      $("#nowP").html(`Now:${pageNo}Page`);
+
+      // 총 페이지수 구하기
+      if (totalCount % numOfRows == 0) {
+            totalPage = parseInt(totalCount / numOfRows);
+          } else {
+            totalPage = parseInt(totalCount / numOfRows) + 1;
+          }
+
+          // 찜 표시
+        let cook = document.cookie;
+        let cookAr = cook.split(";");
+
+        for (let i = 0; i < cookAr.length; i++) {
+          let cookName = (cookAr[i].split("=")[0]).split("~"); // contentid 분리
+          if (cookName[1] != -1) { // 이미 쿠키 있음
+            
+            let heartid = "#" + cookName[1];
+            console.log(heartid);
+            $(`${heartid}`).html("♥");
+          }
+        }
+        
+
+        // (정렬)보기 셀렉트 변경시
+      $(".lineUp").change(function(){ 
+        $(".stayList").empty(); // 게시물 누적되지않게 비워놓고 numOfRows값 다시 주기
+        numOfRows = $(".lineUp option:checked").val();
+        console.log(numOfRows);
+        getStayData();
+      });
+      
+      // 더보기 버튼 클릭시
+      $("#nextP").click(function(){ 
+        if(pageNo < totalPage){
+          pageNo++;
+        getStayData();
+      } else if (pageNo == totalPage){
+        modalOpen(); // 마지막 페이지 모달
+        $(this).attr("disabled", true); // 버튼 비활성화
+      }
+      });
+
+    
+      // 검색 버튼 클릭시
+      $(".searchbtn").click(function(){
+        $(".stayList").empty();
+        searchData();
+      });
+        
+  })
+    function getStayData() {
+      let baseUrl ="http://apis.data.go.kr/B551011/KorService/searchStay?MobileOS=ETC&MobileApp=AppTest&serviceKey=A5FWp3xAnDjS5xM3zMln9Gn1DzuUsAZB4R424%2BSVVBRD1Op4YVIW67rjkTgXl6f1A0MFoYzbm99lvWznmiK%2FTg%3D%3D&_type=json";
+      baseUrl += "&numOfRows=" + numOfRows + "&pageNo=" + pageNo; 
+
+      console.log(numOfRows, pageNo);
+
+      $.ajax({
+        url: baseUrl, // 데이터가 송수신될 서버의 주소
+        type: "GET",
+        datatype: "json",
+        async: false,
+        success: function (data) {
+          // console.log(data);
+          parsing(data);
+          
+       
+        },
+      });
+    }
+    
+    function cookAdd(cookAddId) {
+      let idid = "#" + cookAddId
+      let thisWish = $(idid).parent().children().find($('a')).eq(0).attr('href'); // 클릭한 찜과 같은 영역에 있는 상세정보버튼을 찾아서 그 안의 url 찾기 -> contentid 찾아서 쿠키로 저장 or 삭제
+       let wishId = thisWish.split("=")[1] // contentid 찾기
+
+       
+       // 타이틀주소
+       let wishtitle = encodeURI($(idid).parent().parent().find($('b')).text());
+       
+       // 이미지주소
+       let wishimage = $(idid).parent().parent().children().eq(0).attr('src');
+     
+       console.log(wishimage)
+       
+     
+      
+       // 쿠키 확인하기
+       let cook = document.cookie;
+        let cookAr = cook.split(";");
+        let isFind = false;
+        console.log(cookAr);
+        
+
+        for (let i = 0; i < cookAr.length; i++) {
+          let cookName = (cookAr[i].split("=")[0]).split("~"); // contentid 분리
+          console.log(cookName[1]);
+          if (cookName[1] == wishId) { // 이미 쿠키 있음
+            isFind = true;
+          }
+        }
+        if (!isFind) {
+          // 쿠키가 없을 경우
+         saveCookie(wishId, wishimage, wishtitle);
+         $(idid).html("♥");
+        } else {
+          delCookie(wishId, wishimage, wishtitle);
+          $(idid).html("♡");
+        }
+
+    }  
+    
+    function parsing(json) {
+      let stayAr = json.response.body.items.item;
+      
+      totalCount = Number(json.response.body.totalCount);
+      numOfRows = Number(json.response.body.numOfRows);
+      
+      console.log(stayAr);
+      
+      let output = '<div class="container mt-3 hhh">';
+        $.each(stayAr, function (i, stay) {
+          output += `<div class="card">`;
+            if (stay.firstimage == "" || stay.firstimage == null) {
+              output += `<img class="card-img-top" src="assets/images/stay_noimage.png" style="width:100%">`;
+            } else {
+              output += `<img class="card-img-top" src="${stay.firstimage}" style="width:100%">`;
+            }
+            output += `<div class="card-body">
+              <h6 class="card-title"><b>${stay.title}</b></h6>
+              <p class="card-text">${stay.addr1}${stay.addr2}</p><div style=" float:left"><a href="stay_Detail.html?contentid=${stay.contentid}" class="btn btn-outline-dark btndetail">상세설명</a></div><button type="button" class="btn btn-outline-danger wish" id="${stay.contentid}" onclick="cookAdd(this.id);">♡</button></div></div>`;
+            });
+            $(".stayList").append(output);
+
+             // 찜 표시
+         let cook = document.cookie;
+        let cookAr = cook.split(";");
+      
+        for (let i = 0; i < cookAr.length; i++) {
+          let cookName = (cookAr[i].split("=")[0]).split("~"); // contentid 분리
+          if (cookName[1] != -1) { // 이미 쿠키 있음
+            
+            let heartid = "#" + cookName[1];
+            console.log(heartid);
+            $(`${heartid}`).html("♥");
+          }
+        }
+          }
+
+          // 검색
+          function searchData(){
+
+            let keyword = $(".search").val();
+
+            let url = "http://apis.data.go.kr/B551011/KorService/searchKeyword?MobileOS=ETC&MobileApp=AppTest&serviceKey=A5FWp3xAnDjS5xM3zMln9Gn1DzuUsAZB4R424%2BSVVBRD1Op4YVIW67rjkTgXl6f1A0MFoYzbm99lvWznmiK%2FTg%3D%3D&_type=json&keyword=" + keyword;
+
+            $.ajax({
+        url: url, // 데이터가 송수신될 서버의 주소
+        type: "GET",
+        datatype: "json",
+        async: false,
+        success: function (data) {
+          // console.log(data);
+          parsing(data);
+          
+       
+        }
+      });
+          }
+
+          function modalOpen() {
+            $("#myModal").css("display", "block");
+      }
+
+      function modalClose() {
+        document.getElementById("myModal").style.display = "none";
+      }
+
+  
+
+          // 찜(쿠키) 저장
+    function saveCookie(wishId, wishimage, wishtitle){
+      let now = new Date(); // 현재시간
+       now.setDate(now.getDate()+1); // 쿠키 만료기한 1년
+       let wishCookie = "";
+       wishCookie = "myWish~" + wishId + "=" + "stay~" + wishimage + "~" + wishtitle + ";expires=" + now.toUTCString(); 
+       console.log(wishCookie);
+       document.cookie = wishCookie;
+    }
+
+    // 찜(쿠키) 삭제
+    function delCookie(wishId, wishimage, wishtitle){
+      let now = new Date();
+      wishCookie = "myWish~" + wishId + "=" + "stay~" + wishimage + "~" + wishtitle + ";expires=" + now.toUTCString(); 
+      document.cookie = wishCookie;
+    }
+
+    
+  </script>
+  <style>
+          @font-face {
+        font-family: "NanumSquareNeo-Variable";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2")
+          format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      * {
+        font-family: "NanumSquareNeo-Variable";
+      }
+    
+      .btndetail {
+width: 120%;
+      }
+
+    .card {
+      float: left;
+      margin: 10px;
+      height: 300px;
+      width: 30%;
+    }
+    
+    footer {
+      clear: both;
+    }
+
+    .pagination{
+      clear: both;
+    }
+    
+    .stayList {
+      padding: 20px;
+    }
+
+    .topListUl {
+      background-color: #acb6c8;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .card-text {
+      text-align: center;
+      font-size: 2px;
+    }
+
+    .card-title{
+      text-align: center;
+    }
+
+    .wish {
+      text-align: right;
+      float: right;
+    }
+
+    #mymodal {
+      margin-top: 50%;
+
+    }
+
+    @media only screen and (max-width: 768px) {
+ .card{
+  width: 100%;
+ }
+ .btndetail{
+  width: 340%;
+ }
+
+}
+    </style>
+  </head>
+  <body>
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+      <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header
+      class="header-area header-sticky wow slideInDown"
+      data-wow-duration="0.75s"
+      data-wow-delay="0s"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <nav class="main-nav">
+              <!-- ***** Logo Start ***** -->
+              <a href="index.html" class="logo"> </a>
+              <!-- ***** Logo End ***** -->
+              <!-- ***** Menu Start ***** -->
+              <ul class="nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="category.html">Category</a></li>
+                <li><a href="listing.html" class="active">Listing</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li>
+                  <div class="main-white-button">
+                    <a href="#"><i class="fa fa-plus"></i> Add Your Listing</a>
+                  </div>
+                </li>
+              </ul>
+              <a class="menu-trigger">
+                <span>Menu</span>
+              </a>
+              <!-- ***** Menu End ***** -->
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <div class="page-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="top-text header-text" id="toptop">
+              <h6>hotel/hanok/hostel/resort</h6>
+              <h2>숙박</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   
+
+    <!-- 왼쪽 바 -->
+    
+    <div class="listing-page">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="naccs">
+              <div class="grid">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="menu">
+                      <div class="first-thumb">
+                        <div class="thumb">
+                          <a href="index.html">
+                            <span class="icon"
+                              ><img
+                                src="assets/images/search-icon-01.png"
+                                alt=""
+                            /></span>
+                            홈</a
+                          >
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="visit_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="iconImg/visitIcon.png"
+                                alt=""
+                            /></span>
+                          </a>
+                          관광지
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="culture_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="iconImg/cultureIcon.png"
+                                alt=""
+                            /></span>
+                            문화시설
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="party_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="iconImg/partyIcon.png"
+                                alt=""
+                            /></span>
+                            축제공연행사
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="travel_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="iconImg/travelIcon.png"
+                                alt=""
+                            /></span>
+                            여행코스
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="leports_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="iconImg/leportsIcon.png"
+                                alt=""
+                            /></span>
+                            레포츠
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb active">
+                          <a href="stay_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="iconImg/stayIcon.png"
+                                alt=""
+                            /></span>
+                            숙박
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="shopping_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="iconImg/shoppingIcon.png"
+                                alt=""
+                            /></span>
+                            쇼핑
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="thumb">
+                          <a href="food_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="iconImg/foodIcon.png"
+                                alt=""
+                            /></span>
+                            음식점
+                          </a>
+                        </div>
+                      </div>
+                      <div class="last-thumb">
+                        <div class="thumb">
+                          <a href="wish_listing.html">
+                            <span class="icon"
+                              ><img
+                                src="iconImg/wishIcon.png"
+                                alt=""
+                            /></span>
+                            찜
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-9" >
+
+                     <!-- 검색창 -->
+                     <div class="topList">
+                     <ul class="topListUl">
+                      <li><div class="mb-3 mt-3 srechName" style="padding-bottom:10px">
+                        <form class="d-flex">
+                          <input
+                            class="form-control me-2 search"
+                            type="text"
+                            placeholder="Search"
+                          />
+                          <button type="button" class="btn btn-dark searchbtn">search</button>
+                        </form>
+                      </div></li>
+                      <li><!-- 정렬 갯수 -->
+                        <form style="padding-bottom:10px" >
+                          <select class="form-select form-select-sm mt-3 lineUp" >
+                          <option value="12" checked>12개씩 보기</option>
+                          <option value="15">15개씩 보기</option>
+                          <option value="30">30개씩 보기</option>
+                          <option value="60">60개씩 보기</option>
+                          <option value="120">120개씩 보기</option>
+                        </select>
+                      </form>
+                        </li>
+                        <li><!-- 총 데이터수 -->
+                        <div id="amount" style="padding-top: 10px; text-decoration: underline;"></div>
+                    </li>
+                     </ul>
+    
+
+      
+      
+
+    
+    
+  </div>
+
+
+                    <!-- 목록 -->
+                    <div class="stayList"></div>
+                  
+                    <!-- 더보기 -->                  
+                    <div class="btn-group pagination" style="margin: 20%; width: 60%;">
+                      <button type="button" class="btn btn-secondary" id="nextP">더보기</button>
+                    </div>
+
+
+                   
+    </div>
+  </div>
+</div>
+
+<!-- 마지막페이지 모달 -->
+ <!-- The Modal -->
+ <div class="modal" id="myModal" style="background-color: rgba(10, 7, 7, 0.8);">
+  <div class="modal-dialog" style="top: 30%;">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">알림</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          onclick="modalClose()"
+        ></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        마지막 페이지 입니다!
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          onclick="modalClose()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+                    
+
+<!-- 위로 올리기 -->
+<a href="#toptop" style="position: fixed; bottom:50px; right:100px; width:50px"><img src="assets/images/toptop.png"></a>
+
+
+
+                    <ul class="nacc"></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+
+
+    <!-- footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="about">
+              <div class="logo">
+                <img src="assets/images/black-logo.png" alt="" />
+              </div>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adicingi elit, sed do
+                eiusmod tempor incididunt ut et dolore magna aliqua.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="helpful-links">
+              <h4>Helpful Links</h4>
+              <div class="row">
+                <div class="col-lg-6">
+                  <ul>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">Reviews</a></li>
+                    <li><a href="#">Listing</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                  </ul>
+                </div>
+                <div class="col-lg-6">
+                  <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Awards</a></li>
+                    <li><a href="#">Useful Sites</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="contact-us">
+              <h4>Contact Us</h4>
+              <p>27th Street of New Town, Digital Villa</p>
+              <div class="row">
+                <div class="col-lg-6">
+                  <a href="#">010-020-0340</a>
+                </div>
+                <div class="col-lg-6">
+                  <a href="#">090-080-0760</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="sub-footer">
+              <p>
+                Copyright © 2021 Plot Listing Co., Ltd. All Rights Reserved.
+                <br />
+                Design:
+                <a
+                  rel="nofollow"
+                  href="https://templatemo.com"
+                  title="CSS Templates"
+                  >TemplateMo</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- <script src="vendor/jquery/jquery.min.js"></script> -->
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/animation.js"></script>
+    <script src="assets/js/imagesloaded.js"></script>
+    <script src="assets/js/custom.js"></script>
+  </body>
+</html>
