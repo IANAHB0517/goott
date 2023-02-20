@@ -1,8 +1,7 @@
 package weblsj;
 
-import java.util.Comparator;
 
-public class AscendingByStudentScore implements Comparator<Student> {
+public class AscendingByStudentScore implements Sortable {
 
 	@Override
 	public int compare(Student o1, Student o2) {

@@ -1,5 +1,7 @@
 package weblsj;
 
+import java.util.Objects;
+
 public class Student {
 	private String sNum;
 	private String name;
@@ -30,6 +32,24 @@ public class Student {
 
 	public String getsNum() {
 		return sNum;
+	}
+
+	
+	
+	@Override
+	public int hashCode() {
+		return this.sNum.hashCode(); // 같은 학번일때 같은 해쉬코드가 반환되도록
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		boolean result = false;
+		Student tmp = (Student)obj;
+		if(obj instanceof Student) {
+			
+		}
+		
+		return result;
 	}
 
 	@Override
