@@ -2,13 +2,14 @@ package weblsj;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class DBSelectTest {
+public class PrepareStatementTest {
 
 	public static void main(String[] args) {
 
@@ -38,23 +39,38 @@ public class DBSelectTest {
 		}
 
 		if (con != null) {
-			System.out.print("조회할 사원 번호 >>> ");
+			beforeInsert(con);
+			
+			System.out.print("조회할 사원 이름 >>> ");
 			Scanner sc = new Scanner(System.in);
-			int empNo = sc.nextInt();
+			String firstName = sc.nextLine();
 
 			// 실행할 쿼리문 준비
-//			String query = "select * from employees where employee_id = " + empNo; // 사번 검색
-			String query = "select * from employees"; // 총 직원 검색
+			// 아래의 쿼리문을 inLine 쿼리문 이라고 한다.
+			// 쿼리문의 매개변수를 아래처럼 작성 하면 SQL Injection 공격에 취약하게 된다.
+			// 때문에 PreparedStatement 클래스를 이용하여 쿼리문을 작성 해야 한다.
+//			String query = "select * from employees where first_name = '" + firstName + "'";
 			
+			// 매개 변수가 사용 될 자리에 매개변수의 변수명 대신에 ?를 넣는다.
+			String query = "select * from employees where first_name = ?";
+			
+			PreparedStatement pstmt = null;
+			
+			
+//			System.out.println(query);
 
 			// Statement 객체 : 쿼리문을 Connection 객체가 연결하고 있는 DB서버로 전송하고 실행하는 객체
-			Statement stmt = null;
+//			Statement stmt = null;
 
 			// ResultSet 객체 : 쿼리문이 실행된 후의 결과 테이블을 담고 있는 객체. 단반향으로만 탐색 가능(읽기전용)
 			ResultSet rs = null;
 			try {
-				stmt = con.createStatement();// Statement 객체 반환
-				rs = stmt.executeQuery(query); // stmt으로 부터 쿼리문을 실행 // rs가 쿼리문의 실행 결과를 가지게 됨
+				pstmt = con.prepareStatement(query); // prepareStatement	객체 생성 (sql 문장이 pre-compiling됨)
+				
+				// 매개변수 "?" 를 변수로 할당
+				pstmt.setString(1, firstName);
+				
+				rs = pstmt.executeQuery(); // 실행할 때도 executeQuery() 를 호출해야 함.
 
 				while (rs.next()) { // 결과 행(row)가 있을 동안 반복
 					System.out.println(rs.getInt("EMPLOYEE_ID") + " " + rs.getString("FIRST_NAME") + " "
@@ -69,7 +85,7 @@ public class DBSelectTest {
 //				}
 
 				rs.close();
-				stmt.close();
+				pstmt.close();
 				con.close(); // 연것과 반대로 순서로 close() 해준다. // 정상종료 되었기 때문에 DB에는 Commit이 된다.
 								// dcl을 날렸다면 rollBack or Commit 해준다.
 
@@ -83,6 +99,42 @@ public class DBSelectTest {
 		}
 	}
 
+	private static void beforeInsert(Connection con) {
+		
+		int deptNo = 310;
+		String dName = "자재부";
+		int managerId = 145;
+		int locationId = 2500;
+		
+		if (con != null) {
+			String query = "insert into departments values(?,?,?,?)";
+			
+			PreparedStatement pstmt = null;
+			try {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, deptNo);
+				pstmt.setString(2, dName);
+				pstmt.setInt(3, managerId);
+				pstmt.setInt(4, locationId);
+				
+				int result = pstmt.executeUpdate();
+				
+				if(result == 1) {
+					System.out.println("저장 성공");
+					
+					pstmt.close();
+					
+//					con.close(); // 여기서 con을 닫을 경우에는 다음에 이어지는 select문이 작동하지 않기 때문에 닫아주지 않는다
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
+
 }
 
-// DB에 연결되어 있는 Connection 객체를 통해서 쿼리문을 보내야 하기 때문에 Statement는 Connection 객체로 부터 만들어져야한다.

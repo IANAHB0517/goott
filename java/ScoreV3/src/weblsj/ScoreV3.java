@@ -25,8 +25,6 @@ public class ScoreV3 { // 여기도 클래스 이기 때문에 변수와 메서�
 		System.out.println("**** 9. 종료                                               ****");
 		System.out.println("***************************************************************");
 		System.out.print("메뉴 번호 입력 >>> ");
-//		
-
 	}
 
 	private StuClass createClass() {
