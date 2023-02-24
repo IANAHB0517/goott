@@ -169,10 +169,13 @@ public class FriendsMgmDAOImpl implements FriendsMgmDAO {
 
 		if (con != null) {
 			String query = "select * from friends where friendname = ?";
+//			String query = "select * from friends where friendname like ?";
+			
 
 			PreparedStatement pstmt = null;
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, name);
+//			pstmt.setString(1,"%" + name + "%"); // like 검색의 경우
 			
 			ResultSet rs = pstmt.executeQuery();
 
