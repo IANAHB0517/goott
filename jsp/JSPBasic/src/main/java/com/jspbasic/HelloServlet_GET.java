@@ -3,6 +3,7 @@ package com.jspbasic;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,7 +41,7 @@ public class HelloServlet_GET extends HttpServlet {
 		System.out.println("HelloServlet_GET");
 		System.out.println("Get방식으로 요청됨");
 		
-		// GET 방식으로 요청하면서 전달한 파라메터를 언더옴
+		// GET 방식으로 요청하면서 전달한 파라메터를 얻어옴
 		int kor = Integer.parseInt(request.getParameter("kor"));
 		int eng = Integer.parseInt(request.getParameter("eng"));
 		int math = Integer.parseInt(request.getParameter("math"));
@@ -49,32 +50,47 @@ public class HelloServlet_GET extends HttpServlet {
 		float avg = total /3f;
 		System.out.println(kor + "," + eng + "," + math + "=" + "total : " + total + "," + "avg : " + avg);
 		
+		
 		// 국어, 영어, 수학, 총점, 평균을 유저가 확인 할 수 있는 웹 페이지로 출력
-		response.setContentType("text/html; charset=utf-8"); 
-		// 응답할 문서의 종류와 인코딩 방식을 설정
 		
-		PrintWriter out = response.getWriter(); // getWriter()는 Stream객체로서 한번 열리면 닫히기 전까지 새로 설정할 수 없다?
-		// 출력할 수 있는 객체
+		// 출력할 변수 바인딩(binding : 데이터 묶음)
+		request.setAttribute("kor", kor);
+		request.setAttribute("eng", eng);
+		request.setAttribute("math", math);
+		request.setAttribute("total", total);
+		request.setAttribute("avg", avg);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("dataOutputFromServlet.jsp");
+		rd.forward(request, response); // 데이터 이동(주소표시줄의 url은 바뀌지 않는다.)
 		
 		
 		
-		out.print("<!DOCTYPE html>"
-				+ "<html>" 
-				+ "<head>"
-				+ "<meta charset=\'UTF-8\'>"
-				+ "<title>성적표</title>"
-				 + "</head>"
-				+ "<body>"
-				 + "<div>국어 : " + kor + "</div>"
-				 + "<div>영어 : " + eng + "</div>"
-				 + "<div>수학 : " +  math+ "</div>"
-				 + "<div>총점 : " +  total + "</div>"
-				 + "<div>평균 : " +  avg + "</div>"
-				 + "</body></html>"
-				);
-		
-		out.flush();
-		out.close();
+		// 아래의 방식은 서블릿에서 직접 출력할 웹 문서를 만들어서 response한 방식이다.
+		// 이 방식은 html, css, js 를 이용해 다양한 요구에 따른 View단을 만들어 응답하기가 쉽지 않다.
+		// (코딩도 힘들다)
+//		response.setContentType("text/html; charset=utf-8"); 
+//		// 응답할 문서의 종류와 인코딩 방식을 설정
+//		
+//		PrintWriter out = response.getWriter(); // getWriter()는 Stream객체로서 한번 열리면 닫히기 전까지 새로 설정할 수 없다?
+//		// 출력할 수 있는 객체	
+//		
+//		out.print("<!DOCTYPE html>"
+//				+ "<html>" 
+//				+ "<head>"
+//				+ "<meta charset=\'UTF-8\'>"
+//				+ "<title>성적표</title>"
+//				 + "</head>"
+//				+ "<body>"
+//				 + "<div>국어 : " + kor + "</div>"
+//				 + "<div>영어 : " + eng + "</div>"
+//				 + "<div>수학 : " +  math+ "</div>"
+//				 + "<div>총점 : " +  total + "</div>"
+//				 + "<div>평균 : " +  avg + "</div>"
+//				 + "</body></html>"
+//				);
+//		
+//		out.flush();
+//		out.close();
 	}
 
 	/**
