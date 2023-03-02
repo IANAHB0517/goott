@@ -1,0 +1,29 @@
+.gridContainer {
+  display: grid;
+  grid-template-columns: 0.5fr 3fr;
+  grid-template-rows: 0.5fr 8fr 1fr;
+}
+
+.headerBar {
+  grid-column: 1/-1;
+  grid-row: 1/2;
+  height: 5vh;
+  justify-content: end;
+}
+
+.sideNav {
+  grid-column: 1/2;
+  grid-row: 2/3;
+}
+
+.articleArea {
+  grid-column: 2/-1;
+  grid-row: 2/3;
+  height: 90vh;
+}
+
+.footerBar {
+  grid-column: 1/-1;
+  grid-row: 3/4;
+  height: 5vh;
+}

@@ -7,8 +7,8 @@
 <title>나의 첫 JSP</title>
 </head>
 <body>
-
+	<%@ include file="header.jsp"%>
 	<h1>Hello, JSP</h1>
-
+	<%@ include file="footer.jsp"%>
 </body>
 </html>
