@@ -41,6 +41,23 @@ function getParameter(paramName) {
 <body>
 	<h1>mainTest.jsp</h1>
 	
+	<div>세션 아이디 : <%=session.getId() %></div>
+	
 	<a href="loginTest1.jsp" >로그인하러 가기</a>
+	
+	
+	<%
+	out.print("로그인한 유저 : " + (String)session.getAttribute("loginMember"));
+	%>
+	<div>
+	<a href="helloJSP.jsp">다른 jsp로가기</a>
+	</div>
+	<div>
+	<form action="sessionLogOut.do" method="get">
+	<input type="submit" value="로그아웃">
+	</form>
+	
+	<!--  <a href="helloJSP.jsp"></a> -->
+	</div>
 </body>
 </html>

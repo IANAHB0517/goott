@@ -1,4 +1,4 @@
-package com.MusicPlatform.Controller;
+package com.MusicPlatform.Service;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Controller
+ * Servlet implementation class Service
  */
-@WebServlet("/Controller")
-public class Controller extends HttpServlet {
+@WebServlet("/Service")
+public class ServiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Controller() {
+    public ServiceServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

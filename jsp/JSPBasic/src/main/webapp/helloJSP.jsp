@@ -9,6 +9,11 @@
 <body>
 
 	<h1>Hello, JSP</h1>
+	
+	
+	<%
+	out.print("로그인한 유저 : " + (String)session.getAttribute("loginMember"));
+	%>
 
 </body>
 </html>

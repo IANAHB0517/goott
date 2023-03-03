@@ -32,7 +32,7 @@ function getParameter(paramName) {
 	let page = getParameter("page");
 	
 	if(page === "logInPage"){
-		
+	
 	} else {
 	alert("올바른 접근이 아닙니다!");
 	location.href = 'index.jsp'
@@ -43,7 +43,7 @@ function getParameter(paramName) {
 </script>
 </head>
 <body>
-	<form action="LogIn.pg" method="get">
+	<form action="LogIn.pg" method="post">
 		<div>
 			아이디 : <input type="text" name="userId" id="logInId">
 		</div>

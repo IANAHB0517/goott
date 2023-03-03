@@ -17,6 +17,11 @@ public class TestMemberVo {
 	
 	
 	
+	public TestMemberVo() {
+
+	}
+
+
 	public TestMemberVo(String userId, String pwd, String email, String mobile, String gender, int age, String hobbies,
 			String job, String memo) {
 		super();
