@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,24 +43,31 @@ function getParameter(paramName) {
 </head>
 <body>
 	<h1>mainTest.jsp</h1>
-	
-	<div>세션 아이디 : <%=session.getId() %></div>
-	
-	<a href="loginTest1.jsp" >로그인하러 가기</a>
-	
-	
+
+	<div>
+		세션 아이디 :
+		<%=session.getId()%></div>
+
 	<%
-	out.print("로그인한 유저 : " + (String)session.getAttribute("loginMember"));
+	out.print("로그인한 유저 : " + (String) session.getAttribute("loginMember"));
 	%>
 	<div>
-	<a href="helloJSP.jsp">다른 jsp로가기</a>
+		<a href="helloJSP.jsp">다른 jsp로가기</a>
 	</div>
-	<div>
-	<form action="sessionLogOut.do" method="get">
-	<input type="submit" value="로그아웃">
-	</form>
-	
-	<!--  <a href="helloJSP.jsp"></a> -->
-	</div>
+
+
+	<c:choose>
+		<c:when test="${sessionScope.loginMember != null}">
+			<div>
+				<form action="sessionLogOut.do" method="get">
+					<input type="submit" value="로그아웃">
+				</form>
+				<!--  <a href="helloJSP.jsp"></a> -->
+			</div>
+		</c:when>
+		<c:otherwise>
+			<a href="loginTest2.jsp">로그인하러 가기</a>
+		</c:otherwise>
+	</c:choose>
 </body>
 </html>
