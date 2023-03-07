@@ -25,4 +25,11 @@
     <!--
     <Manager pathname="" />
     -->
+    
+    <!-- 오라클 DB JNDI(Java Nameing and Directory Interface) 설정-->
+    <Resource name="jdbc/weblsj" auth="Container"
+              type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@127.0.0.1:1521:xe"
+              username="hr" password="1234" maxTotal="20" maxIdle="10"
+              maxWaitMillis="-1"/>    
 </Context>
