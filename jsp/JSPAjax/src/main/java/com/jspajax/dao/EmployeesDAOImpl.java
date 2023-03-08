@@ -9,7 +9,9 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import com.jspajax.vo.DepartmentVo;
 import com.jspajax.vo.Employees;
+import com.jspajax.vo.JobsVo;
 
 public class EmployeesDAOImpl implements EmployeesDAO {
 
@@ -27,38 +29,73 @@ public class EmployeesDAOImpl implements EmployeesDAO {
 
 	@Override
 	public List<Employees> selecAllEmp() throws NamingException, SQLException {
-	System.out.println(getClass().getName() + "DAO 단");
-	
-	List<Employees> lst = new ArrayList<>();
-	
-	Connection con = DBConnection.dbconnect();
-	if (con != null) {
-		String query = "SELECT e.* , d.department_name from employees e inner join departments d"
-				+ " on e.department_id = d.department_id";
-		PreparedStatement pstmt =  con.prepareStatement(query);
-		ResultSet rs = pstmt.executeQuery();
-		
-		while(rs.next()) {
-			lst.add(new Employees(
-					rs.getInt("EMPLOYEE_ID"),
-					rs.getString("FIRST_NAME"),
-					rs.getString("LAST_NAME"),
-					rs.getString("EMAIL"),
-					rs.getString("PHONE_NUMBER"),
-					rs.getDate("HIRE_DATE"),
-					rs.getString("JOB_ID"),
-					rs.getFloat("SALARY"),
-					rs.getFloat("COMMISSION_PCT"),
-					rs.getInt("MANAGER_ID"),
-					rs.getInt("DEPARTMENT_ID"), 
-					rs.getString("DEPARTMENT_NAME")
-					));
+		System.out.println(getClass().getName() + "DAO 단");
+
+		List<Employees> lst = new ArrayList<>();
+
+		Connection con = DBConnection.dbconnect();
+		if (con != null) {
+			String query = "SELECT e.* , d.department_name from employees e inner join departments d"
+					+ " on e.department_id = d.department_id";
+			PreparedStatement pstmt = con.prepareStatement(query);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				lst.add(new Employees(rs.getInt("EMPLOYEE_ID"), rs.getString("FIRST_NAME"), rs.getString("LAST_NAME"),
+						rs.getString("EMAIL"), rs.getString("PHONE_NUMBER"), rs.getDate("HIRE_DATE"),
+						rs.getString("JOB_ID"), rs.getFloat("SALARY"), rs.getFloat("COMMISSION_PCT"),
+						rs.getInt("MANAGER_ID"), rs.getInt("DEPARTMENT_ID"), rs.getString("DEPARTMENT_NAME")));
+			}
+
+			DBConnection.dbClose(rs, pstmt, con);
 		}
-		
-		DBConnection.dbClose(rs, pstmt, con);
-	}
-	
+
 		return lst;
 	}
 
+	@Override
+	public List<JobsVo> selectAllJobs() throws NamingException, SQLException {
+		// System.out.println(getClass().getName() + "DAO 단");
+
+		List<JobsVo> lst = new ArrayList<>();
+
+		Connection con = DBConnection.dbconnect();
+		if (con != null) {
+			String query = "select * from jobs";
+			PreparedStatement pstmt = con.prepareStatement(query);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				lst.add(new JobsVo(rs.getString("JOB_ID"), rs.getString("JOB_TITLE"), rs.getInt("MIN_SALARY"),
+						rs.getInt("MAX_SALARY")
+
+				));
+			}
+
+			DBConnection.dbClose(rs, pstmt, con);
+		}
+
+		return lst;
+	}
+
+	@Override
+	public List<DepartmentVo> SelectAllDept() throws NamingException, SQLException {
+
+		List<DepartmentVo> lst = new ArrayList<>();
+
+		Connection con = DBConnection.dbconnect();
+		if (con != null) {
+			String query = "select * from DEPARTMENTS order by DEPARTMENT_ID";
+			PreparedStatement pstmt = con.prepareStatement(query);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				lst.add(new DepartmentVo(rs.getInt("DEPARTMENT_ID"), rs.getString("DEPARTMENT_NAME"),rs.getInt("MANAGER_ID"), rs.getInt("LOCATION_ID")));
+						}
+
+			DBConnection.dbClose(rs, pstmt, con);
+		}
+
+		return lst;
+}
 }
