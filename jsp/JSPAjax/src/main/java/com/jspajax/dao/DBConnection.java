@@ -31,4 +31,9 @@ public class DBConnection {
 		con.close();
 	}
 	
+	public static void dbClose( Statement stmt, Connection con) throws SQLException {
+		stmt.close();
+		con.close();
+	}
+	
 }

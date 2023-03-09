@@ -65,7 +65,7 @@ pageEncoding="UTF-8"%>
               FIRST_NAME: writeFirstName,
               LAST_NAME: writeLastName,
               EMAIL: writeEmail,
-              writePhoneNumber: writePhoneNumber,
+              PHONE_NUMBER: writePhoneNumber,
               HIRE_DATE: writeHireDate,
               JOB_ID: writeJobId,
               SALARY: writeSalary,
@@ -73,15 +73,13 @@ pageEncoding="UTF-8"%>
               MANAGER_ID: writeMANAGER,
               DEPARTMENT_ID: writeDEPARTMENT,
             };
+            console.log(emp);
 
             saveEmp(emp);
           }
         });
 
-        function saveEmp(emp) {
-          console.log(emp);
-        }
-
+       
         // 직급정보 입력시
         $("#writeJobId").change(function () {
           if ($(this).val() != "") {
@@ -310,6 +308,14 @@ pageEncoding="UTF-8"%>
              dataType : "json", // 수신받을 데이터 타입(MIME TYPE)
              success : function(data) { // 통신이 성공하면 수행할 함수(콜백 함수)
                 console.log(data);
+             
+             if(data.status == "success"){
+            	 $("#writeModal").hide();
+            	 writeModalInit();
+            	 getAllEmployees();
+             } else if (data.status == "fail"){
+            	 alert("저장에 실패 했습니다.");
+             }
                 
              }
           });
@@ -317,6 +323,17 @@ pageEncoding="UTF-8"%>
        }
       
       
+      function writeModalInit(){
+    	  $("#writeFirstName").val('');
+          $("#writeLastName").val('');
+          $("#writeEmail").val('');
+          $("#writePhoneNumber").val('');
+          $("#writeHireDate").val('');
+          
+          //let writeSalary = Number($("#writeSalary").html());
+          $("#writeCOMMISSION_PCT").val('');
+ 
+      }
       
       
       
