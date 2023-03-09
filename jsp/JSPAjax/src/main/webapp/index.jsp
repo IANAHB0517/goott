@@ -296,6 +296,30 @@ pageEncoding="UTF-8"%>
 
         $(".empInfo").html(output);
       }
+      
+      
+      function saveEmp(emp) {
+          console.log(emp);
+          console.log(JSON.stringify(emp));
+          
+          
+          $.ajax({
+             url : "saveEmp.do", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성)
+             type : "get", // 통신 방식 (GET, POST, PUT, DELETE)
+             data : emp, // 서블릿에 전송할 데이터
+             dataType : "json", // 수신받을 데이터 타입(MIME TYPE)
+             success : function(data) { // 통신이 성공하면 수행할 함수(콜백 함수)
+                console.log(data);
+                
+             }
+          });
+          
+       }
+      
+      
+      
+      
+      
     </script>
     <style>
       .empInfo {

@@ -20,4 +20,7 @@ public interface EmployeesDAO {
 	
 	//모든 dept 정보를 얻어오는 메서드
 	List<DepartmentVo> SelectAllDept() throws NamingException, SQLException;
+	
+	// 사원을 저장하는 메서드
+	String insertEmp(Employees empDto) throws NamingException, SQLException;
 }
