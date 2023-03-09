@@ -28,15 +28,16 @@ public class EmpDAOImpl implements EmpDAO {
 	public List<Emp> getEmp() throws NamingException, SQLException {
 		System.out.println("getEmp DAO 단 도착");
 		
-		Connection con = DBConnection.dbconnect();
+		
 		List<Emp> lst = new ArrayList<>();
+		Connection con = DBConnection.dbconnect();
 		
 		if(con != null) {
 			String query = "select * from emp order by empno desc";
 			PreparedStatement pstmt = con.prepareStatement(query);
-			ResultSet rs = pstmt.executeQuery(query);
+			ResultSet rs = pstmt.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				lst.add(new Emp(rs.getInt("EMPNO"), rs.getString("ENAME"), rs.getString("JOB"), rs.getInt("MGR"),
 						rs.getDate("HIREDATE"), rs.getFloat("SAL"), rs.getFloat("COMM"), rs.getInt("DEPTNO")));
 			}
@@ -45,10 +46,7 @@ public class EmpDAOImpl implements EmpDAO {
 			
 		}
 		
-		
-		
-		
-		
+	
 		return lst;
 	}
 

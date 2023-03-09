@@ -14,11 +14,11 @@
   
   $(function(){
 	  
-	  outputEmp();
+	  getAllEmp();
 	  
   })
   
-  function outputAllEmp(){
+  function getAllEmp(){
 	   $.ajax({
 	          url: "getAllEmp.do", // 데이터가 송수신될 서버의 주소 (서블릿의 매핑주소 작성)
 	          type: "GET", // 통신 방식 (GET, POST, PUT, DELETE)
@@ -30,46 +30,95 @@
 	            if (data.status == "fail") {
 	              alert("데이터를 불러오지 못했습니다!");
 	            } else if (data.status == "success") {
-	              outputEntireEmployees(allEmpData);
+	              
 	            }
 	          },
 	         
 	        });
+	   outEmps(data);
   }
   
+  // json으로 가져온 사원들 출력
+  function outEmps(json){
+	  $(".respCnt").html(json.cnt);
+	  $(".respDate").html(json.outputDate);
+		// 테이블 헤드 입력	  
+	  let outputTable = "<thead><tr><th>사번</th><th>이름</th><th>매니저</th><th>입사일</th><th>급여</th><th>커미션</th><th>부서번호</th></tr></thead><tbody>";
+	  
+	  //테이블 바디 입력
+	  $.each(json.emps, function(i, e) {
+		  outputTable += "<tr class='emp'>";
+			  outputTable += "<td>" + e.ENAME + "</td>";
+			  outputTable += "<td>" + e.JOB + "</td>";
+			  
+			  //매니저 번호를 이름으로 변경
+			  let mag = e.MGR;
+			  let magName = "";
+			  $.each(json.emps, function (i, item) {
+				  if (mag == item.ENAME) {
+		              // 직속상관을 찾은경우
+		              magName = item.ENAME;
+		            }
+			  });
+			  
+			  outputTable += "<td>" + magName + "</td>";
+			  
+			  outputTable += "<td>" + e.HIREDATE + "</td>";
+			  outputTable += "<td>" + e.SAL + "</td>";
+			  
+			  if (e.COMM == 0.0) {
+			  outputTable += "<td></td>";  
+			  } else {
+			  outputTable += "<td>" + e.COMM  * 100 + "</td>";				  
+			  }
+			  
+			  
+			  outputTable += "<td>" + e.DEPTNO + "</td>";
+			  outputTable += "</tr>";
+	  })
+	  
+	  outputTable += "</tbody>";
+	  
+	  $(".table-striped").html(outputTable)
+	  
+  }
+  
+  
+  
+  
   </script>
+  
+   <style>
+     .table{
+     margin : 5px;
+     border : 1px solid black;
+     }
+     
+      .icon {
+        border-radius: 24px;
+        background-color: gray;
+        position: fixed;
+        right: 15px;
+        bottom: 10px;
+      }
+
+      .icon:hover {
+        background-color: green;
+      }
+    </style>
   
 </head>
 <body>
 <div class="container">
-  <h2>Striped Rows</h2>
-  <p class="respSummary"> 응답 받은 데이터 갯수 :<span class="respCnt"> <span> </span> </span> 응답 일시 :<span class=""> <span> </span> </span></p>            
+  <h2>Scott EMP</h2>
+  <p class="respSummary"> 응답 받은 데이터 갯수 :<span class="respCnt"> <span> </span> </span> 응답 일시 :<span class="respDate"> <span> </span> </span></p>            
   <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>John</td>
-        <td>Doe</td>
-        <td>john@example.com</td>
-      </tr>
-      <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-        <td>mary@example.com</td>
-      </tr>
-      <tr>
-        <td>July</td>
-        <td>Dooley</td>
-        <td>july@example.com</td>
-      </tr>
-    </tbody>
+   
   </table>
+  
+  <div class="writerIcon">
+        <img src="imgs/write.png" class="icon" />
+      </div>
 </div>
 </body>
 </html>

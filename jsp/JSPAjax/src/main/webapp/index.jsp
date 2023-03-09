@@ -260,7 +260,7 @@ pageEncoding="UTF-8"%>
           "<th>소속 부서명</th></tr></thead><tbody>";
 
         $.each(json.employees, function (i, item) {
-          output += "<tr class='emp''>";
+          output += "<tr class='emp'>";
           output += "<td>" + item.EMPLOYEE_ID + "</td>";
           output += "<td>" + item.FIRST_NAME + ", " + item.LAST_NAME + "</td>";
           output += "<td>" + item.EMAIL + "</td>";
