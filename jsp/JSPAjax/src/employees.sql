@@ -31,6 +31,7 @@ as
 select * from employees where 1=0; -- 껍데기만 복사함
 
 
+
 -- 2) 실제 delte 문을 사용하지 않는 겨우
 -- 해당 테이블에 삭제 여부 컬럼 (isDelete)을 만든 후 삭제 되는 데이터에 대해 Y로 업데이트 수행
 -- -> 데이터 검색시 안 보이도록 처리
@@ -47,7 +48,7 @@ on e.department_id = d.department_id where quit_date is null order by EMPLOYEE_I
 SELECT e.* , d.department_name from employees e inner join departments d
 on e.department_id = d.department_id where quit_date is not null order by EMPLOYEE_ID desc;
 
-select * from employees where quit_date is not null;
+select * from employees where quit_date is null;
 
 
 -- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
