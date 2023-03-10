@@ -106,9 +106,45 @@ pageEncoding="UTF-8"%>
           }
         });
 
+        
+        // 모달창 닫기
         $(".writeCloseBtn").click(function () {
           $("#writeModal").hide();
         });
+        
+        $(".modiCloseBtn").click(function () {
+            $("#modiModal").hide();
+          });
+        
+        $(".delCloseBtn").click(function () {
+            $("#delModal").hide();
+          });
+        
+        // 삭제 컨트롤러단 호출
+        $(".delBtn").click(function () {
+        	let empNo = $("#remEmpNO").html();
+        	
+        	 $.ajax({
+                 url: "delEmp.do", // 데이터가 송수신될 서버의 주소 (서블릿의 매핑주소 작성)
+                 type: "GET", // 통신 방식 (GET, POST, PUT, DELETE)
+                 data : { "empNo" : empNo}, // 서블릿에 전송할 데이터
+                 dataType: "json", // 수신받을 데이터 타입(MIME TYPE)
+                 success: function (data) {
+                   // 통신이 성공하면 수행할 함수(콜백 함수)
+                   console.log(data);
+                   allEmpData = data;
+                   if (data.status == "fail") {
+                     alert("삭제 실패!");
+                   } else if (data.status == "success") {
+                	   getAllEmployees(); // 데이터 갱신
+                	   $("#delModal").hide();
+                   }
+                 },
+                 error: function () {},
+                 complete: function () {},
+               });
+        	
+        })
 
         $("#writeMANAGER").change(function () {
           if ($(this).val() != "") {
@@ -213,8 +249,8 @@ pageEncoding="UTF-8"%>
           complete: function () {},
         });
       }
+      
       // 모든 부서 데이터를 얻어오는 함수
-
       function getDeptInfo() {
         $.ajax({
           url: "getAllDept.do", // 데이터가 송수신될 서버의 주소 (서블릿의 매핑주소 작성)
@@ -247,7 +283,8 @@ pageEncoding="UTF-8"%>
           complete: function () {},
         });
       }
-
+	
+      // 모든 직원 데이터 파싱하여 출력하는 함수
       function outputEntireEmployees(json) {
         $("#outputCnt").html("데이터 : " + json.count + "개");
         $("#outputDate").html("출력 일시 : " + json.outputDate);
@@ -257,7 +294,7 @@ pageEncoding="UTF-8"%>
           "<thead><tr><th>사번</th><th>이름</th><th>이메일</th><th>전화번호</th><th>입사일</th><th>직급</th><th>급여</th><th>커미션(%)</th>" +
           "<th>직속상관</th>" +
           // + "<th>소속 부서번호</th>"
-          "<th>소속 부서명</th></tr></thead><tbody>";
+          "<th>소속 부서명</th><th>수정하기</th><th>삭제하기</th></tr></thead><tbody>";
 
         $.each(json.employees, function (i, item) {
           output += "<tr class='emp'>";
@@ -287,6 +324,11 @@ pageEncoding="UTF-8"%>
           // output += "<td>" + item.DEPARTMENT_ID + "</td>";
           output += "<td>" + item.DEPARTMENT_NAME + "</td>";
 
+          // empmanage를 제이쿼리로 이벤트 를 감지하면 둘중 누구를 클릭한 건지 알기가 쉽지 않기 때문에
+          // 온클릭으로 작성하는게 더 편하다
+          // 이클립스 자동 줄 바꿈 alt + shift + y
+          output += "<td><img class='empmanage' src='imgs/modify.png' onclick='modModalShow(" + item.EMPLOYEE_ID + ");'></td>"
+          output += "<td><img class='empmanage' src='imgs/delete.png' onclick='delModalShow(" + item.EMPLOYEE_ID + ");'></td>"
           output += "</tr>";
         });
 
@@ -337,8 +379,26 @@ pageEncoding="UTF-8"%>
       
       
       
+      function modModalShow(empNo){
+    	// alert(empNo);
+    	  $("#modiModal").show(500);
+    	  $("#modiEmpNo").val(empNo);
+      }
+      
+      function delModalShow(empNo){
+    	  //alert(empNo);
+    	  $("#delModal").show(500);
+    	  $("#remEmpNO").html(empNo);
+      }
+      
+      
+      
     </script>
     <style>
+    .empmanage {
+    width:24px;
+    
+    }
       .empInfo {
         font-size: 12px;
       }
@@ -378,7 +438,7 @@ pageEncoding="UTF-8"%>
       </div>
     </div>
 
-    <!-- The Modal -->
+    <!-- The Modal (사원 입력 모달) -->
     <div class="modal" id="writeModal" style="display: none">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -478,5 +538,159 @@ pageEncoding="UTF-8"%>
         </div>
       </div>
     </div>
+  
+   <!-- The Modal (사원 수정 모달) -->
+    <div class="modal" id="modiModal" style="display: none">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">사원 수정</h4>
+            <button
+              type="button"
+              class="btn-close modiCloseBtn"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+          
+           <div class="mb-3 mt-3">
+              <label for="modiEmpNo" class="form-label">EmployeeID :</label>
+              <input type="text" class="form-control" id="modiEmpNo"  readonly/>
+            </div>
+          
+            <div class="mb-3 mt-3">
+              <label for="modiFirstName" class="form-label"
+                >First Name :</label>
+              <input type="text" class="form-control" id="modiFirstName" />
+            </div>
+            
+            <div class="mb-3 mt-3">
+              <label for="modiLastName" class="form-label">Last Name :</label>
+              <input type="text" class="form-control" id="modiLastName" />
+            </div>
+            
+            <div class="mb-3 mt-3">
+              <label for="modiEmail" class="form-label">Email :</label>
+              <input type="text" class="form-control" id="modiEmail" />
+            </div>
+            <div class="mb-3 mt-3">
+              <label for="modiPhoneNumber" class="form-label"
+                >Phone Number :</label
+              >
+              <input type="text" class="form-control" id="modiPhoneNumber" />
+            </div>
+            <div class="mb-3 mt-3">
+              <label for="modiHireDate" class="form-label">Hire Date :</label>
+              <input type="date" class="form-control" id="modiHireDate" />
+            </div>
+            <div class="mb-3 mt-3">
+              <label for="modiJobId" class="form-label">Job Id :</label>
+              <select id="modiJobId"></select>
+            </div>
+            <div class="mb-3 mt-3">
+              <label for="modiSalary" class="form-label"
+                >Salary : $<span id="modiSalary"></span
+              ></label>
+              <div id="salModiInput" style="display: none"></div>
+            </div>
+            <div class="mb-3 mt-3">
+              <label for="modiCOMMISSION_PCT" class="form-label"
+                >Commission :</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="modiCOMMISSION_PCT"
+                min="0.01"
+                max="0.99"
+                step="0.01"
+              />
+            </div>
+            <div class="mb-3 mt-3">
+              <label for="modiMANAGER" class="form-label">MANAGER :</label>
+              <select id="modiMANAGER">
+                <!-- 아이디는 사번, 옵션의 밸류는 이름, 성 -->
+              </select>
+            </div>
+            <div class="mb-3 mt-3">
+              <label for="modiDEPARTMENT" class="form-label"
+                >DEPARTMENT :</label
+              >
+              <select id="modiDEPARTMENT">
+                <!-- 아이디는 부서번호, 옵션의 밸류는 이름 -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success modiBtn"
+              data-bs-dismiss="modal"
+            >
+              modify
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-danger modiCloseBtn"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+   
+    <!-- The Modal (사원 삭제 모달) -->
+    <div class="modal" id="delModal" style="display: none">
+    	<div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">사원 삭제</h4>
+            <button
+              type="button"
+              class="btn-close delCloseBtn"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+          <div class="delCehck">
+         <h4><span id="remEmpNO"></span>번 사원을 정말 삭제 하시겠습니까?</h4>
+         <h6>이 작업은 취소할 수 없습니다.</h6>
+            </div>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger delBtn"
+              data-bs-dismiss="modal"
+            >
+              삭제
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-danger delCloseBtn"
+              data-bs-dismiss="modal"
+            >
+              취소
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+   
   </body>
 </html>

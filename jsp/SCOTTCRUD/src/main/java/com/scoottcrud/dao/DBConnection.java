@@ -15,7 +15,8 @@ public class DBConnection {
 		Context initContext = new InitialContext();
 		Context envContext = (Context) initContext.lookup("java:/comp/env"); // Directory service에 의해 context.xml 파일의
 																				// 객체를 얻어온다.(JDNI)
-		DataSource ds = (DataSource) envContext.lookup("jdbc/weblsj"); // 아래 이름의 태그를 찾아 그 부분으로 부터 Connection 객체를 얻어온다.
+		DataSource ds = (DataSource) envContext.lookup("jdbc/sctcrud"); // 아래 이름의 태그를 찾아 그 부분으로 부터 Connection 객체를 얻어온다.
+		// 여기를 봐라 이 우매한 짐승아
 		Connection conn = ds.getConnection(); // context.xml에서 만들어진 connection 객체를 얻어옴
 		// etc.
 

@@ -1,5 +1,6 @@
 package com.jspajax.dao;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -23,4 +24,7 @@ public interface EmployeesDAO {
 	
 	// 사원을 저장하는 메서드
 	String insertEmp(Employees empDto) throws NamingException, SQLException;
+	
+	// 사원을 삭제하는 메서드
+	int deleteEmp(int empNo, Date quitDate) throws NamingException, SQLException;
 }

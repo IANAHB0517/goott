@@ -30,12 +30,12 @@
 	            if (data.status == "fail") {
 	              alert("데이터를 불러오지 못했습니다!");
 	            } else if (data.status == "success") {
+	   					outEmps(allEmpData);
 	              
 	            }
 	          },
 	         
 	        });
-	   outEmps(data);
   }
   
   // json으로 가져온 사원들 출력
@@ -93,6 +93,10 @@
      margin : 5px;
      border : 1px solid black;
      }
+     
+      .emp:hover {
+        background-color: yellow;
+      }
      
       .icon {
         border-radius: 24px;

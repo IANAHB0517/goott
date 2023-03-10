@@ -27,9 +27,10 @@ public class SaveEmployeeServlet extends HttpServlet {
 		resp.setContentType("application/json; charset=utf-8"); // json 형식으로 응답
 		PrintWriter out = resp.getWriter();
 
-		// System.out.println("!!!!");
-
-		// request로 부터 넘어온 데이터를 데이터 타입 변경하여 얻어옴
+		
+		
+		// request 객체를 처리
+		// request로 부터 넘어온 데이터를 데이터 타입 변경하여 얻어옴 
 		String firstName = req.getParameter("FIRST_NAME");
 		String lastName = req.getParameter("LAST_NAME");
 		String email = req.getParameter("EMAIL");

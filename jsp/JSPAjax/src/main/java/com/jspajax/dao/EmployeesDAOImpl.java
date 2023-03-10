@@ -2,6 +2,7 @@ package com.jspajax.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,8 +37,8 @@ public class EmployeesDAOImpl implements EmployeesDAO {
 
 		Connection con = DBConnection.dbconnect();
 		if (con != null) {
-			String query = "SELECT e.* , d.department_name from employees e inner join departments d"
-					+ " on e.department_id = d.department_id order by EMPLOYEE_ID desc";
+			String query = "SELECT e.* , d.department_name from employees e inner join departments d "
+					+ "on e.department_id = d.department_id where quit_date is null order by EMPLOYEE_ID desc";
 			PreparedStatement pstmt = con.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
 
@@ -139,4 +140,29 @@ public class EmployeesDAOImpl implements EmployeesDAO {
 		
 		return result;
 	}
+
+	
+	@Override
+	public int deleteEmp(int empNo, Date now) throws NamingException, SQLException {
+		// 딜리트 구현하기
+		int result = 0;
+		
+		Connection con = DBConnection.dbconnect();
+		if (con != null) {
+		String query = "update employees set QUIT_DATE=? where employee_id=?";
+		
+		PreparedStatement pstmt = con.prepareStatement(query);
+		pstmt.setDate(1, now);
+		pstmt.setInt(2, empNo);
+		
+		result = pstmt.executeUpdate();
+		
+		DBConnection.dbClose(pstmt, con);
+		
+		}
+		
+		return result;
+	}
+
+	
 }

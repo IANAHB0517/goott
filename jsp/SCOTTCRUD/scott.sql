@@ -1,4 +1,4 @@
-
+select * from emp order by empno desc;
 
 CREATE OR REPLACE PROCEDURE PROC_SAVEEMP
 (
