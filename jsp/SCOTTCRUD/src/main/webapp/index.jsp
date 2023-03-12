@@ -16,7 +16,11 @@
 	  
 	  getAllEmp();
 	  
+	  
+	  
   })
+  
+  
   
   function getAllEmp(){
 	   $.ajax({
@@ -43,11 +47,13 @@
 	  $(".respCnt").html(json.cnt);
 	  $(".respDate").html(json.outputDate);
 		// 테이블 헤드 입력	  
-	  let outputTable = "<thead><tr><th>사번</th><th>이름</th><th>매니저</th><th>입사일</th><th>급여</th><th>커미션</th><th>부서번호</th></tr></thead><tbody>";
+	  let outputTable = "<thead><tr><th>사번</th><th>이름</th><th>직급</th><th>매니저</th><th>입사일</th><th>급여</th><th>커미션</th><th>부서번호</th></tr></thead><tbody>";
 	  
 	  //테이블 바디 입력
 	  $.each(json.emps, function(i, e) {
 		  outputTable += "<tr class='emp'>";
+		  
+			  outputTable += "<td>" + e.EMPNO + "</td>";
 			  outputTable += "<td>" + e.ENAME + "</td>";
 			  outputTable += "<td>" + e.JOB + "</td>";
 			  
@@ -55,7 +61,7 @@
 			  let mag = e.MGR;
 			  let magName = "";
 			  $.each(json.emps, function (i, item) {
-				  if (mag == item.ENAME) {
+				  if (mag == item.EMPNO) {
 		              // 직속상관을 찾은경우
 		              magName = item.ENAME;
 		            }
