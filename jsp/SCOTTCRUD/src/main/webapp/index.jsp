@@ -17,6 +17,42 @@
 	  getAllEmp();
 	  
 	  
+	  // 사원 입력 버튼 클릭시
+	  $(".writerIcon").click(function (){
+		  $("#writeModal").show(100);
+	  });
+	  
+	  // 사원 저장
+	  $("#addEmp").click(function (){
+		  alert("사원 저장");
+		  
+		  let ENAME = $("#writeEmpName").val()
+		  let JOB = $("#writeJobId").val()
+		  let MGR = $("#writeMng").val()
+		  let HIREDATE = $("#writeHdate").val()
+		  let SAL = $("#writeSal").val()
+		  let COMM = $("#writeComm").val()
+		  let DEPTNO = $("#writeDept").val()
+		  
+		  let emp = {
+			"ENAME" : ENAME ,
+			"JOB" : JOB ,
+			"MGR" : MGR ,
+			"HIREDATE" : HIREDATE ,
+			"SAL" : SAL ,
+			"COMM" : COMM ,
+			"DEPTNO" : DEPTNO
+		  }
+		  
+		  console.log(emp)
+	  });
+	  
+	  
+	  //모달 닫기
+	  $(".writeCloseBtn").click(function (){
+		  $("#writeModal").hide();
+	  });
+	  
 	  
   })
   
@@ -89,7 +125,11 @@
 	  
   }
   
-  
+  // 사원 입력
+  function addEmp(){
+	  
+	 
+  }
   
   
   </script>
@@ -122,6 +162,7 @@
 <div class="container">
   <h2>Scott EMP</h2>
   <p class="respSummary"> 응답 받은 데이터 갯수 :<span class="respCnt"> <span> </span> </span> 응답 일시 :<span class="respDate"> <span> </span> </span></p>            
+  
   <table class="table table-striped">
    
   </table>
@@ -129,6 +170,68 @@
   <div class="writerIcon">
         <img src="imgs/write.png" class="icon" />
       </div>
+</div>
+
+
+<!-- The Modal -->
+<div class="modal" id="writeModal" style="display: none">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="btn-close writeCloseBtn" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+      <label for="writeEmpName" class="form-label">이름</label>
+        <input type="text" id="writeEmpName" class="writeModalInput"  />
+      </div>
+      
+      <div class="modal-body">
+      <label for="writeJobId" class="form-label">직급</label>
+        <input type="text" id="writeJobId" class="writeModalInput"  />
+      </div>
+      
+      <div class="modal-body">
+      <label for="writeMng" class="form-label">매니저</label>
+        <input type="text" id="writeMng" class="writeModalInput"  />
+      </div>
+      
+      <div class="modal-body">
+      <label for="writeHdate" class="form-label">채용일</label>
+        <input type="date" id="writeHdate" class="writeModalInput"  />
+      </div>
+      
+      <div class="modal-body">
+      <label for="writeSal" class="form-label">급여 : $<span id="writeSalary"></span></label> </label>
+        <div id="salInput" style="display: none"></div>
+      </div>
+      
+      <div class="modal-body">
+      <label for="writeComm" class="form-label">상여금</label>
+        <input type="number" id="writeComm" class="writeModalInput orm-control" min="0.01" max="0.99" step="0.01"  />
+      </div>
+      
+      <div class="modal-body">
+      <label for="writeDept" class="form-label">부서</label>
+        <input type="text" id="writeDept" class="writeModalInput"  />
+      </div>
+      
+      
+      
+      
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" id="addEmp" class="btn btn-success" data-bs-dismiss="modal">Add</button>
+        <button type="button" class="btn btn-danger writeCloseBtn" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 </body>
 </html>

@@ -32,7 +32,10 @@ public class GetAllEmployeesServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		resp.setContentType("application/json; charset=utf-8"); // json 형식으로 응답
+		
 		PrintWriter out = resp.getWriter();
+		
+		
 		
 		String searchName = req.getParameter("searchName");
 		String order = req.getParameter("order");

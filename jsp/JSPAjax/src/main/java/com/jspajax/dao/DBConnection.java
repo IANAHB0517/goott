@@ -19,7 +19,7 @@ public class DBConnection {
 		Connection conn = ds.getConnection(); // context.xml에서 만들어진 connection 객체를 얻어옴
 		//etc.
 		
-		System.out.println(conn.toString());
+		System.out.println(conn.toString() + "Con 객체");
 		
 		return conn;
 		

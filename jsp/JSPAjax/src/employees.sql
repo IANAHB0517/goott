@@ -66,7 +66,7 @@ SELECT e.* , d.department_name from employees e inner join departments d
 on e.department_id = d.department_id where quit_date is null and employee_id = 207;
 -- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- 정렬 방법
-SELECT e.* , d.department_name from employees e inner join departments d on e.department_id = d.department_id where quit_date is null order by EMPLOYEE_ID desc
+SELECT e.* , d.department_name from employees e inner join departments d on e.department_id = d.department_id where quit_date is null order by EMPLOYEE_ID desc;
 
 
 -- ----------------------------------------------------------------------------------------------------------------------------------------------------------------

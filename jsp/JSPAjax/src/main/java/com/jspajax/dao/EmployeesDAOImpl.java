@@ -32,8 +32,8 @@ public class EmployeesDAOImpl implements EmployeesDAO {
 	@Override
 	public List<Employees> selecAllEmp(String searchName , String order) throws NamingException, SQLException {
 		
-		System.out.println(order + "DAO 단");
-		System.out.println(getClass().getName() + "DAO 단");
+		System.out.println(searchName + ";" + order + " DAO 단");
+		System.out.println("selecAllEmp DAO 단");
 
 		List<Employees> lst = new ArrayList<>();
 

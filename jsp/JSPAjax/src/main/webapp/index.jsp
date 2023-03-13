@@ -23,7 +23,7 @@ pageEncoding="UTF-8"%>
       let searchName = null;
 
       $(document).ready(function () {
-        getAllEmployees();
+        getAllEmployees(searchName, order);
         getJobsData();
         getDeptInfo();
         
@@ -324,10 +324,10 @@ pageEncoding="UTF-8"%>
     	  let url ="getAllEmployees.do";
     	  
     	  if (searchName != null || order != null){
-    		  url += "?";
+    		 url += "?";
     		  
     		  if(searchName != null) {
-    			  url +=  "searchName=" + searchName;
+    			  url +=  "searchName=" + searchName + "&";
     		  }
     		  if(order != null) {
     			  url +=  "order=" + order  ;    			  
