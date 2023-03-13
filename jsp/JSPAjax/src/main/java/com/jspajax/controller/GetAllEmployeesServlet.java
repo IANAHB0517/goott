@@ -33,11 +33,17 @@ public class GetAllEmployeesServlet extends HttpServlet {
 
 		resp.setContentType("application/json; charset=utf-8"); // json 형식으로 응답
 		PrintWriter out = resp.getWriter();
+		
+		String searchName = req.getParameter("searchName");
+		String order = req.getParameter("order");
+		
+		System.out.println(searchName);
+		System.out.println(order);
 
 		EmployeesDAO dao = EmployeesDAOImpl.getInstance();
 
 		try {
-			List<Employees> lst = dao.selecAllEmp();
+			List<Employees> lst = dao.selecAllEmp(searchName, order);
 
 			// Gson 라이브러리를 이용한 json 변환하기
 //			String outputJson = toJsonWithGson(lst);
@@ -80,7 +86,7 @@ public class GetAllEmployeesServlet extends HttpServlet {
 				employee.put("PHONE_NUMBER", e.getPHONE_NUMBER());
 
 				Date tempDate = e.getHIRE_DATE();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:MM:ss");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
 				sdf.format(tempDate);
 
 				employee.put("HIRE_DATE", sdf.format(tempDate));

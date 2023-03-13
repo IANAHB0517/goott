@@ -13,7 +13,7 @@ import com.jspajax.vo.JobsVo;
 public interface EmployeesDAO {
 	
 	// 모든 직원 정보를 얻어오는 메서드
-	public abstract List<Employees> selecAllEmp() throws NamingException, SQLException;
+	public abstract List<Employees> selecAllEmp(String searchName, String order) throws NamingException, SQLException;
 	
 	//모든 jobs 정보를 얻어오는 메서드
 	
@@ -27,4 +27,10 @@ public interface EmployeesDAO {
 	
 	// 사원을 삭제하는 메서드
 	int deleteEmp(int empNo, Date quitDate) throws NamingException, SQLException;
+	
+	//사번으로 해당 사원의 정보를 얻어오는 메서드
+	Employees selectEmpByEmpNo(int empNo) throws NamingException, SQLException;
+	
+	//사원 정보를 수정하는 메서드
+	int updateEmployee(Employees dto) throws NamingException, SQLException;
 }

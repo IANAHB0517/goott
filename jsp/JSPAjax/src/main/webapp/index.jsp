@@ -19,22 +19,82 @@ pageEncoding="UTF-8"%>
       let inputManagerId = "";
       let allDeptData = "";
       let inputDeptId = "";
+      let order = "EMPLOYEE_ID";
+      let searchName = null;
 
       $(document).ready(function () {
         getAllEmployees();
         getJobsData();
         getDeptInfo();
+        
+   		 // 정렬 순서 버튼 클릭시
+      	$(".orderRadio").click(function () {
+      		order = $(this).val();
+      		console.log(order);
+      		
+      		getAllEmployees(searchName, order);
+      	});
+        
+        // 사원 이름으로 검색시
+        $(".searchName").keyup(function (){
+        	searchName = $(this).val();
+        	if (searchName.length > 1) {
+        		// alert(searchName);
+        		getAllEmployees(searchName, order);
+        	}
+        });
 
         $(".icon").click(function () {
           // 사원 입력시 필요한 부가 정보를 바인딩
 
-          makeJobSelection();
-          makeMNGSelection();
-          makeDptSelection();
+          // 직급정보 동적 바인딩 및 출력
+          $("#writeJobId").html(makeJobSelection());
+       	  // 매니저정보 동적 바인딩 및 출력
+          $("#writeMANAGER").html(makeMNGSelection());
+          // 부서 정보 동적 바인딩 및 출력
+          $("#writeDEPARTMENT").html(makeDptSelection());
 
           $("#writeModal").show(500);
         });
 
+        // 사원 수정 버튼 클릭시
+        $(".modiBtn").click(function () {
+        	// 1) 유저가 입력한 값을 input 태그로부터 가져오기
+            let modiFirstName = $("#modiFirstName").val();
+            let modiLastName = $("#modiLastName").val();
+            let modiEmail = $("#modiEmail").val();
+            let modiPhoneNumber = $("#modiPhoneNumber").val();
+            let modiHireDate = $("#modiHireDate").val();
+            let modiJobId = $("#modiJobId").val();
+            let modiSalary = Number($("#modiSal").val());  // modiSal 안되면 이거 해보기
+            let modiCOMMISSION_PCT = $("#modiCOMMISSION_PCT").val();
+            let modiMANAGER = $("#modiMANAGER").val();
+            let modiDEPARTMENT = $("#modiDEPARTMENT").val();
+        	let empNo = $("#modiEmpNo").val();
+            
+            		
+                        let modiEmp = {
+                        		"Employee_id" : empNo,
+                          "FIRST_NAME": modiFirstName,
+                          "LAST_NAME": modiLastName,
+                          "EMAIL": modiEmail,
+                          "PHONE_NUMBER": modiPhoneNumber,
+                          "HIRE_DATE": modiHireDate,
+                          "JOB_ID": modiJobId,
+                          "SALARY": modiSalary,
+                          "COMMISSION_PCT": modiCOMMISSION_PCT,
+                          "MANAGER_ID": modiMANAGER,
+                          "DEPARTMENT_ID": modiDEPARTMENT
+                        };
+            		
+            
+            console.log(modiEmp)
+            
+            modifyEmployee(modiEmp);
+        });
+        
+      	
+      
         // 사원 저장 버튼 클릭시
         $(".writeBtn").click(function () {
           // 1) 유저가 입력한 값을 input 태그로부터 가져오기
@@ -44,7 +104,7 @@ pageEncoding="UTF-8"%>
           let writePhoneNumber = $("#writePhoneNumber").val();
           let writeHireDate = $("#writeHireDate").val();
           let writeJobId = inputJobId;
-          let writeSalary = Number($("#writeSalary").html());
+          let writeSalary = Number($("#writeSal").val());
           let writeCOMMISSION_PCT = $("#writeCOMMISSION_PCT").val();
           let writeMANAGER = inputManagerId;
           let writeDEPARTMENT = inputDeptId;
@@ -79,6 +139,7 @@ pageEncoding="UTF-8"%>
           }
         });
 
+    
        
         // 직급정보 입력시
         $("#writeJobId").change(function () {
@@ -92,17 +153,11 @@ pageEncoding="UTF-8"%>
             // options 속성 : select 태그 안에 있는 option 태그들 (배열 처럼 운용)
             // selectedIndex 속성 : 유저가 선택한 option 태그 번째.
 
-            let minSal = 0;
-            let maxSal = 0;
-            // 선택한 직급의 최소 최대 급여를 얻어옴
-            $.each(jobs.JOBS, function (i, e) {
-              if (inputJobId == e.JOB_ID) {
-                minSal = e.MIN_SALARY;
-                maxSal = e.MAX_SALARY;
-              }
-            });
-            console.log(minSal, maxSal);
-            makeSalInput(minSal, maxSal);
+            let salInfo = getSalInfo();
+            let output = makeSalInput(salInfo, null);
+            
+            $("#salInput").html(output);
+            $("#salInput").show();
           }
         });
 
@@ -168,20 +223,56 @@ pageEncoding="UTF-8"%>
         });
       });
 
+      function getSalInfo(){
+    	  let minSal = 0;
+          let maxSal = 0;
+          // 선택한 직급의 최소 최대 급여를 얻어옴
+          $.each(jobs.JOBS, function (i, e) {
+            if (inputJobId == e.JOB_ID) {
+              minSal = e.MIN_SALARY;
+              maxSal = e.MAX_SALARY;
+            }
+          });
+          console.log(minSal, maxSal);
+          
+          return {"minSal" : minSal,
+        	  "maxSal" : maxSal};
+      }
+      
       function changeSal(sal) {
         $("#writeSalary").html(sal); // span 태그에 선택한 값을 넣어줌
       }
 
       // 급여정보를 동적으로 태그에 바인딩
-      function makeSalInput(minSal, maxSal) {
-        let output =
-          "<input type='range' class='form-range' min='" +
-          minSal +
-          "' max='" +
-          maxSal +
-          "' id='writeSal' onchange='changeSal(this.value);' step='10'>";
-        $("#salInput").html(output);
-        $("#salInput").show();
+      function makeSalInput(salInfo, mode) {
+    	  let output = "";
+    	  
+    	  
+    	  if (mode == null){
+    		   output =
+    	          "<input type='range' class='form-range' min='" +
+    	          salInfo.minSal +
+    	          "' max='" +
+    	          salInfo.maxSal +
+    	          "' id='writeSal' onchange='changeSal(this.value);' step='10'>";
+    	  } else if (mode ="modi"){
+    		   output =
+    	          "<input type='range' class='form-range' min='" +
+    	          salInfo.minSal +
+    	          "' max='" +
+    	          salInfo.maxSal +
+    	          "' id='modiSal' onchange='modiChangeSal(this.value);' step='10'>";
+    		  
+    	  }
+    	  
+       
+          
+          return output;
+        
+      }
+      
+      function modiChangeSal(sal) {
+    	  $("#writeSalary").html(sal);
       }
 
       //직급 정보를 동적으로 select 태그에 바인딩
@@ -189,11 +280,12 @@ pageEncoding="UTF-8"%>
         let output = "<option value=''> -- 직급을 선택하세요 --- </option>";
         $.each(jobs.JOBS, function (i, etc) {
           output +=
-            "<option id = '" + etc.JOB_ID + "'>" + etc.JOB_TITLE + "</option>";
+            "<option id = '" + etc.JOB_ID + "'value='"+ etc.JOB_ID + "'>" + etc.JOB_TITLE + "</option>";
           //output += "<option>" + etc.JOB_TITLE + "</option>";
         });
 
-        $("#writeJobId").html(output);
+        return output;
+        
       }
 
       //매니저 정보를 동적으로 select 태그에 바인딩
@@ -202,16 +294,14 @@ pageEncoding="UTF-8"%>
 
         $.each(allEmpData.employees, function (i, etc) {
           output +=
-            "<option id = '" +
-            etc.EMPLOYEE_ID +
-            "'>" +
+            "<option id = '" + etc.EMPLOYEE_ID + "' value = '" + etc.EMPLOYEE_ID + "'>" +
             etc.FIRST_NAME +
             ", " +
             etc.LAST_NAME +
             "</option>";
         });
 
-        $("#writeMANAGER").html(output);
+        return output;
       }
 
       //부서 정보를 동적으로 select 태그에 바인딩
@@ -219,20 +309,33 @@ pageEncoding="UTF-8"%>
         let output = "<option value=''> -- 부서를 선택하세요 --- </option>";
         $.each(allDeptData.depts, function (i, etc) {
           output +=
-            "<option id = '" +
-            etc.DEPARTMENT_ID +
-            "'>" +
+            "<option id = '" + etc.DEPARTMENT_ID + "' value='"+ etc.DEPARTMENT_ID + "'>" +
             etc.DEPARTMENT_NAME +
             "</option>";
         });
 
-        $("#writeDEPARTMENT").html(output);
+    
+        
+        return output
       }
 
       // 모든 직원 데이터를 얻어오는 함수
-      function getAllEmployees() {
+      function getAllEmployees(searchName, order) {
+    	  let url ="getAllEmployees.do";
+    	  
+    	  if (searchName != null || order != null){
+    		  url += "?";
+    		  
+    		  if(searchName != null) {
+    			  url +=  "searchName=" + searchName;
+    		  }
+    		  if(order != null) {
+    			  url +=  "order=" + order  ;    			  
+    		  }
+    	  } 
+    	  console.log(url);
         $.ajax({
-          url: "getAllEmployees.do", // 데이터가 송수신될 서버의 주소 (서블릿의 매핑주소 작성)
+          url: url, // 데이터가 송수신될 서버의 주소 (서블릿의 매핑주소 작성)
           type: "GET", // 통신 방식 (GET, POST, PUT, DELETE)
           dataType: "json", // 수신받을 데이터 타입(MIME TYPE)
           success: function (data) {
@@ -242,7 +345,7 @@ pageEncoding="UTF-8"%>
             if (data.status == "fail") {
               alert("데이터를 불러오지 못했습니다!");
             } else if (data.status == "success") {
-              outputEntireEmployees(allEmpData);
+              outputEntireEmployees(allEmpData, searchName);
             }
           },
           error: function () {},
@@ -285,7 +388,7 @@ pageEncoding="UTF-8"%>
       }
 	
       // 모든 직원 데이터 파싱하여 출력하는 함수
-      function outputEntireEmployees(json) {
+      function outputEntireEmployees(json, sn) {
         $("#outputCnt").html("데이터 : " + json.count + "개");
         $("#outputDate").html("출력 일시 : " + json.outputDate);
 
@@ -299,6 +402,21 @@ pageEncoding="UTF-8"%>
         $.each(json.employees, function (i, item) {
           output += "<tr class='emp'>";
           output += "<td>" + item.EMPLOYEE_ID + "</td>";
+          if (sn == null) {
+        	   output += "<td>" + item.FIRST_NAME + ", " + item.LAST_NAME + "</td>";
+          } else if (sn != null){
+        	  let fullName = item.FIRST_NAME + ", " + item.LAST_NAME
+        	  let fi = fullName.indexOf(sn);
+        	          	  
+        	  let fName = fullName.split(sn)[0]
+        	  let bName = fullName.split(sn)[1];
+        	  
+        	  console.log(fullName, sn, fName, bName);
+        	  
+        	  
+        	   output += "<td>" + fName + "<mark>" + sn +"</mark>" + bName + "</td>";
+          }
+               output += "<td>" + item.EMAIL + "</td>";
           output += "<td>" + item.FIRST_NAME + ", " + item.LAST_NAME + "</td>";
           output += "<td>" + item.EMAIL + "</td>";
           output += "<td>" + item.PHONE_NUMBER + "</td>";
@@ -378,9 +496,31 @@ pageEncoding="UTF-8"%>
       }
       
       
-      
+      // 수정 모달 띄우기
       function modModalShow(empNo){
     	// alert(empNo);
+    	
+    	$.ajax({
+             url : "getEmp.do", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성)
+             type : "post", // 통신 방식 (GET, POST, PUT, DELETE)
+             data : {
+            	 "empNo" : empNo
+             }, // 서블릿에 전송할 데이터
+             dataType : "json", // 수신받을 데이터 타입(MIME TYPE)
+             success : function(data) { // 통신이 성공하면 수행할 함수(콜백 함수)
+                console.log(data);
+             
+             if(data.status == "success"){
+            	bindingDataModModal(data);
+            	
+             } else if (data.status == "fail"){
+            	 alert("저장에 실패 했습니다.");
+             }
+                
+             }
+          });
+    	
+    	
     	  $("#modiModal").show(500);
     	  $("#modiEmpNo").val(empNo);
       }
@@ -391,6 +531,73 @@ pageEncoding="UTF-8"%>
     	  $("#remEmpNO").html(empNo);
       }
       
+      // 수정할 사원 바인딩
+      function bindingDataModModal(data){
+    	  $("#modiFirstName").val(data.employee.FIRST_NAME);
+    	  $("#modiLastName").val(data.employee.LAST_NAME);
+    	  $("#modiEmail").val(data.employee.EMAIL);
+    	  $("#modiPhoneNumber").val(data.employee.PHONE_NUMBER);
+    	  
+    	  $("#modiHireDate").val(data.employee.HIRE_DATE.split(" ")[0]);
+    	  
+    	  $("#modiJobId").html(makeJobSelection());
+    	  $("#modiJobId").val(data.employee.JOB_ID);
+    	  
+
+    	  let minSal = 0;
+          let maxSal = 0;
+          // 선택한 직급의 최소 최대 급여를 얻어옴
+          $.each(jobs.JOBS, function (i, e) {
+            if (data.employee.JOB_ID == e.JOB_ID) {
+              minSal = e.MIN_SALARY;
+              maxSal = e.MAX_SALARY;
+            }
+            
+           let salInfo =  {"minSal" : minSal, "maxSal" : maxSal};          
+           
+           
+           $("#salModiInput").html(makeSalInput(salInfo, "modi"));
+           $("#salModiInput").show();
+            
+          });
+
+    	  $("#modiSalary").val(data.employee.SALARY);
+    	  
+    	  $("#modiCOMMISSION_PCT").val(data.employee.COMMISSION_PCT);
+    	 
+    	  $("#modiMANAGER").html(makeMNGSelection());
+    	  if (data.employee.MANAGER_ID != "0") {
+    	  $("#modiMANAGER").val(data.employee.MANAGER_ID);    		  
+    	  }
+    	  
+    	  $("#modiDEPARTMENT").html(makeDptSelection());
+    	  $("#modiDEPARTMENT").val(data.employee.DEPARTMENT_ID);
+    	  
+      }
+      
+      
+      //사원 수정 정보를 서블릿으로 요청하는 함수
+      function modifyEmployee(modiEmp){
+    	  $.ajax({
+              url : "ModiEmp.do", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성)
+              type : "get", // 통신 방식 (GET, POST, PUT, DELETE)
+              data : modiEmp, // 서블릿에 전송할 데이터
+              dataType : "json", // 수신받을 데이터 타입(MIME TYPE)
+              success : function(data) { // 통신이 성공하면 수행할 함수(콜백 함수)
+                 console.log(data);
+              
+              if(data.status == "success"){
+             	 $("#modiModal").hide();
+             	 getAllEmployees();
+              } else if (data.status == "fail"){
+             	 alert("수정에 실패 했습니다.");
+              }
+                 
+              }
+           });
+    	  
+    	  
+      }
       
       
     </script>
@@ -423,7 +630,19 @@ pageEncoding="UTF-8"%>
   <body>
     <div class="container">
       <h1>Employees CRUD with Ajax</h1>
-    </div>
+      
+	<div class="searchEmp">
+	<input type="text" class="form-control form-control-lg searchName" placeholder="input search Employees Name">
+	</div>
+	<!-- 숙제 -->
+	<div class="orderMethod">
+	<input class="form-check-input orderRadio" type="radio" id="radioNo" name="orderMethod" value="EMPLOYEE_ID" checked> 사번순
+	<input class="form-check-input orderRadio" type="radio" id="radioName" name="orderMethod" value="FIRST_NAME"> 이름순
+	<input class="form-check-input orderRadio" type="radio" id="radioHireDate" name="orderMethod" value="HIRE_DATE"> 입사일순
+	</div>
+      </div>
+      
+    
 
     <div class="row" style="border: 1px solid black; color: blue; margin: 10px">
       <div class="col-sm-3">

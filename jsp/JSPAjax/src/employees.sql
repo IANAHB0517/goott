@@ -20,7 +20,12 @@ select * from employees where employee_id=?;
 
 update employees set first_name=?, last_name=?, email=?, phone_number=?, hire_date=?, job_id=?, salary=?, commission_pct=?, manager_id=?, department_id=?
 where employee_id=?;
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 사원 입력
 
+insert into employees values(212, '수정', '용', 'dragonc', '010-0000-0003', '2023-03-13', 'AD_VP', 17000, 0.01, 100, 90, null);
+
+commit;
 -- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- 삭제 작업
 -- 1) 실제 delete 문을 사용해야하는 경우
@@ -49,6 +54,28 @@ SELECT e.* , d.department_name from employees e inner join departments d
 on e.department_id = d.department_id where quit_date is not null order by EMPLOYEE_ID desc;
 
 select * from employees where quit_date is null;
+
+
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 사원 수정
+
+SELECT e.* , d.department_name from employees e inner join departments d
+on e.department_id = d.department_id where quit_date is null and employee_id = ?;
+
+SELECT e.* , d.department_name from employees e inner join departments d
+on e.department_id = d.department_id where quit_date is null and employee_id = 207;
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 정렬 방법
+SELECT e.* , d.department_name from employees e inner join departments d on e.department_id = d.department_id where quit_date is null order by EMPLOYEE_ID desc
+
+
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 특정 이름으로 검색
+
+SELECT e.* , d.department_name from employees e inner join departments d
+on e.department_id = d.department_id where quit_date is null 
+and first_name like '%ev%' or last_name  like '%ev%'
+order by EMPLOYEE_ID desc;
 
 
 -- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
