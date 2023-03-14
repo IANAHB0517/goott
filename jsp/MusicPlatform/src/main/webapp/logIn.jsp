@@ -43,6 +43,8 @@ function getParameter(paramName) {
 </script>
 </head>
 <body>
+	<%@ include file="header.jsp"%>
+		<%@ include file="navbar.jsp"%>
 	<form action="LogIn.pg" method="post">
 		<div>
 			아이디 : <input type="text" name="userId" id="logInId">
@@ -55,5 +57,6 @@ function getParameter(paramName) {
 			<a href="signIn.jsp">회원가입</a>
 		</div>
 	</form>
+	<%@ include file="footer.jsp"%>
 </body>
 </html>

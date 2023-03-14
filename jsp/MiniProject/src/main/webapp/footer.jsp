@@ -13,11 +13,8 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div class="articleArea">
-	<%
-	out.println("<div>" + "Current Session : " + session.getId() + "</div>");
-	out.println("<div>" + "Current User : " + session.getAttribute("loginUser") + "</div>");
-	%>
-</div>
+	<div class="mt-5 p-4 bg-dark text-white text-center">
+		<p>Footer</p>
+	</div>
 </body>
 </html>
