@@ -2,6 +2,7 @@ package com.miniproj.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.miniproj.service.MemberService;
+import com.miniproj.vodto.MemberDTO;
 
 public class RegisterMemberService implements MemberService {
 
@@ -49,6 +51,7 @@ public class RegisterMemberService implements MemberService {
 		String userMobile = "";
 		String userGender = "";
 		String hobbies = "";
+		List<String> hobbyLst = new ArrayList<>();
 		String job = "";
 		String userImg = "";
 		String memo = "";
@@ -78,7 +81,7 @@ public class RegisterMemberService implements MemberService {
 			List<FileItem> lst = sfu.parseRequest(req);
 
 			for (FileItem fi : lst) {
-				// System.out.println(fi);
+				System.out.println(fi);
 
 				if (fi.isFormField()) { // 이미지가 아닌 데이터
 					if (fi.getFieldName().equals("userId")) {
@@ -101,14 +104,42 @@ public class RegisterMemberService implements MemberService {
 					} else if (fi.getFieldName().equals("memo")) {
 						memo = fi.getString(encoding);
 
+					} else if (fi.getFieldName().equals("hobby")) {
+						hobbyLst.add(fi.getString(encoding));
+
 					}
+					
+					
+					
+					
+					
 				} else { // isFormField() : false -> 이미지 파일
-					saveUserImg(fi, userId, realPath);
+					userImg = getNewFileName(fi, userId, realPath);
 				}
 
+				
+			};
+			
+			// 취미 여러개를 한개의 컬럼에 넣기위해서
+			for (int i = 0; i < hobbyLst.size(); i++) {
+				if (i != hobbyLst.size() - 1) {
+					hobbies += hobbyLst.get(i) + ",";
+					
+				} else {
+					hobbies += hobbyLst.get(i) ;
+				}
 			}
-			;
-			System.out.println(userId);
+			
+			MemberDTO member = new MemberDTO(userId, userPwd, userEmail, userMobile,
+					userGender, hobbies, job, userImg, memo);
+			
+			System.out.println(member.toString());
+			
+			// 업로드된 파일을 실제 저장
+			// DB에 insert
+			
+			
+//			System.out.println(userId);
 		} catch (FileUploadException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,14 +148,15 @@ public class RegisterMemberService implements MemberService {
 		return null;
 	}
 
-	private void saveUserImg(FileItem fi, String userId, String realPath) {
+	// 업로드된 파일의 이름을 중복되지 않는 이름을 반환
+	private String getNewFileName(FileItem fi, String userId, String realPath) {
 		long tmpFileSize = fi.getSize();// 파일 사이즈
 		String tmpFileName = fi.getName(); // 업로드된 이미지의 이름(확장자 포함)
 		String newFileName = ""; // 실제 저장되는 파일명
 		
 		if (tmpFileSize > 0) {
 			
-			// 파일 이름 처리를 어떻게 할 것이냐(같은 이름의 파일이 있으면 overwrite 되기 때문에
+			// 파일 이름 처리를 어떻게 할 것이냐(같은 이름의 파일이 있으 면 overwrite 되기 때문에
 			// 1) 아예 처음 부터 중복되지 않을 이름으로 저장하는 방법
 			// ex) "userId_유니크값.확장자"
 			
@@ -146,8 +178,8 @@ public class RegisterMemberService implements MemberService {
 			
 			System.out.println(newFileName);
 			
-			
 		}
+		return newFileName;
 	}
 
 	private String makeNewFileNameWithNumbering(String tmpFileName, int cnt) {
