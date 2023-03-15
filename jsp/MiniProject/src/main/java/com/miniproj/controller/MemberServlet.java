@@ -33,11 +33,15 @@ public class MemberServlet extends HttpServlet {
 		
 		System.out.println("요청된 서비스 : " + command);
 		
-		MemberFactory mf = MemberFactory.getInstance();
+		MemberFactory  mf = MemberFactory.getInstance();
 		MemberService service = mf.getService(command);
 		
 		if (service != null) {
-			service.execute(req, resp);
+			 mf = service.execute(req, resp);
+		}
+		
+		if (mf.isRedirect()) {
+			resp.sendRedirect(mf.getWhereisgo()); // 페이지 이동
 		}
 	}
 

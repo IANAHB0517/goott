@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 가입 페이지</title>
+
 <style>
         fieldset {
             padding: 10px;
@@ -26,6 +27,12 @@
     </style>
 
     <script>
+    
+    $(document).ready(function(){
+    	if(getParameter("status") == "fail"){
+    		alert("회원가입 실패!");
+    	}
+    });
         // 회원 가입 버튼을 아래의 조건에 따라 유효성 검사를 하고,
         // 유효하면 1-1_sub.html 페이지에 데이터를 전송하자
         // 아이디 : 4자 이상 8자 이하 필수(소문자로 저장)
@@ -39,164 +46,6 @@
         // 메모 : 가입인사. 안써도 됨.
         // 가입 조항 동의서에 반드시 체크가 되어 있을 것.
 
-        function validPwd(pwd1, pwd2) {
-            // 비밀번호 : 4자 이상 12자 이하 필수(비밀번호 확인과 동일할것)
-            let isValid = false;
-
-            if (pwd1 == "") {
-                outputError("비밀번호는 필수 입니다", $("#pwd1"));
-            } else if (pwd1.length < 4 || pwd1.length > 13) {
-                outputError("비밀번호는  4자 이상 12자 이하로 입력하세요", $("#pwd1"));
-            } else if (pwd1 != pwd2) {
-                outputError("비밀번호가 서로 맞지 않습니다", $("#pwd2"));
-            } else {
-                isValid = true;
-            }
-
-            return isValid;
-        }
-
-        function registerValid() {
-            // 폼태그 안에 있는 모든 입력 데이터를 회원가입 조건이 맞는지를 비교해서
-            // 모든 조건에 다 부합이 되면 true 반환
-            // 하나라도 조건에 만족하지 않는 데이터가 있다면 false 반환
-
-            let idCheck = validUserId($("#userId").val());
-
-            let pwdCheck = validPwd($("#pwd1").val(), $("#pwd2").val());
-
-            let emailCheck = validEmail($("#email").val());
-
-            let genderChk = validGender();
-
-
-
-            let hobbies = getHobby(); // 문자열
-            console.log(hobbies);
-
-            let job = getJob();
-
-
-            let isAgree = false;
-            if (document.getElementById("agree").checked) {  // 가입 동의에 체크가 되어 있다면...
-                isAgree = true;
-            } else {
-                outputError("가입 조항에 동의해주세요", $("#agree"));
-            }
-
-
-            let valid = false;
-            if (idCheck && pwdCheck && emailCheck && genderChk && job && isAgree) {
-                // 아이디 체크, 패스워드, 이메일, 성별, 직업, 가입조항의  모든 입력 데이터가 유효할 때만 submit이 되도록...
-                valid = true;
-            }
-
-            return valid;
-
-        }
-
-        function getJob() {
-            let isValid = false;
-            // selectedIndex : 유저가 select 태그의 옵션중에서 선택한 옵션의 index번호
-            console.log(document.getElementById("sel1").selectedIndex);
-            if (document.getElementById("sel1").selectedIndex == 0) {
-                outputError("직업을 선택하세요", $("#sel1"));
-            } else {
-                isValid = true;
-            }
-
-            return isValid;
-        }
-
-        function getHobby() {
-            let hobbies = "";
-            let hobbyArr = document.getElementsByName("hobby");
-            for (let i = 0; i < hobbyArr.length; i++) {
-                if (hobbyArr[i].checked == true) {
-                    hobbies += hobbyArr[i].value + ",";
-                }
-            }
-            console.log(hobbies);
-
-            return hobbies.substring(0, hobbies.length - 1);
-        }
-
-        function validGender() {
-            // 성별 : 남성 또는 여성 중에 하나가 반드시 체크 되어 있어야 한다.
-            let isValid = false;  // 성별 유효성 검사에 통
-            let radio1 = false;
-            let radio2 = false;
-
-            if (document.getElementsByName("gender")[0].checked) {
-                radio1 = true;
-            }
-
-            if (document.getElementsByName("gender")[1].checked) {
-                radio2 = true;
-            }
-
-            if (radio1 == false && radio2 == false) { // 아무곳도 체크가 안되었다면
-                outputError("성별을 선택하세요", $("#radio2"));
-            } else {
-                isValid = true;
-            }
-
-            return isValid;
-        }
-
-        function validEmail(email) {
-            // 이메일 : 이메일 주소 형식인지 아닌지 검사
-            let pattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-            let isValid = false;
-            if (!email.match(pattern)) {  // email이 pattern과 일치 하지 않느냐?
-                outputError("이메일 주소형식이 아니에요", $("#email"));
-            } else {
-                isValid = true;
-            }
-
-            return isValid;
-        }
-
-
-        function outputError(errorMsg, tagObj) {
-            // errorMsg를 tagObj객체 다음 요소에 삽입시켜 출력한다.
-            let err = `<div class='errMsg'>${errorMsg}</div>`;
-            $(err).insertAfter($(tagObj));
-            $(tagObj).focus();
-            $(".errMsg").hide(3000);
-        }
-
-        function validUserId(userId) {
-            //4자 이상 8자 이하 필수 
-
-            // 아이디가 3자 이하이거나, 9자 이상이거나, 아무것도 입력하지 않았을때 => 에러메지지 출력, 다시 입력
-
-
-            let idCheck = false;
-            if (userId == "" || userId.length < 1) { // 아이디가 입력되지 않았다
-                outputError("아이디는 필수로 입력하세요!", $("#userId"));
-            } else if (userId.length <= 3 || userId.length >= 9) {
-                outputError("4자 이상 8자 이하로 입력하세요!", $("#userId"));
-            } else {
-                idCheck = true;
-                // $("#userId").attr("readonly", "true"); // 요렇게 처리 하거나
-                // 체크 이미지를 추가하거나 input 태그에 배경색을 칠하거나....
-            }
-
-            // 아이디가 4자이상 8자이하이고, 0-9숫자A-Za-z 대소문자가 반드시 포함되어야 한다. 
-            // 이런 복잡한 문제는 if로 해결하지 말고, 정규식을 응용하자.
-            // let pattern = /^[A-Za-z0-9]{4,8}$/;
-            // if (pattern.test(userId)) {
-            //     // 아이디가 유효하다
-            //     console.log("유효");
-            // } else {
-            //     // 아이디가 유효하지 않다.
-            //     console.log("무효");
-            // }
-
-
-            return idCheck;
-        }
 
     </script>
 </head>
@@ -285,7 +134,7 @@
             </div>
 
             <div style="margin-top: 20px; text-align: center;">
-                <button type="submit" class="btn btn-success" onclick="return registerValid();">회원가입</button>
+                <button type="submit" class="btn btn-success" >회원가입</button>
                 <button type="reset" class="btn btn-warning">취소</button>
             </div>
         </form>

@@ -4,6 +4,24 @@ import com.miniproj.service.MemberService;
 
 public class MemberFactory {
 	private static MemberFactory instance = null;
+	private boolean isRedirect; // redirect 할것인지 말것인지
+	private String whereisgo; // 어느 페이지로 이동할것인지
+	
+	public String getWhereisgo() {
+		return whereisgo;
+	}
+
+	public void setWhereisgo(String whereisgo) {
+		this.whereisgo = whereisgo;
+	}
+
+	public boolean isRedirect() {
+		return isRedirect;
+	}
+
+	public void setRedirect(boolean isRedirect) {
+		this.isRedirect = isRedirect;
+	}
 
 	private MemberFactory() { }
 
