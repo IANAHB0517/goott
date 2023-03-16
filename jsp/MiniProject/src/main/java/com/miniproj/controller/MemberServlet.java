@@ -27,7 +27,9 @@ public class MemberServlet extends HttpServlet {
 		System.out.println("요청한 통신 방식 : " + req.getMethod()); 
 		
 		String requestUri = req.getRequestURI();
+		System.out.println("requestUri : " + requestUri);
 		String contextPath = req.getContextPath(); // Miniproject
+		System.out.println("contextPath : " + contextPath);
 		
 		String command = requestUri.substring(contextPath.length());
 		
@@ -40,9 +42,11 @@ public class MemberServlet extends HttpServlet {
 			 mf = service.execute(req, resp);
 		}
 		
-		if (mf.isRedirect()) {
+		if (mf != null && mf.isRedirect()) {
 			resp.sendRedirect(mf.getWhereisgo()); // 페이지 이동
 		}
+		
+		return;
 	}
 
 	@Override

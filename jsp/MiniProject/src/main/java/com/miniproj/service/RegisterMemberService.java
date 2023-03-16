@@ -1,4 +1,4 @@
-package com.miniproj.controller;
+package com.miniproj.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,10 +20,10 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 
+import com.miniproj.controller.MemberFactory;
 import com.miniproj.dao.MemberDAO;
 import com.miniproj.dao.MemberDAOImpl;
 import com.miniproj.error.CommonException;
-import com.miniproj.service.MemberService;
 import com.miniproj.vodto.MemberDTO;
 
 public class RegisterMemberService implements MemberService {
@@ -165,8 +165,11 @@ public class RegisterMemberService implements MemberService {
 		}
 
 		// 만약 base64문자열로 파일을 넣고 싶다면...
-		String strUpFilePath = realPath + File.separator + userImg;
-		makeFiletoBase64String(strUpFilePath, realPath, userImg);
+		if (userImg != "") {
+			String strUpFilePath = realPath + File.separator + userImg;
+			//makeFiletoBase64String(strUpFilePath, realPath, userImg);
+			
+		}
 
 		// DAO으로 전송하기 위해
 		MemberDTO member = new MemberDTO(userId, userPwd, userEmail, userMobile, userGender, hobbies, job, dbUserImg,
@@ -199,7 +202,12 @@ public class RegisterMemberService implements MemberService {
 				// NamingException 은 개발자 실수이기 때문에 개발자만 보도록 공통 에러페이지(error.jsp)를 만들었고
 				// 에러 정보를 error.jsp로 바인딩하여 error.jsp 페이지에서 에러 정보를 출력하였다.
 				// forward
-				CommonException ce = new CommonException(e.getMessage(), 99);
+				CommonException ce = new CommonException(e.getMessage(), 99); // 예외 정보를 바인딩
+				// throw 와 throws 가 각각 다르다
+				// throws는 예외를 넘겨주는 구문
+				// throw 는 컴퓨터가 예외라고 생각하지 않는 구문에서 강제로 예외가 발생한 것으로 간주하는 구문
+				// 여기서 throw를 사용하지 않은 이유는 이미 오류가 발생해서 코드가 실행중인 경우이기 때문이다. 
+				
 				ce.setErrorMsg(e.getMessage()); // 에러의 종류
 				ce.setStackTrace(e.getStackTrace()); // 에러 기록
 
@@ -208,6 +216,7 @@ public class RegisterMemberService implements MemberService {
 				req.getRequestDispatcher("../error.jsp").forward(req, resp); // 페이지 이동
 
 			} else if (e instanceof SQLException) {
+				// SQL Exception 은 대부분 실제 유저의 입력 오류로 인한 예외
 				mf.setRedirect(true);
 				mf.setWhereisgo("register.jsp?status=fail");
 				return mf;
@@ -247,7 +256,7 @@ public class RegisterMemberService implements MemberService {
 			e.printStackTrace();
 		}
 
-		return null;
+		return result;
 
 	}
 
