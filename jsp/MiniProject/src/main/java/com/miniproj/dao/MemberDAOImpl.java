@@ -10,6 +10,10 @@ import javax.naming.NamingException;
 import com.miniproj.vodto.LoginDTO;
 import com.miniproj.vodto.MemberDTO;
 
+/**
+ * @author goott
+ *
+ */
 public class MemberDAOImpl implements MemberDAO {
 	private static MemberDAOImpl instance = null;
 
@@ -23,6 +27,10 @@ public class MemberDAOImpl implements MemberDAO {
 		return instance;
 	}
 
+	/**
+	 * 실제 DB에 입력 받은 값들로 회원을 삽입
+	 * 그 때마다 새로운 회원에게 회원 가입 포인트 부여
+	 */
 	@Override
 	public int insertMember(MemberDTO dto) throws NamingException, SQLException {
 		int result =0;
@@ -87,6 +95,9 @@ public class MemberDAOImpl implements MemberDAO {
 		return result;
 	}
 
+	/**
+	 * userId로 회원 검색
+	 */
 	@Override
 	public int selectByUserId(String userId) throws NamingException, SQLException {
 		int result = 0;
@@ -113,6 +124,9 @@ public class MemberDAOImpl implements MemberDAO {
 		return result;
 	}
 
+	/**
+	 * 아이디와 비밀번호로 로그인
+	 */
 	@Override
 	public MemberDTO loginUser(LoginDTO dto) throws NamingException, SQLException {
 		MemberDTO member = null;
@@ -142,6 +156,10 @@ public class MemberDAOImpl implements MemberDAO {
 		return member;
 	}
 
+	/**
+	 * 회원 가입, 로그인, 게시글 작성 등 이벤트 발생시 종속적으로
+	 * 포인트를 부여하는 메서드
+	 */
 	@Override
 	public int addPoint(String userId, String why, Connection con) throws NamingException, SQLException {
 		// 종속적 모든 경우에서 Connection 객체가 있어야만 메서드가 실행된다.

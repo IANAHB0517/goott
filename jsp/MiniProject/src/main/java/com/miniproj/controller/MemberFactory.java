@@ -42,7 +42,7 @@ public class MemberFactory {
 	/**
 	 * 공통 서블릿에서 command를 받아 필요한 서비스단의 객체를 반환해주는 메서드
 	 * @param command : 공통 서블릿 단에서 주는 요청한 서비스 객체
-	 * 반환 값 타입 : 
+	 * 반환 값 타입 : MemberFactory
 	 */
 	public MemberService getService(String command) {
 		MemberService  service = null;

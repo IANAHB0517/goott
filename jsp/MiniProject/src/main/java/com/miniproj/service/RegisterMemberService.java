@@ -34,6 +34,10 @@ public class RegisterMemberService implements MemberService {
 	private static final int MAX_FILE_SIZE = 1024 * 1024 * 10; // 최대 파일 업로드 크기(10MB)
 	private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 15; // 최대 request 버퍼 크기(15MB)
 
+	/**
+	 * form 태그에 입력 데이터(텍스트, 이미지)를 request 객체로 부터 얻어옴
+	 * 
+	 */
 	@Override
 	public MemberFactory execute(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -239,6 +243,12 @@ public class RegisterMemberService implements MemberService {
 
 	}
 
+	/**
+	 * @param strUpFilePath
+	 * @param realPath
+	 * @param userImg
+	 * @return 파일을 base64 로 인코딩 해서 저장해줌
+	 */
 	private String makeFiletoBase64String(String strUpFilePath, String realPath, String userImg) {
 		// base64 문자열 : 이진 데이터 파일을 읽어서 A-Za-z0-9+/ 문자의 조랍으로 바꾼것
 		// 파일 -> 문자열로 표현
@@ -271,7 +281,13 @@ public class RegisterMemberService implements MemberService {
 
 	}
 
-	// 업로드된 파일의 이름을 중복되지 않는 이름을 반환
+	// 
+	/**
+	 * @param fi
+	 * @param userId
+	 * @param realPath
+	 * @return 업로드된 파일의 이름을 변환하여 중복되지 않는 이름으로 반환
+	 */
 	private String getNewFileName(FileItem fi, String userId, String realPath) {
 		long tmpFileSize = fi.getSize();// 파일 사이즈
 		String tmpFileName = fi.getName(); // 업로드된 이미지의 이름(확장자 포함)
@@ -304,6 +320,11 @@ public class RegisterMemberService implements MemberService {
 		return newFileName;
 	}
 
+	/**
+	 * @param tmpFileName
+	 * @param cnt
+	 * @return 중복된 파일명에 숫자를 붙여서 중복을 피하게 해주는 메서드
+	 */
 	private String makeNewFileNameWithNumbering(String tmpFileName, int cnt) {
 		String newFileName = "";
 		String ext = tmpFileName.substring(tmpFileName.lastIndexOf(".") + 1); // 확장자 얻어오기
@@ -320,7 +341,12 @@ public class RegisterMemberService implements MemberService {
 		return newFileName;
 	}
 
-	// tmpFileName의 파일이 realPath에 존재한다면 true, 아니면 false를 반환
+	/**
+	 * @param tmpFileName
+	 * @param realPath
+	 * @return
+	 * // tmpFileName의 파일이 realPath에 존재한다면 true, 아니면 false를 반환
+	 */
 	private boolean duplicateFileName(String tmpFileName, String realPath) {
 		boolean result = false;
 
@@ -336,6 +362,11 @@ public class RegisterMemberService implements MemberService {
 
 	}
 
+	/**
+	 * @param userId
+	 * @param tmpFileName
+	 * @return 파일이름을 임의의 고유 값으로 변경해줌 
+	 */
 	private String makeNewUniqueFileName(String userId, String tmpFileName) {
 		String newFileName;
 		String ext = tmpFileName.substring(tmpFileName.lastIndexOf(".") + 1);
