@@ -145,7 +145,7 @@ public class RegisterMemberService implements MemberService {
 			mf.setRedirect(true);
 			mf.setWhereisgo("register.jsp?status=fail");
 			return mf;
-
+			
 		}
 
 		// 취미 여러개를 한개의 컬럼에 넣기위해서
@@ -183,11 +183,22 @@ public class RegisterMemberService implements MemberService {
 
 		try {
 			if (dao.insertMember(member) == 1) {
-				// 회원 가입 잘됨
-				System.out.println("mf 값 할당!");
+				// 회원가입 잘됨
+				// System.out.println("mf 값 할당!");
+				// memberpoint 테이블에 회원가입 점수 부여 insert
+				
+				// 하지만 트랜잭션 처리를 위해 (Connection 객체가 서비스단에는 없기 때문에)
+				// -> DAO(insertMember) 에서 호출
+				
+				
+				// JSP 의 MVC 패턴의 최약점은 비지니스 로직을 풀어야 하는 Service 단에서는 connection 객체를 가지지 못하기 때문에 
+				// DB Transaction 처리를 하지 못해서 그 부분을 보안하기 위해서 Service 단에서 트랜잭션을 처리 할 수있도록 Spring에서 보안 되었다.
+				
+				// Transaction 처리를 하지 못해서 발생하는 문제는 비지니스 로직을 파악하기 위해서 Service 단 과 Dao 단을 모두 봐야하는 불편함이 발생한다.
+				// 저장 프로시져의 경우 MVC 패턴 내에서 비지니스 로직을 파악 할 수 없기 때문에 불편함이 발생한다.
 
-				mf.setRedirect(true);
-				mf.setWhereisgo("../index.jsp?status=success");
+				mf.setRedirect(true); // 리다이렉트
+				mf.setWhereisgo("../index.jsp?status=success"); // 이동하려는 페이지 설정
 			}
 		} catch (NamingException | SQLException e) {
 

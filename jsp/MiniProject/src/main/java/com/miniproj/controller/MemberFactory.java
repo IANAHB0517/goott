@@ -1,6 +1,8 @@
 package com.miniproj.controller;
 
+import com.miniproj.service.ConfirmCodeService;
 import com.miniproj.service.DulicateUserIdService;
+import com.miniproj.service.SendEmailService;
 import com.miniproj.service.LoginMemberService;
 import com.miniproj.service.LogoutMemberService;
 import com.miniproj.service.MemberService;
@@ -53,8 +55,11 @@ public class MemberFactory {
 			service = new DulicateUserIdService();
 		} else if (command.equals("/member/logout.mem")) {
 			service = new LogoutMemberService();
+		} else if (command.equals("/member/sendMail.mem")) { // 인증 코드를 메일로 보내주는 서비스
+			service = new SendEmailService();
+		} else if (command.equals("/member/confirmCode.mem")) { // 인증 코드 확인 서비스
+			service = new ConfirmCodeService();
 		}
-		
 		return service;
 	}
 }

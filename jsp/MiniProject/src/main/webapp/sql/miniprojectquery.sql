@@ -130,6 +130,15 @@ insert into memberpoint(who, why, howmuch)
 values('abcde123', '회원가입', 100);
 
 
+-- ----------------- 
 
+-- 회원가입시 포인트 부여
+insert into memberpoint (who, why, howmuch)
+values (?, '회원가입', (select howmuch from pointpolicy where why ='회원가입'));
+
+
+
+-- 테이블 조회
+use lsj;
 select * from member;
-
+select * from memberpoint;

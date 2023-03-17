@@ -144,7 +144,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         let idValid = idCheck();
         let pwd1Valid = validPwd1();
         let pwd2Valid = validPwd2();
-        let emailValid = validEmail();
+        let emailValid = validEmail(); // 이메일 유효성 검사
+        let isUsedMail = $("#isUseMail").val();
         let mobileValid = validMobile();
         let imgValid = validImg();
         let isAgreed = false;
@@ -161,6 +162,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           emailValid &&
           mobileValid &&
           imgValid &&
+          isUsedMail =="Y" &&
           isAgreed
         ) {
           allCheckOk = true;
@@ -173,6 +175,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           emailValid,
           mobileValid,
           imgValid,
+          isUsedMail,
           isAgreed
         );
         return allCheckOk;
@@ -207,6 +210,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         } else {
           isValid = true;
           clearError($("#email"));
+          
+          $(".confirmMailDiv").show(200);
         }
 
         return isValid;
@@ -302,6 +307,53 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         }
         // $(".errMsg").hide(3000);
       }
+      
+      function sendMail(){
+    	  let mailAddr = $("#email").val();
+    	  $.ajax({
+              url: "sendMail.mem", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성) // 기능을 구현할때 먼저 상의해서 정의해야함
+              type: "post", // 통신 방식 (GET, POST, PUT, DELETE)
+              data: {
+               "mailAddr" : mailAddr
+              }, // 서블릿에 전송할 데이터
+              dataType: "json", // 수신받을 데이터 타입(MIME TYPE)
+              success: function (data) {
+                // 통신이 성공하면 수행할 함수(콜백 함수)
+                console.log(data);
+
+                if (data.status == "success") {
+                alert("이메일이 전송되었습니다!");
+                } else if (data.status == "fail") {
+                  alert("잠시 후, 다시 시도해 주세요");
+                }
+              },
+            });
+    	  
+      }
+      
+      function confirmCode() {
+    	  let uic = $("#userInputCode").val();
+    	  
+    	  $.ajax({
+              url: "confirmCode.mem", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성) // 기능을 구현할때 먼저 상의해서 정의해야함
+              type: "post", // 통신 방식 (GET, POST, PUT, DELETE)
+              data: {
+               "uic" : uic
+              }, // 서블릿에 전송할 데이터
+              dataType: "json", // 수신받을 데이터 타입(MIME TYPE)
+              success: function (data) {
+                // 통신이 성공하면 수행할 함수(콜백 함수)
+                console.log(data);
+
+                if (data.status == "success") {
+                alert("사용 가능한 메일입니다");
+                $("#isUseMail").val("Y");
+                } else if (data.status == "fail") {
+                  alert("메일 주소를 확인하시고 다시 시도하세요");
+                }
+              },
+            });
+      }
 
       // 비밀번호 : 4자 이상 12자 이하 필수(비밀번호 확인과 동일할것)
       // 이름 : 필수 항목
@@ -364,6 +416,30 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             name="email"
           />
           <div class="errMsg"></div>
+          <input type="hidden" value="N" id="isUseMail">
+          <div class="confirmMailDiv" style="display:none">
+          <div style="margin-top: 20px; text-align: center">
+          <button
+            type="button"
+            class="btn btn-success"
+            onclick="sendMail();"
+          >이메일 발송</button> <!-- 하나의 폼태그 안에는 서브밋과 리셋은 하나씩 만가능 -->
+          <input
+            type="text"
+            class=""
+            id="userInputCode"
+            placeholder="이메일로 발송된 코드 입력"
+            name="userInputCode"
+          />
+           <button
+           id ="uicBtn"
+            type="button"
+            class="btn btn-success"
+            onclick="confirmCode();"
+          >확인</button> 
+           
+          </div>
+          </div>
         </div>
 
         <div class="mb-3 mt-3">
