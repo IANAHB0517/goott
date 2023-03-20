@@ -20,7 +20,7 @@ public class LoginMemberService implements MemberService {
 	@Override
 	public MemberFactory execute(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		System.out.println("회원 로그인 처리 하자~");
+//		System.out.println("회원 로그인 처리 하자~");
 
 		MemberFactory mf = MemberFactory.getInstance();
 
@@ -31,7 +31,7 @@ public class LoginMemberService implements MemberService {
 		System.out.println(dto.toString());
 
 		try {
-			MemberDTO loginMember = MemberDAOImpl.getInstance().loginUser(dto);
+			MemberDTO loginMember = MemberDAOImpl.getInstance().loginWithTransaction(dto);
 			if (loginMember != null) { // 로그인 성공
 				System.out.println("로그인 성공!");
 				// 로그인한 유저으 ㅣ정보를 세션 객체에 바인딩

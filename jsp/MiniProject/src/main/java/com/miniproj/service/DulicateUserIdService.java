@@ -24,6 +24,7 @@ public class DulicateUserIdService implements MemberService {
 	@Override
 	public MemberFactory execute(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		
 
 		MemberFactory mf = MemberFactory.getInstance();
 
@@ -31,13 +32,13 @@ public class DulicateUserIdService implements MemberService {
 		PrintWriter out = resp.getWriter();
 
 		String userId = req.getParameter("userId");
-		System.out.println("서비스 단 : " + userId + "값이 중복 되는지 검사");
+//		System.out.println("서비스 단 : " + userId + "값이 중복 되는지 검사");
 
 		JSONObject json = new JSONObject();
 
 		try {
 			int result = MemberDAOImpl.getInstance().selectByUserId(userId);
-			System.out.println("=============" + result + " : DB에 중복된 유저수 ============= ");
+//			System.out.println("=============" + result + " : DB에 중복된 유저수 ============= ");
 
 			json.put("status", "success");
 
@@ -48,7 +49,7 @@ public class DulicateUserIdService implements MemberService {
 
 			}
 
-		//	out.print(json.toJSONString());
+			out.print(json.toJSONString());
 
 		} catch (NamingException | SQLException e) {
 			if (e instanceof NamingException) {

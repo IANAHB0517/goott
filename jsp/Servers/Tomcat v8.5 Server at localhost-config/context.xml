@@ -30,11 +30,8 @@
 		type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
 		url="jdbc:oracle:thin:@127.0.0.1:1521:xe" username="scott"
 		password="1234" maxTotal="20" maxIdle="10" maxWaitMillis="-1" />
-		
-		<Resource name="jdbc/MuseCon" auth="Container"
-		type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
-		url="jdbc:oracle:thin:@127.0.0.1:1521:xe" username="scott"
-		password="1234" maxTotal="20" maxIdle="10" maxWaitMillis="-1" />
+
+
 
 	<!-- mysql DB 사용을 위한 JNDI 설정 -->
 	<Resource name="jdbc/mySQL" auth="Container"
@@ -42,10 +39,16 @@
 		maxWaitMillis="10000" username="root" password="1234"
 		driverClassName="com.mysql.cj.jdbc.Driver"
 		url="jdbc:mysql://localhost:3306/lsj?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8" />
-		<!-- xml에서는 &를 사용할 때 &amp; 이렇게 사용해야 한다 -->
-		<!-- 타임존을 설정 해주어야 한다 serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8 -->
-		<!-- ssl 예외를 처리하기위해서 useSSL=false&amp; -->
-		<!-- driverClassName="com.mysql.cj.jdbc.Driver" 삭제된 드라이버를 현재의 버전 드라이버로 바꿔준다. -->
-		
+	<!-- xml에서는 &를 사용할 때 &amp; 이렇게 사용해야 한다 -->
+	<!-- 타임존을 설정 해주어야 한다 serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8 -->
+	<!-- ssl 예외를 처리하기위해서 useSSL=false&amp; -->
+	<!-- driverClassName="com.mysql.cj.jdbc.Driver" 삭제된 드라이버를 현재의 버전 드라이버로 바꿔준다. -->
+
+	<Resource name="jdbc/mySQL2" auth="Container"
+		type="javax.sql.DataSource" maxTotal="100" maxIdle="30"
+		maxWaitMillis="10000" username="root" password="1234"
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/selfproj?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8" />
+
 
 </Context>

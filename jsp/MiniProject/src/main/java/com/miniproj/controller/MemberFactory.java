@@ -6,6 +6,7 @@ import com.miniproj.service.SendEmailService;
 import com.miniproj.service.LoginMemberService;
 import com.miniproj.service.LogoutMemberService;
 import com.miniproj.service.MemberService;
+import com.miniproj.service.MyPageMemberService;
 import com.miniproj.service.RegisterMemberService;
 
 public class MemberFactory {
@@ -53,13 +54,15 @@ public class MemberFactory {
 			service = new RegisterMemberService();
 		} else if (command.equals("/member/duplicateUserId.mem")) {
 			service = new DulicateUserIdService();
-		} else if (command.equals("/member/logout.mem")) {
+		} else if (command.equals("/logout.mem")) {
 			service = new LogoutMemberService();
 		} else if (command.equals("/member/sendMail.mem")) { // 인증 코드를 메일로 보내주는 서비스
 			service = new SendEmailService();
 		} else if (command.equals("/member/confirmCode.mem")) { // 인증 코드 확인 서비스
 			service = new ConfirmCodeService();
-		}
+		} else if (command.equals("/member/myPage.mem")) { // 마이 페이지
+			service = new MyPageMemberService();
+		} 
 		return service;
 	}
 }

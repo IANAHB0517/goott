@@ -116,11 +116,12 @@
 				<Valve className="org.apache.catalina.valves.AccessLogValve"
 					directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b"
 					prefix="localhost_access_log" suffix=".txt" />
+					
 				<Context docBase="MiniProject" path="/MiniProject"
 					reloadable="true" source="org.eclipse.jst.jee.server:MiniProject" />
-				<Context docBase="MusicPlatform" path="/MusicPlatform"
-					reloadable="true" source="org.eclipse.jst.jee.server:MusicPlatform" />
 
+				<Context docBase="SelfProject" path="/SelfProject"
+					reloadable="true" source="org.eclipse.jst.jee.server:SelfProject" />
 			</Host>
 		</Engine>
 	</Service>

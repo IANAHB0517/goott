@@ -6,19 +6,12 @@ drop table member;
 drop table rent;
 drop table video;
 
--- 테이블 생성
-CREATE TABLE `member` (
-  `userId` varchar(8) NOT NULL,
-  `userPwd` varchar(200) NOT NULL,
-  `userEmail` varchar(50) NOT NULL,
-  `userMobile` varchar(13) DEFAULT NULL,
-  `userGender` varchar(1) NOT NULL,
-  `hobbies` varchar(100) DEFAULT NULL,
-  `job` varchar(20) DEFAULT NULL,
-  `userImg` varchar(100) DEFAULT 'uploadMember/noimg.png',
-  `memo` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- 관리자 컬럼생성
+ALTER TABLE `lsj`.`member` 
+ADD COLUMN `isAdmin` VARCHAR(1) NULL DEFAULT 'N' AFTER `memo`;
+
 
 -- 패스워드 암호화
 select md5('1234'); -- md5 알고리즘으로 암호화
@@ -75,6 +68,29 @@ CREATE TABLE `pointpolicy` (
   PRIMARY KEY (`why`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
+-- 로그인 기록 테이블
+CREATE TABLE `latestloginlog` (
+  `who` varchar(8) NOT NULL,
+  `latestlogindate` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`who`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 멤버포인트 테이블 생성
+CREATE TABLE `member` (
+  `userId` varchar(8) NOT NULL,
+  `userPwd` varchar(200) NOT NULL,
+  `userEmail` varchar(50) NOT NULL,
+  `userMobile` varchar(13) DEFAULT NULL,
+  `userGender` varchar(1) NOT NULL,
+  `hobbies` varchar(100) DEFAULT NULL,
+  `job` varchar(20) DEFAULT NULL,
+  `userImg` varchar(100) DEFAULT 'uploadMember/noimg.png',
+  `memo` varchar(200) DEFAULT NULL,
+  `isAdmin` varchar(1) DEFAULT 'N',
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- 포인트 테이블
 INSERT INTO `lsj`.`pointpolicy` (`why`, `howmuch`) VALUES ('회원가입', '100');
 INSERT INTO `lsj`.`pointpolicy` (`why`, `howmuch`) VALUES ('로그인', '10');
@@ -98,6 +114,9 @@ ADD CONSTRAINT `who_fk`
   
   alter table memberpoint
   add constraint memberpoint_howmuch_fk foreign key(howmuch) references pointpolicy(howmuch);
+  
+  alter table latestloginlog
+  add constraint member_userId_fk foreign key(who) references member(userId);
 
 -- -----------------
 ALTER TABLE `lsj`.`memberpoint` 
@@ -131,14 +150,39 @@ values('abcde123', '회원가입', 100);
 
 
 -- ----------------- 
-
+-- 포인트 부여
 -- 회원가입시 포인트 부여
 insert into memberpoint (who, why, howmuch)
 values (?, '회원가입', (select howmuch from pointpolicy where why ='회원가입'));
 
+-- 최근 로그인 한 날짜가 바뀌었는가?
+select datediff(now(), (select latestlogindate from latestloginlog where who='a1a1'));
 
+-- 회원 가입후 처음 로그인 하면 -1
+select ifnull(a.diff, -1) as datediff from (select datediff(now(), (select latestlogindate from latestloginlog where who= 'kimlay')) as diff) a;
+
+-- 처음 로그인 x, 로그인 하고 날짜가 바뀌었으면 > 0
+select datediff(now(), (select latestlogindate from latestloginlog where who='a1a1'))  as diff;
+
+-- 처음 로그인 x, 로그인 하고 날짜가 바뀌지 않았으면 0
+
+-- 처음 로그인 한 사람 로그인 기록 남기는 sql문
+insert into latestloginlog(who) values (?);
+
+-- 기존 로그인기록이 있는 사람 update 하는 sql문
+update latestloginlog set latestlogindate = now() where who=?;
+
+select TIMESTAMPDIFF(day, now(), (select latestlogindate from latestloginlog where who='kimlay')) as diff;
+
+-- 로그인한 회원의 전체 정보 조회
+select * from member where userId = ?;
+
+-- 유저 아이디로 포인트 내역 가져오기
+select * from memberpoint where who = ? order by no desc;
 
 -- 테이블 조회
 use lsj;
 select * from member;
 select * from memberpoint;
+select * from latestloginlog;
+
