@@ -1,4 +1,4 @@
-package com.miniproj.service;
+package com.miniproj.member.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.miniproj.controller.MemberFactory;
-import com.miniproj.dao.MemberDAOImpl;
 import com.miniproj.error.CommonException;
+import com.miniproj.member.controller.MemberFactory;
+import com.miniproj.member.dao.MemberDAOImpl;
 import com.miniproj.vodto.LoginDTO;
 import com.miniproj.vodto.MemberDTO;
 
@@ -38,7 +38,9 @@ public class LoginMemberService implements MemberService {
 				HttpSession ses = req.getSession();
 				ses.setAttribute("loginMember", loginMember);
 
-				req.getRequestDispatcher("../index.jsp").forward(req, resp);
+
+				mf.setRedirect(true);
+				mf.setWhereisgo("../index.jsp");
 
 			} else {
 				mf.setRedirect(true);

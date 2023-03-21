@@ -1,4 +1,4 @@
-package com.miniproj.service;
+package com.miniproj.member.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;import org.apache.coyote.http11.upgrade.UpgradeServletOutputStream;
 import org.json.simple.JSONObject;
 
-import com.miniproj.controller.MemberFactory;
 import com.miniproj.etc.SendMail;
+import com.miniproj.member.controller.MemberFactory;
 
 public class SendEmailService implements MemberService {
 

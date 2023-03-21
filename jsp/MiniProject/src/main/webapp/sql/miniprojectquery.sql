@@ -180,9 +180,76 @@ select * from member where userId = ?;
 -- 유저 아이디로 포인트 내역 가져오기
 select * from memberpoint where who = ? order by no desc;
 
+-- 회원 탈퇴하기 -- fk 제약땜에 삭제가 안됨			
+delete from member where userId = '?';
+
 -- 테이블 조회
 use lsj;
 select * from member;
 select * from memberpoint;
 select * from latestloginlog;
+SELECT * FROM lsj.pointpolicy;
+select * from board;
+
+
+-- ==========================================================================================================================================================================
+
+-- 계층형 게시판 구현
+-- 게시판 테이블 생성alter
+CREATE TABLE `lsj`.`board` (
+  `no` INT NOT NULL AUTO_INCREMENT,
+  `writer` VARCHAR(8) NOT NULL,
+  `title` VARCHAR(100) NOT NULL,
+  `postDate` DATETIME NULL DEFAULT now(),
+  `content` VARCHAR(500) NOT NULL,
+  `imgFile` VARCHAR(50) NULL,
+  `readcount` INT NOT NULL DEFAULT 0,
+  `likecount` INT NOT NULL DEFAULT 0,
+  `ref` INT NOT NULL DEFAULT 0, -- 부모글을 참조
+  `step` INT NOT NULL DEFAULT 0, -- 답글의 깊이 -- 가로순
+  `reforder` INT NOT NULL DEFAULT 0, -- 부모글과 답글을 보여주는 순서 -- 세로순
+  PRIMARY KEY (`no`));
+  
+  -- member, board 테이블 관계 설정
+  alter table board
+  add constraint board_writer_fk
+  foreign key (writer)
+  references member(userId)
+  on delete cascade;
+  
+  -- 게시글 삭제
+  delete from board where no = ?;
+
+-- 게시판에 글 등록(부모글) 하는 쿼리문
+insert into board(writer, title, content, imgFile, ref)
+values ('kimlay', '1번글', 'ㅎ2', '', (select max(no) + 1 from board));
+
+commit;
+-- ref 컬럼은 부모글을 참조하는 컬럼이다. 답글이 아닌 부모글을 쓸 때는 자기 자신의 글 번호(no)와 
+-- 같은 값을 가지도록 해야한다.
+
+select max(no) + 1 from board;
+
+insert into board(writer, title, content, imgFile, ref)
+values ('abcd1230', '1번 놓침', 'hello', '', 2);
+
+--  이렇게 하면 되는데 왜 안할까...
+insert into board(writer, title, content, imgFile, ref)
+values ('abcd1230', '왜 이렇게 안하나..', 'hello', '', (select max(b.no) + 1 from board b));
+-- 위의 경우 같은 테이블을 참조 하는 것을 속여서 각각 다른 테이블에서 가져오는 것 처럼 속이는 방법
+
+-- 테이블을 운용하기 위한 정보를 모아놓은 테이블에서 값을 가지고 오는 법
+insert into board(writer, title, content, imgFile, ref)
+values ('abcd1230', '이렇게 하면되나', 'hello', '',
+(select auto_increment from information_schema.tables where table_schema = 'lsj' and table_name = 'board'));
+
+-- 하지만 위의 두 경우 모두 오류 발생의 위험이 있어서 먼저 no 값을 가져와서 ref에 넣어 주도록 한다.
+
+-- 게시판 전체 글 목록을 보여주는 쿼리문
+select * from board order by no desc;
+
+
+-- ?번 글을 조회하는 쿼리문
+select * from board where no =?;
+
 

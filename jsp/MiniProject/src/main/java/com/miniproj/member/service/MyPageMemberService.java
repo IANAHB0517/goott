@@ -1,4 +1,4 @@
-package com.miniproj.service;
+package com.miniproj.member.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.miniproj.controller.MemberFactory;
-import com.miniproj.dao.MemberDAO;
-import com.miniproj.dao.MemberDAOImpl;
+import com.miniproj.member.controller.MemberFactory;
+import com.miniproj.member.dao.MemberDAO;
+import com.miniproj.member.dao.MemberDAOImpl;
 import com.miniproj.vodto.MemberDTO;
 import com.miniproj.vodto.MemberPointVo;
 

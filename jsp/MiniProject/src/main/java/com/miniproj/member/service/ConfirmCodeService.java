@@ -1,4 +1,4 @@
-package com.miniproj.service;
+package com.miniproj.member.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
-import com.miniproj.controller.MemberFactory;
+import com.miniproj.member.controller.MemberFactory;
 
 public class ConfirmCodeService implements MemberService {
 

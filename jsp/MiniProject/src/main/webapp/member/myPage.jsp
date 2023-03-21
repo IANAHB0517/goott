@@ -54,7 +54,7 @@
 				</div></li>
 			<li class="nav-item"><a class="nav-link" href="#"
 				onclick="showPoint();">포인트 적립내역</a>
-				<div class="memberPoint">${memberpoint}
+				<div class="memberPoint">
 					<table class="table table-striped">
 						<thead>
 							<tr>

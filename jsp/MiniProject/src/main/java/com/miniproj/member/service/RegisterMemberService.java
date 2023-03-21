@@ -1,4 +1,4 @@
-package com.miniproj.service;
+package com.miniproj.member.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +20,9 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 
-import com.miniproj.controller.MemberFactory;
-import com.miniproj.dao.MemberDAO;
-import com.miniproj.dao.MemberDAOImpl;
+import com.miniproj.member.controller.MemberFactory;
+import com.miniproj.member.dao.MemberDAO;
+import com.miniproj.member.dao.MemberDAOImpl;
 import com.miniproj.error.CommonException;
 import com.miniproj.vodto.MemberDTO;
 

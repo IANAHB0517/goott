@@ -1,4 +1,4 @@
-package com.miniproj.controller;
+package com.miniproj.member.controller;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.miniproj.service.MemberService;
+import com.miniproj.member.service.MemberService;
 
 @WebServlet("*.mem") // .mem으로 끝나는 모든 매핑 주소에 대해 현재의 서블릿이 동작한다는 것을 의미
 public class MemberServlet extends HttpServlet {

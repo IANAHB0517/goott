@@ -1,4 +1,4 @@
-package com.miniproj.dao;
+package com.miniproj.member.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

@@ -1,4 +1,4 @@
-package com.miniproj.service;
+package com.miniproj.member.service;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.miniproj.controller.MemberFactory;
+import com.miniproj.member.controller.MemberFactory;
 
 public class LogoutMemberService implements MemberService {
 

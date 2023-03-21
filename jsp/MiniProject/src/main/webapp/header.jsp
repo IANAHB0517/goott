@@ -26,6 +26,7 @@
 	</style>
 </head>
 <body>
+	<!-- 어떤 페이지에서 어떤 탭을 누르더라도 이동이 원할 하도록 해주는 것이 contextPath 이다 잘 사용해야 한다 -->
 	<c:set var="contextPath" value="<%=request.getContextPath()%>" />
 	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 		<div class="container-fluid">
@@ -39,7 +40,7 @@
 					<li class="nav-item"><a class="nav-link"
 						href="${contextPath}/member/register.jsp">회원가입</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="javascript:void(0)">게시판</a></li>
+						href="${contextPath}/board/listAll.bo">게시판</a></li>
 						<c:choose>
 							<c:when test="${sessionScope.loginMember != null }">
 								

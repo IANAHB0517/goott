@@ -1,4 +1,4 @@
-package com.miniproj.service;
+package com.miniproj.member.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 import com.google.gson.JsonObject;
-import com.miniproj.controller.MemberFactory;
-import com.miniproj.dao.MemberDAOImpl;
 import com.miniproj.error.CommonException;
+import com.miniproj.member.controller.MemberFactory;
+import com.miniproj.member.dao.MemberDAOImpl;
 
 import netscape.javascript.JSObject;
 
