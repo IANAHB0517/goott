@@ -1,6 +1,5 @@
 package com.miniproj.member.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
-import com.google.gson.JsonObject;
 import com.miniproj.error.CommonException;
 import com.miniproj.member.controller.MemberFactory;
 import com.miniproj.member.dao.MemberDAOImpl;
