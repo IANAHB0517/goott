@@ -129,11 +129,13 @@ public class BoardWriteService implements BoardService {
 		String dbUserImg = "";
 		// DB에 insert 하기 전 업로드된 파일이 있는지?
 		if (!imgFile.equals("")) { // 업로드된 이미지가 존재 한다면
-			dbUserImg = "board/img" + imgFile; // DB에 경로까지 포함해서 insert 한다.
+			dbUserImg ="board/imgs/" + imgFile; // DB에 경로까지 포함해서 insert 한다.
 		}
 
 		int ref = BoardDAOImpl.getInstance().getNextRef();
 
+		content = content.replace("\n", "<br />"); // 개행 문자를 줄 바꿈 태그로 변환해줌
+		
 		// DAO으로 전송하기 위해
 		BoardVo board = new BoardVo(0, writer, title, null, content, dbUserImg, 0, 0, ref, 0, 0);
 

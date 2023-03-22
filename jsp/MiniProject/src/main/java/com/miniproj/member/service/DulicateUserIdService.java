@@ -17,7 +17,7 @@ import com.miniproj.error.CommonException;
 import com.miniproj.member.controller.MemberFactory;
 import com.miniproj.member.dao.MemberDAOImpl;
 
-import netscape.javascript.JSObject;
+// import netscape.javascript.JSObject;
 
 public class DulicateUserIdService implements MemberService {
 

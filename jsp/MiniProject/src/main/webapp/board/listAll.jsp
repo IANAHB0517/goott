@@ -30,6 +30,9 @@
 </style>
 </head>
 <body>
+<c:if test="${requestScope.boardList == null}"> <!-- 포트폴리오에 꼭 넣을 것 -->
+	<c:redirect url="listAll.bo"></c:redirect>
+</c:if>
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div class="container">
