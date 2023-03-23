@@ -1,6 +1,8 @@
 package com.miniproj.board.controller;
 
+import com.miniproj.board.service.BoardDeleteService;
 import com.miniproj.board.service.BoardListService;
+import com.miniproj.board.service.BoardModiService;
 import com.miniproj.board.service.BoardService;
 import com.miniproj.board.service.BoardViewService;
 import com.miniproj.board.service.BoardWriteService;
@@ -27,8 +29,14 @@ public class BoardFactory {
 			service = new BoardWriteService();
 		} else if (command.equals("/board/viewBoard.bo")) {
 			service = new BoardViewService();
+		} else if (command.equals("/board/delete.bo")) {
+			service = new BoardDeleteService();
+		}  else if (command.equals("/board/modi.bo")) {
+			service = new BoardModiService();
 		}
 
+		
+		
 		return service;
 
 	}

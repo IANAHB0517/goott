@@ -172,6 +172,8 @@ insert into latestloginlog(who) values (?);
 -- 기존 로그인기록이 있는 사람 update 하는 sql문
 update latestloginlog set latestlogindate = now() where who=?;
 
+
+
 select TIMESTAMPDIFF(day, now(), (select latestlogindate from latestloginlog where who='kimlay')) as diff;
 
 -- 로그인한 회원의 전체 정보 조회
@@ -252,4 +254,45 @@ select * from board order by no desc;
 -- ?번 글을 조회하는 쿼리문
 select * from board where no =?;
 
+-- ?번 글의 조회수를 증가하는 쿼리문
+update board set readcount = readcount + 1 where no = ?;
 
+-- ==========================================================================================================================================================================
+-- 게시물 상세 조회
+
+-- 조회수 처리를 위한 테이블 생성 및 fk 생성
+CREATE TABLE `lsj`.`readcountprocess` (
+  `no` INT NOT NULL AUTO_INCREMENT,
+  `ipAddr` VARCHAR(15) NOT NULL,
+  `boardNo` INT NOT NULL,
+  `readTime` DATETIME NOT NULL DEFAULT now(),
+  PRIMARY KEY (`no`),
+  INDEX `readcount_boardNo_fk_idx` (`boardNo` ASC) VISIBLE,
+  CONSTRAINT `readcount_boardNo_fk`
+    FOREIGN KEY (`boardNo`)
+    REFERENCES `lsj`.`board` (`no`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+-- ? 번 ip 주소가 ? 번 읽은 적이 있는가? 
+select * from readcountprocess where ipAddr =? && boardNo = ?;
+
+select readTime from readcountprocess where ipAddr ='211.197.18.247' && boardNo = 1 ;
+
+-- timediff t1 에서 t2를 뻄
+select timediff(  now() , (select readTime from readcountprocess where ipAddr ='211.197.18.247' and boardNo = 1)) > 24;
+
+-- timediff t2 에서 t1 을 뻄 단위를 지정해주어야함
+select timestampdiff( hour, (select readTime from readcountprocess where ipAddr ='211.197.18.247' and boardNo = 1), now()) > 24;
+
+-- ? 번 ip 주소가 ? 번 읽은 시간이 null 이면 -1 반환
+select ifnull(timestampdiff( hour, (select readTime from readcountprocess where ipAddr ='211.197.18.247' and boardNo = 1), now()) > 24 , -1) as diff;
+
+-- ? 번 ip 주소가 ? 번 읽은 시간이 null 이면 -1 반환 쿼리문
+select ifnull(timestampdiff( hour, (select readTime from readcountprocess where ipAddr =? and boardNo = ?), now()) > 24 , -1) as diff;
+
+--  ip 주소 글번호 입력
+insert into readcountprocess(ipAddr, boardNo) values (?,?);
+
+-- 글 번호 읽은 시간 업데이트
+update readcountprocess set readTime = now() where ipAddr = ? and boardNo =? ;
