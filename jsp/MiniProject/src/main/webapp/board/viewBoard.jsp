@@ -55,7 +55,20 @@
 		return isValid;
 	}
 
-	
+	function goReply() {
+		console.log('${sessionScope.loginMember.memo}')
+		// 로그인이 되어 있는지 확인
+		console.log('${sessionScope.loginMember.userId}') // JS에서 EL 표현식은 객체로 인식된다
+		let loginId = '${sessionScope.loginMember.userId}';
+		if (loginId != '') { // 로그인 되어 있다
+			let url = "replyBoard.jsp?pNo=${requestScope.board.no }&pRef=${requestScope.board.ref}&pStep=${requestScope.board.step}"
+				 url += "&pRefOrder=${requestScope.board.reforder}"
+			location.href = url;
+		} else { // 로그인 하지 않음
+			alert("답글을 작성하시려면 로그인을 해야 합니다.");
+			location.href = '../member/login.jsp';
+		}
+	}
 </script>
 <style>
 #ImgPreview {
@@ -122,12 +135,40 @@
 	</div>
 
 	<div style="margin-top: 20px;" class="btns">
-
-		<c:if test="${writer == loginUser }">
-			<button type="submit" class="btn btn-success" onclick="location.href='modi.bo?no=' + ${requestScope.board.no };">수정</button>
-			<button type="submit" class="btn btn-danger" onclick="location.href='delete.bo?no=' + ${requestScope.board.no };">삭제</button>
+		<!-- c:if 를 사용하는 방법은 UX 측면에서 최선의 방법이 아니다 -->
+		<!-- 
+		<c:if test="${sessionScope.loginMember != null}">
+			<c:if test="${writer == loginUser }">
+				<button type="submit" class="btn btn-success"
+					onclick="location.href='modi.bo?no=' + ${requestScope.board.no };">수정</button>
+				<button type="submit" class="btn btn-danger"
+					onclick="location.href='delete.bo?no=' + ${requestScope.board.no };">삭제</button>
+			</c:if>
+			<button type="submit" class="btn btn-info" onclick="goReply();">답글
+				달기</button>
 		</c:if>
-		<button type="submit" class="btn btn-info">답글 달기</button>
+
+		<c:if test="${sessionScope.loginMember == null}">
+			<c:if test="${writer != loginUser }">
+				<button type="submit" class="btn btn-success"
+					onclick="location.href='modi.bo?no=' + ${requestScope.board.no };"
+					disabled>수정</button>
+				<button type="submit" class="btn btn-danger"
+					onclick="location.href='delete.bo?no=' + ${requestScope.board.no };"
+					disabled>삭제</button>
+			</c:if>
+			<button type="submit" class="btn btn-info" onclick="goReply();"
+				disabled>답글 달기</button>
+		</c:if>
+		 -->
+		
+		<button type="submit" class="btn btn-success"
+			onclick="location.href='modi.bo?no=' + ${requestScope.board.no };">수정</button>
+		<button type="submit" class="btn btn-danger"
+			onclick="location.href='delete.bo?no=' + ${requestScope.board.no };">삭제</button>
+		<button type="submit" class="btn btn-info" onclick="goReply();"
+			>답글 달기</button>
+
 		<button type="button" class="btn btn-warning"
 			onclick="location.href='listAll.bo';">목록으로</button>
 	</div>

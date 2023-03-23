@@ -38,7 +38,7 @@ public class BoardDAOImpl implements BoardDAO {
 		Connection con = DBConnection.dbconnect();
 
 		if (con != null) {
-			String query = "select * from board order by no desc;";
+			String query = "select * from board order by ref desc, reforder asc";
 			PreparedStatement pstmt = con.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery(query);
 
@@ -219,7 +219,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 		return result;
 	}
-	
+
 	public int updateReadCount(int boardNo, Connection con) throws SQLException {
 		int result = 0;
 
@@ -239,10 +239,8 @@ public class BoardDAOImpl implements BoardDAO {
 		}
 
 		return result;
-		
+
 	}
-	
-	
 
 	/**
 	 * ip 주소, 글번호 , 읽은 시간 insert
@@ -344,7 +342,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 		return result;
 	}
-	
+
 	@Override
 	public int transactionProcessReadCount(ReadCountProcess rcp) throws NamingException, SQLException {
 		int result = -1;
@@ -356,9 +354,9 @@ public class BoardDAOImpl implements BoardDAO {
 			int oneday = withinOneDayOrNot(rcp.getIpAddr(), rcp.getBoardNo(), con);
 			if (oneday == -1) {
 				int insertResult = insertReadCount(rcp.getIpAddr(), rcp.getBoardNo(), con);
-				
+
 				int updateResult = updateReadCount(rcp.getBoardNo(), con);
-				
+
 				if (insertResult == 1 && updateResult == 1) {
 					con.commit();
 				} else {
@@ -367,7 +365,6 @@ public class BoardDAOImpl implements BoardDAO {
 			} else if (oneday == 1) {
 				int updateResult1 = updateReadTime(rcp.getIpAddr(), rcp.getBoardNo(), con);
 				int updateResult2 = updateReadCount(rcp.getBoardNo(), con);
-				
 
 				if (updateResult1 == 1 && updateResult2 == 1) {
 					con.commit();
@@ -407,8 +404,109 @@ public class BoardDAOImpl implements BoardDAO {
 		return result;
 	}
 
+	@Override
+	public int modiBoard(int boardNo) throws NamingException, SQLException {
+		// 로직 부터 다시 시작하기
+		return 0;
+	}
 
+	@Override
+	public int updateReplyPost(BoardVo reply, Connection con) throws NamingException, SQLException {
+		int result = 0;
+
+		if (con != null) {
+			String query = "update board set reforder = reforder + 1" + " where ref = ? and reforder > ?";
+
+			PreparedStatement pstmt = con.prepareStatement(query);
+
+			pstmt.setInt(1, reply.getRef());
+			pstmt.setInt(2, reply.getReforder());
+
+			result = pstmt.executeUpdate();
+
+		}
+
+		return result;
+	}
+
+	@Override
+	public int insertReplyPost(BoardVo reply, Connection con) throws NamingException, SQLException {
+		int result = -1;
+
+		if (con != null) {
+			String query = "insert into board (writer, title, content, ref, step, reforder)" + " values (?,?,?,?,?,?)";
+
+			PreparedStatement pstmt = con.prepareStatement(query);
+
+			pstmt.setString(1, reply.getWriter());
+			pstmt.setString(2, reply.getTitle());
+			pstmt.setString(3, reply.getContent());
+
+			pstmt.setInt(4, reply.getRef());
+			pstmt.setInt(5, reply.getStep() + 1);
+			pstmt.setInt(6, reply.getReforder() + 1);
+
+			result = pstmt.executeUpdate();
+		}
+
+		return result;
+	}
+
+	@Override
+	public int transactionProcessForReplyPost(BoardVo reply) throws NamingException, SQLException {
+		int result = -1;
+		Connection con = DBConnection.dbconnect();
+
+		con.setAutoCommit(false);
+		if (con != null) {
+			int updateResult = updateReplyPost(reply, con);
+
+			if (updateResult >= 0) {
+				int insertResult = insertReplyPost(reply, con);
+
+				if (insertResult == 1) {
+					int PointResult = MemberDAOImpl.getInstance().addPoint(reply.getWriter(), "답글쓰기", con);
+					
+					if (PointResult == 1) {
+						con.commit();
+						result = 1;
+					} else {
+						con.rollback(); // 포인트가 제대로 안들어가면 insert한 답글이 롤백 되어야 한다.
+					}
+				}
+			}
+		}
+		con.setAutoCommit(true);
+		DBConnection.dbClose(con);
+
+		return result;
+	}
+
+	@Override
+	public ArrayList<BoardVo> getTop3() throws NamingException, SQLException {
+		ArrayList<BoardVo> lst = new ArrayList<>();
+		
+		Connection con = DBConnection.dbconnect();
+
+		if (con != null) {
+			String query = "select * from board order by readcount desc limit 3";
+			PreparedStatement pstmt = con.prepareStatement(query);
+			ResultSet rs = pstmt.executeQuery(query);
+
+			while (rs.next()) {
+				lst.add(new BoardVo(rs.getInt("no"), rs.getString("writer"), rs.getString("title"),
+						rs.getTimestamp("postDate"), rs.getString("content"), rs.getString("imgFile"),
+						rs.getInt("readcount"), rs.getInt("likecount"), rs.getInt("ref"), rs.getInt("step"),
+						rs.getInt("reforder")));
+			}
+			DBConnection.dbClose(rs, pstmt, con);
+		}
+
+		
+		return lst;
+	}
 
 	
-
+	
+	
 }

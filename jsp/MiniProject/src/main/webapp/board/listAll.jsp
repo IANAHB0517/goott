@@ -27,9 +27,14 @@
 	clear:both;
 	}
 	
+	.replyImg{
+	width: 20px;
+	}
+	
 </style>
 </head>
 <body>
+<c:set var="contextPath" value="<%=request.getContextPath()%>" />
 <c:if test="${requestScope.boardList == null}"> <!-- 포트폴리오에 꼭 넣을 것 -->
 	<c:redirect url="listAll.bo"></c:redirect>
 </c:if>
@@ -50,19 +55,30 @@
         <th>작성일</th>
         <th>조회수</th>
         <th>좋아요</th>
+        <th>ref</th>
+        <th>step</th>
+        <th>reforder</th>
       </tr>
     </thead>
     <tbody>
      	<c:forEach var="board" items="${boardList }">
      		<tr onclick="goViewBoard(${board.no });">
      			<td>${board.no }</td>
-     			<td>${board.title }</td>
+     			
+     			<td><c:if test="${board.step > 0 }">
+     				<c:forEach var="i" begin="1" end="${board.step }" step="1">
+     					<img src="${contextPath }/images/reply.png" class="replyImg">
+     				</c:forEach>
+     			</c:if>${board.title }</td>
      			<td>${board.writer }</td>
      			<td>
      			<fmt:formatDate value="${board.postDate }"/>
      			</td>
      			<td>${board.readcount }</td>
      			<td>${board.likecount }</td>
+     			<td>${board.ref }</td>
+     			<td>${board.step }</td>
+     			<td>${board.reforder }</td>
      		</tr>
      	
      	</c:forEach>
