@@ -11,6 +11,9 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
+	$(function(){
+		
+	});
 	function showBasic() {
 		$(".card").show();
 		$(".memberPoint").hide();
@@ -20,6 +23,7 @@
 		$(".card").hide();
 		$(".memberPoint").show();
 	}
+
 </script>
 <style>
 .memberPoint {
@@ -34,12 +38,12 @@
 		<h4>마이 페이지</h4>
 		<ul class="nav nav-tabs">
 			<li class="nav-item"><a class="nav-link active" href="#"
-				onclick="showBaic();">기본정보</a>
+				onclick="showBasic();">기본정보</a>
 				<div class="card" style="width: 400px">
 					<img class="card-img-top"
 						src="${contextPath}/${memberInfo.userImg}"
 						alt="${memberInfo.userId}">
-					<p class="card-body">
+					<div class="card-body">
 					<h4 class="card-title">${memberInfo.userId}</h4>
 					<div class="card-text">
 						<div class="userEmail">${memberInfo.userEmail }</div>
@@ -48,8 +52,7 @@
 						<div class="hobbies">${memberInfo.hobbies }</div>
 						<div class="userjob">${memberInfo.job }</div>
 						<div class="usermemo">${memberInfo.memo }</div>
-						</p>
-
+					</div>
 					</div>
 				</div></li>
 			<li class="nav-item"><a class="nav-link" href="#"

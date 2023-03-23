@@ -185,13 +185,7 @@ select * from memberpoint where who = ? order by no desc;
 -- 회원 탈퇴하기 -- fk 제약땜에 삭제가 안됨			
 delete from member where userId = '?';
 
--- 테이블 조회
-use lsj;
-select * from member;
-select * from memberpoint;
-select * from latestloginlog;
-SELECT * FROM lsj.pointpolicy;
-select * from board;
+
 
 
 -- ==========================================================================================================================================================================
@@ -296,3 +290,33 @@ insert into readcountprocess(ipAddr, boardNo) values (?,?);
 
 -- 글 번호 읽은 시간 업데이트
 update readcountprocess set readTime = now() where ipAddr = ? and boardNo =? ;
+
+-- ==========================================================================================================================================================================
+-- 게시물 답글 달기
+
+-- 부모글이 원래글인지 답글인지 판단 (답글이 끼어 들기할 공간 만들기)
+update board set reforder = reforder + 1
+where ref = ? and reforder > ? ;
+
+-- 답글을 board 테이블에 등록
+insert into board (writer, title, content, ref, step, reforder)
+values (?,?,?,?,pStep+1,pRefOrder+1) ;
+
+-- 모든 게시물을 출력
+select * from board order by ref desc, reforder asc;
+
+--  ===============================================================================================================================================================
+-- 인기글 조회 또는 최신글 몇개 가져오기
+select * from board order by readcount desc limit 5;
+
+-- 마이 페이지 내가 쓴글
+select * from board where writer =?;
+
+--  ===============================================================================================================================================================
+-- 테이블 조회
+use lsj;
+select * from member;
+select * from memberpoint;
+select * from latestloginlog;
+SELECT * FROM lsj.pointpolicy;
+select * from board order by ref desc, reforder asc;

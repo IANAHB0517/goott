@@ -3,9 +3,11 @@ package com.miniproj.board.controller;
 import com.miniproj.board.service.BoardDeleteService;
 import com.miniproj.board.service.BoardListService;
 import com.miniproj.board.service.BoardModiService;
+import com.miniproj.board.service.BoardReplyService;
 import com.miniproj.board.service.BoardService;
 import com.miniproj.board.service.BoardViewService;
 import com.miniproj.board.service.BoardWriteService;
+import com.miniproj.board.service.pop3BoardService;
 
 public class BoardFactory {
 	private static BoardFactory instance = null;
@@ -33,6 +35,10 @@ public class BoardFactory {
 			service = new BoardDeleteService();
 		}  else if (command.equals("/board/modi.bo")) {
 			service = new BoardModiService();
+		} else if (command.equals("/board/reply.bo")) {
+			service = new BoardReplyService();
+		} else if (command.equals("/popTop3.bo")) {
+			service = new pop3BoardService();
 		}
 
 		
