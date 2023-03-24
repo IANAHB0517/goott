@@ -1,10 +1,5 @@
 use lsj;
 
-drop table board;
-drop table genre;
-drop table member;
-drop table rent;
-drop table video;
 
 
 
@@ -305,12 +300,78 @@ values (?,?,?,?,pStep+1,pRefOrder+1) ;
 -- 모든 게시물을 출력
 select * from board order by ref desc, reforder asc;
 
+-- 답글 수정의 경우 (답글 작성자가 로그인 하여 수정 가능, 기존의 ref, setp, reforder 가 유지 됨)
+
+-- 답글 삭제  (답글 작성자가 로그인 하여 삭제 가능,
+-- 답글의 writer : admin
+-- 답글의 title : 삭제된 글입니다
+-- 답글의 내용 : x
+-- viewBoard.bo 페이지로 링크를 안걸어도 된다.
+-- 조회수, 좋아요 수, 초기화 되면서 대체 (ref, step, reforder 대체된 글이 유지)
+
 --  ===============================================================================================================================================================
 -- 인기글 조회 또는 최신글 몇개 가져오기
-select * from board order by readcount desc limit 5;
+select * from board order by readcount desc limit 3;
 
 -- 마이 페이지 내가 쓴글
 select * from board where writer =?;
+
+--  ===============================================================================================================================================================
+-- 페이징 처리
+-- select * from board order by ref desc, reforder asc limit 보여주기 시작할 row의 index, 보여줄 글의 수;
+select * from board order by ref desc, reforder asc limit 1, 3;
+select * from board order by no desc limit 6,3;
+
+-- 1) 하나의 페이지에 몇개의 글(Row)을 보여 줄 것인가 결정 : 3
+-- 2) 게시판 글의 총 갯수를 얻어온다 : 27
+select count(*) as cnt from board ;
+-- 3) 총 페이지의 수 : 게시판 수 / 하나의 페이지에 보여줄 글의 수
+-- 27 / 3 = 9 , (나누어 떨어지지 않을 경우 + 1)
+
+-- 4) X번 페이지에서 출력하게 될 글의 시작 번호
+-- 전체 글의 갯수 (27) - (현재 페이지 번호-1) * 한페이지당 보여줄 글의 수
+-- 1페이지 :  27 - 0 * 3 = 27
+-- 1페이지 :  27 - 1 * 3 = 24
+
+-- 1페이지 : 
+select * from board order by ref desc, reforder asc limit 0, 3;
+-- 2페이지 : 
+select * from board order by ref desc, reforder asc limit 3, 3;
+-- 3페이지 : 
+select * from board order by ref desc, reforder asc limit 6, 3;
+-- 4페이지 : 
+select * from board order by ref desc, reforder asc limit 9, 3;
+
+-- X페이지 : 
+select * from board order by ref desc, reforder asc limit (?-1)?, ?;
+
+
+select count(*) from board where step < 1;
+
+
+
+-- 4) 보여주기 시작할 row index 번호 = (현재 페이지 번호-1) * 한페이지당 보여줄 글의 수
+-- 1 페이지 0 
+
+-- 페이징 블럭 만들기 (pagination 페이지 번호를 몇개씩 보여 줄 것인가)
+-- 1) 1개의 블럭에 몇개 페이지를 둘 것인가(pageCntPerBlock) : 4
+-- 전체 페이징 블럭 갯수 : 전체 페이지 수 / pageCntPerBlock
+-- 나누어 떨어지지 않으면 + 1 = 9 / 4 = 2 -> (나누어 떨어지지 않으므로) 3
+
+-- 2) 현재 페이지가 속한 페이징 블럭 : 현재 페이지번호 / pageCntPerBlock
+-- 2 페이지 -> 2/4 (나누어 떨어지지 않으면 올림) = 1 번 블럭
+-- 6 페이지 -> 6/4 = 2 번 블럭
+
+-- 3) 현재 페이징 블럭의 시작 번호 : (현재 페이징 블럭 -1) * pageCntPerBlock + 1
+-- 2번 블럭 : (2 - 1) * 4 + 1 = 5
+
+-- 4) 현재 페이징 블럭의 끝 번호 : (현재 페이징 시작 번호 + pageCntPerBlock) - 1
+-- 2번 블럭 : (5 + 4) - 1 = 8 
+
+--  ===============================================================================================================================================================
+-- 마이페이지 포인트 페이징
+select count(*) as cnt from memberpoint where who = 'abcd1230';
+
 
 --  ===============================================================================================================================================================
 -- 테이블 조회

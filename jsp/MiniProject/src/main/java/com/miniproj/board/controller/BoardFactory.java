@@ -7,7 +7,7 @@ import com.miniproj.board.service.BoardReplyService;
 import com.miniproj.board.service.BoardService;
 import com.miniproj.board.service.BoardViewService;
 import com.miniproj.board.service.BoardWriteService;
-import com.miniproj.board.service.pop3BoardService;
+import com.miniproj.board.service.Pop3BoardService;
 
 public class BoardFactory {
 	private static BoardFactory instance = null;
@@ -38,7 +38,7 @@ public class BoardFactory {
 		} else if (command.equals("/board/reply.bo")) {
 			service = new BoardReplyService();
 		} else if (command.equals("/popTop3.bo")) {
-			service = new pop3BoardService();
+			service = new Pop3BoardService();
 		}
 
 		

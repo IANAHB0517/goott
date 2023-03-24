@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import com.miniproj.etc.PagingInfo;
 import com.miniproj.member.dao.DBConnection;
 import com.miniproj.member.dao.MemberDAOImpl;
 import com.miniproj.vodto.BoardVo;
@@ -41,6 +42,37 @@ public class BoardDAOImpl implements BoardDAO {
 			String query = "select * from board order by ref desc, reforder asc";
 			PreparedStatement pstmt = con.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery(query);
+
+			while (rs.next()) {
+				lst.add(new BoardVo(rs.getInt("no"), rs.getString("writer"), rs.getString("title"),
+						rs.getTimestamp("postDate"), rs.getString("content"), rs.getString("imgFile"),
+						rs.getInt("readcount"), rs.getInt("likecount"), rs.getInt("ref"), rs.getInt("step"),
+						rs.getInt("reforder")));
+			}
+			DBConnection.dbClose(rs, pstmt, con);
+		}
+
+		return lst;
+	}
+	
+	
+	@Override
+	public List<BoardVo> selectEntireBoard(PagingInfo pi) throws NamingException, SQLException {
+		// List<BoardVo> lst = null; // 리스트를 초기화 할때는 null 로 하지 말것 null에는 아무리 add를 해봐야
+		// 들어가지 않는다
+		// 처음부터 ArrayList를 만들어주자
+		List<BoardVo> lst = new ArrayList<>();
+
+		Connection con = DBConnection.dbconnect();
+
+		if (con != null) {
+			String query = "select * from board order by ref desc, reforder asc limit ?, ?;";
+			PreparedStatement pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pi.getStartRowIndex());
+			pstmt.setInt(2, pi.getViewPostCntPerPage());
+			
+			ResultSet rs = pstmt.executeQuery();
+			
 
 			while (rs.next()) {
 				lst.add(new BoardVo(rs.getInt("no"), rs.getString("writer"), rs.getString("title"),
@@ -504,6 +536,29 @@ public class BoardDAOImpl implements BoardDAO {
 
 		
 		return lst;
+	}
+
+	@Override
+	public int getTotalPostCnt(String tableName) throws NamingException, SQLException {
+		int result = -1;
+		//ArrayList<BoardVo> lst = new ArrayList<>();
+		
+		Connection con = DBConnection.dbconnect();
+
+		if (con != null) {
+			String query = "select count(*) as cnt from " + tableName;
+			PreparedStatement pstmt = con.prepareStatement(query);
+			
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				result = rs.getInt("cnt");
+			}
+			DBConnection.dbClose(rs, pstmt, con);
+		}
+
+		
+		return result;
 	}
 
 	
