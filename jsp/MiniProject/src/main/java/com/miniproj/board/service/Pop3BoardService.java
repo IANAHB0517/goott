@@ -17,7 +17,7 @@ import com.miniproj.board.dao.BoardDAO;
 import com.miniproj.board.dao.BoardDAOImpl;
 import com.miniproj.vodto.BoardVo;
 
-public class pop3BoardService implements BoardService {
+public class Pop3BoardService implements BoardService {
 
 	@Override
 	public BoardFactory action(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,7 +39,7 @@ public class pop3BoardService implements BoardService {
 				
 			}
 			
-			json.put("status", b); // 가지고온 리스트를 까서 json에 넣어야 하는데 어떻게 하더라?
+			//json.put("status", b); // 가지고온 리스트를 까서 json에 넣어야 하는데 어떻게 하더라?
 			
 		} catch (NamingException | SQLException e) {
 			// TODO Auto-generated catch block

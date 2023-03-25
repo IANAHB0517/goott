@@ -18,7 +18,7 @@ pageEncoding="UTF-8"%>
     <c:set var="contextPath" value="<%=request.getContextPath()%>" />
     <nav
       class="navbar navbar-expand-sm bg-light justify-content-center headerBar"
-    >
+    >r
       <ul class="navbar-nav navbar-nav-top">
         <li class="nav-item">
           <a class="nav-link" href="${contextPath }/index.jsp">Home</a>

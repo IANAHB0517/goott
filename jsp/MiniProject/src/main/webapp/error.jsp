@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
     <%@ page isErrorPage="true" %>
       <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>°ψΕλ ΏΉΏά ΖδΐΜΑφ</title>
+<title>κ³µν†µ μμ™Έ νμ΄μ§€</title>
 </head>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
