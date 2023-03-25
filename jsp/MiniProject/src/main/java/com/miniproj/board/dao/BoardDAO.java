@@ -7,12 +7,16 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import com.miniproj.etc.PagingInfo;
 import com.miniproj.vodto.BoardVo;
 import com.miniproj.vodto.ReadCountProcess;
 
 public interface BoardDAO {
 	// 게시물 전체 리스트 얻어오는 메서드
 	List<BoardVo> selectEntireBoard() throws NamingException, SQLException;
+	
+	// pagingInfo 를 받는 메서드로 오버로딩
+	List<BoardVo> selectEntireBoard(PagingInfo pi) throws NamingException, SQLException;
 
 	// 다음 ref 값을 얻어옴
 	int getNextRef() throws NamingException, SQLException;
@@ -56,6 +60,7 @@ public interface BoardDAO {
 	// 인기글 3개 가져오기
 	ArrayList<BoardVo> getTop3() throws NamingException, SQLException;
 
-	
+	// 전체 게시판의 글 개수 없어오기
+	int getTotalPostCnt(String tableName) throws NamingException, SQLException;
 	
 }

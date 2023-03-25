@@ -40,7 +40,7 @@
 					<li class="nav-item"><a class="nav-link"
 						href="${contextPath}/member/register.jsp">회원가입</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="${contextPath}/board/listAll.bo">게시판</a></li>
+						href="${contextPath}/board/listAll.bo?pageNo=1">게시판</a></li>
 						<c:choose>
 							<c:when test="${sessionScope.loginMember != null }">
 								

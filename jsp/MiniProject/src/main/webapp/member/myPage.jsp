@@ -11,8 +11,8 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
-	$(function(){
-		
+	$(function() {
+
 	});
 	function showBasic() {
 		$(".card").show();
@@ -23,7 +23,8 @@
 		$(".card").hide();
 		$(".memberPoint").show();
 	}
-
+	
+	
 </script>
 <style>
 .memberPoint {
@@ -44,15 +45,15 @@
 						src="${contextPath}/${memberInfo.userImg}"
 						alt="${memberInfo.userId}">
 					<div class="card-body">
-					<h4 class="card-title">${memberInfo.userId}</h4>
-					<div class="card-text">
-						<div class="userEmail">${memberInfo.userEmail }</div>
-						<div class="userMobile">${memberInfo.userMobile }</div>
-						<div class="userGender">${memberInfo.userGender }</div>
-						<div class="hobbies">${memberInfo.hobbies }</div>
-						<div class="userjob">${memberInfo.job }</div>
-						<div class="usermemo">${memberInfo.memo }</div>
-					</div>
+						<h4 class="card-title">${memberInfo.userId}</h4>
+						<div class="card-text">
+							<div class="userEmail">${memberInfo.userEmail }</div>
+							<div class="userMobile">${memberInfo.userMobile }</div>
+							<div class="userGender">${memberInfo.userGender }</div>
+							<div class="hobbies">${memberInfo.hobbies }</div>
+							<div class="userjob">${memberInfo.job }</div>
+							<div class="usermemo">${memberInfo.memo }</div>
+						</div>
 					</div>
 				</div></li>
 			<li class="nav-item"><a class="nav-link" href="#"
@@ -76,6 +77,24 @@
 							</c:forEach>
 						</tbody>
 					</table>
+					${requestScope.pagingInfo }
+
+					<ul class="pagination">
+						<li class="page-item"><a class="page-link" href="${memberInfo.userId }&pointPage=${i -1}">Previous</a></li>
+						
+					<c:forEach var="i" begin="1" end="${requestScope.pagingInfo.totalPageCnt }" step="1">
+					<c:choose>
+						<c:when test="${requestScope.pagingInfo.pageNo == i }">
+							<li class="page-item active"><a class="page-link" href="myPage.mem?userid=${memberInfo.userId }&point&Page=${i }">${i }</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link" href="myPage.mem?userid=${memberInfo.userId }&pointPage=${i }">${i }</a></li>
+						</c:otherwise>
+					</c:choose>
+					</c:forEach>	
+
+						<li class="page-item"><a class="page-link" href="${memberInfo.userId }&pointPage=${i +1}">Next</a></li>
+					</ul>
 
 				</div></li>
 			<!-- 
