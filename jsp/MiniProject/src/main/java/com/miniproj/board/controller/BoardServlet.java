@@ -42,9 +42,7 @@ public class BoardServlet extends HttpServlet {
 		
 		if(bf.isRedirect()) { // redirect
 			resp.sendRedirect(bf.getWhereisgo());
-		} else { // forward
-			// member 에서는 forward를 바인딩 하지 않았다.
-			// 이렇게 하는게 더 깔끔 하다
+		} else { 
 			RequestDispatcher rd =req.getRequestDispatcher(bf.getWhereisgo());
 			try {
 				rd.forward(req, resp);

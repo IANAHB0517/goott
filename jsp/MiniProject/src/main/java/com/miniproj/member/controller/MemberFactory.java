@@ -6,6 +6,7 @@ import com.miniproj.member.service.LoginMemberService;
 import com.miniproj.member.service.LogoutMemberService;
 import com.miniproj.member.service.MemberService;
 import com.miniproj.member.service.MyPageMemberService;
+import com.miniproj.member.service.PointListBoardService;
 import com.miniproj.member.service.RegisterMemberService;
 import com.miniproj.member.service.SendEmailService;
 
@@ -62,7 +63,10 @@ public class MemberFactory {
 			service = new ConfirmCodeService();
 		} else if (command.equals("/member/myPage.mem")) { // 마이 페이지
 			service = new MyPageMemberService();
+		} else if (command.equals("/pointListAll.mem")) {
+			service = new PointListBoardService();
 		} 
+		
 		return service;
 	}
 }

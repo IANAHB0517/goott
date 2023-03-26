@@ -7,8 +7,8 @@ import com.miniproj.board.service.BoardReplyService;
 import com.miniproj.board.service.BoardService;
 import com.miniproj.board.service.BoardViewService;
 import com.miniproj.board.service.BoardWriteService;
-import com.miniproj.board.service.PointListBoardService;
 import com.miniproj.board.service.Pop3BoardService;
+import com.miniproj.member.service.PointListBoardService;
 
 public class BoardFactory {
 	private static BoardFactory instance = null;

@@ -388,4 +388,4 @@ select * from memberpoint;
 select * from latestloginlog;
 SELECT * FROM pointpolicy;
 select * from board order by ref desc, reforder asc;
-select * from readcountprocess ;
+select * from readcountprocess;

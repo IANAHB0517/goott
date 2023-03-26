@@ -1,4 +1,4 @@
-package com.miniproj.board.service;
+package com.miniproj.member.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,20 +12,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
-import com.miniproj.board.controller.BoardFactory;
+
 import com.miniproj.board.dao.BoardDAO;
 import com.miniproj.board.dao.BoardDAOImpl;
+import com.miniproj.board.service.BoardService;
 import com.miniproj.error.CommonException;
 import com.miniproj.etc.PagingInfo;
+import com.miniproj.member.controller.MemberFactory;
+import com.miniproj.member.dao.MemberDAO;
+import com.miniproj.member.dao.MemberDAOImpl;
 import com.miniproj.vodto.BoardVo;
+import com.miniproj.vodto.MemberPointVo;
 
 public class PointListBoardService implements BoardService {
 
 	@Override
-	public BoardFactory action(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public MemberFactory action(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("포인트 목록 출력");
 
-		BoardFactory bf = BoardFactory.getInstance();
+		MemberFactory mf = MemberFactory.getInstance();
 		
 		resp.setContentType("application/json; charset=utf-8"); // json 형식으로 응답
 		PrintWriter out = resp.getWriter();
@@ -44,18 +49,19 @@ public class PointListBoardService implements BoardService {
 
 		System.out.println("userId : " + userId + "페이지 번호 : " + pageNo + "보여줄 글 개수");
 
-		BoardDAO dao = BoardDAOImpl.getInstance();
+		MemberDAO dao = MemberDAOImpl.getInstance();
+		BoardDAO dao2 = BoardDAOImpl.getInstance();
 		
 		JSONObject json = new JSONObject();
 
 		try {
 			// 페이지 번호, 전체 글의 개수로 페이징 처리를 해서.
-			PagingInfo pi = getPagingInfo(pageNo, viewPostCntPerPage, dao, userId);
+			PagingInfo pi = getPagingInfo(pageNo, viewPostCntPerPage, dao2, userId);
 			
 			// get 방식이기 때문에 반환 해주기 위한 json 객체
 			
 			// 페이징 처리한 쿼리문이 실행 되도록 dao 단 호출
-			List<BoardVo> lst = dao.selectEntireBoard(pi);
+			List<MemberPointVo> lst = dao.getMemberPoint(userId ,pi);
 			System.out.println("lst : " + lst.toString());
 
 			json.put("status", "success");
@@ -86,19 +92,19 @@ public class PointListBoardService implements BoardService {
 		out.print(json.toJSONString());
 		out.close();
 
-		bf.setRedirect(false);
+		mf.setRedirect(false);
 		
-		return bf;
+		return mf;
 	}
 
-	private PagingInfo getPagingInfo(int pageNo, int viewPostCntPerPage, BoardDAO dao, String userId)
+	private PagingInfo getPagingInfo(int pageNo, int viewPostCntPerPage, BoardDAO dao2, String userId)
 			throws NamingException, SQLException {
 		PagingInfo pi = new PagingInfo();
 
 		// 실질적인 페이징에 필요한 변수들 setting
 		pi.setViewPostCntPerPage(viewPostCntPerPage);
 		pi.setPageNo(pageNo);
-		pi.setTotalPostCnt(dao.getTotalPostCnt("memberpoint where userid = " + userId));
+		pi.setTotalPostCnt(dao2.getTotalPostCnt("memberpoint where userid = " + userId));
 		pi.setTotalPageCnt(pi.getTotalPostCnt(), pi.getViewPostCntPerPage());
 		pi.setStartRowIndex(pi.getPageNo());
 

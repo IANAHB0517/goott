@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import com.miniproj.etc.PagingInfo;
 import com.miniproj.vodto.LoginDTO;
 import com.miniproj.vodto.MemberDTO;
 import com.miniproj.vodto.MemberPointVo;
@@ -332,6 +333,36 @@ public class MemberDAOImpl implements MemberDAO {
 			PreparedStatement pstmt = con.prepareStatement(query);
 			
 			pstmt.setString(1, userId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				lst.add (new MemberPointVo(rs.getInt("no"),
+											rs.getString("who"),
+											rs.getTimestamp("when"),
+											rs.getString("why"),
+											rs.getInt("howmuch")));
+			}
+			DBConnection.dbClose(rs, pstmt, con);
+		}
+		
+		return lst;
+	}
+	
+	
+	public List<MemberPointVo> getMemberPoint(String userId, PagingInfo pi) throws NamingException, SQLException {
+		List<MemberPointVo> lst =new ArrayList<>();
+		MemberPointVo mpv = null;
+
+		Connection con =DBConnection.dbconnect();
+		
+		if (con != null) {
+			String query ="select * from memberpoint where who = ?  order by no desc limit ?, ?";
+			PreparedStatement pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, userId);
+			pstmt.setInt(2, pi.getStartRowIndex());
+			pstmt.setInt(3, pi.getViewPostCntPerPage());
 			
 			ResultSet rs = pstmt.executeQuery();
 			
