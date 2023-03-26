@@ -69,6 +69,7 @@ public class LoginMemberService implements MemberService {
 				// SQL Exception 은 대부분 실제 유저의 입력 오류로 인한 예외
 				mf.setRedirect(true);
 				mf.setWhereisgo("login.jsp?status=fail");
+				e.printStackTrace();
 
 			}
 		}

@@ -29,7 +29,7 @@ values('abcd123',sha1(md5('1234')),'abc@abc.com','010-1111-2222','M','','학생'
 insert into member
 values(?,sha1(md5('?')),?,?,?,?,?,?,?);
 
--- 회원 포인트 적립을 위한 테이블
+-- 회원 테이블
 CREATE TABLE `member` (
   `userId` varchar(8) NOT NULL,
   `userPwd` varchar(200) NOT NULL,
@@ -43,6 +43,13 @@ CREATE TABLE `member` (
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- 회원 포인트 테이블
+CREATE TABLE `memberpoint` (
+  `who` varchar(8) NOT NULL,
+  `when` datetime DEFAULT CURRENT_TIMESTAMP,
+  `why` varchar(50) DEFAULT NULL,
+  `howmuch` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 중복된 유저 아이디 검사 sql문
 select * from member where userId = ?;
@@ -71,7 +78,7 @@ CREATE TABLE `latestloginlog` (
   PRIMARY KEY (`who`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- 멤버포인트 테이블 생성
+-- 회원 테이블 생성
 CREATE TABLE `member` (
   `userId` varchar(8) NOT NULL,
   `userPwd` varchar(200) NOT NULL,
@@ -103,7 +110,7 @@ ADD CONSTRAINT `who_fk`
   ON DELETE CASCADE
   ON UPDATE NO ACTION;
   
-  alter table membepoint
+  alter table memberpoint
   add constraint memberpoint_why_fk foreign key(why)
   references pointpolicy(why);
   
@@ -379,5 +386,6 @@ use lsj;
 select * from member;
 select * from memberpoint;
 select * from latestloginlog;
-SELECT * FROM lsj.pointpolicy;
+SELECT * FROM pointpolicy;
 select * from board order by ref desc, reforder asc;
+select * from readcountprocess ;

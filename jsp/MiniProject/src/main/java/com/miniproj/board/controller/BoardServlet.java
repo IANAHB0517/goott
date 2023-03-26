@@ -46,7 +46,12 @@ public class BoardServlet extends HttpServlet {
 			// member 에서는 forward를 바인딩 하지 않았다.
 			// 이렇게 하는게 더 깔끔 하다
 			RequestDispatcher rd =req.getRequestDispatcher(bf.getWhereisgo());
-			rd.forward(req, resp);
+			try {
+				rd.forward(req, resp);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

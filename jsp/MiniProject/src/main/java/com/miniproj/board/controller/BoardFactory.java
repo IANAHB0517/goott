@@ -7,6 +7,7 @@ import com.miniproj.board.service.BoardReplyService;
 import com.miniproj.board.service.BoardService;
 import com.miniproj.board.service.BoardViewService;
 import com.miniproj.board.service.BoardWriteService;
+import com.miniproj.board.service.PointListBoardService;
 import com.miniproj.board.service.Pop3BoardService;
 
 public class BoardFactory {
@@ -39,6 +40,8 @@ public class BoardFactory {
 			service = new BoardReplyService();
 		} else if (command.equals("/popTop3.bo")) {
 			service = new Pop3BoardService();
+		} else if (command.equals("/pointListAll.bo")) {
+			service = new PointListBoardService();
 		}
 
 		

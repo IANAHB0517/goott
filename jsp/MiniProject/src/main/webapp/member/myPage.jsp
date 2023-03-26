@@ -12,7 +12,11 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
 	$(function() {
-
+	$(".movePage").click(function(){
+		console.log($(this).html())
+		movePaing('${memberInfo.userId}',$(this).html())
+		
+	})
 	});
 	function showBasic() {
 		$(".card").show();
@@ -24,6 +28,29 @@
 		$(".memberPoint").show();
 	}
 	
+	function movePaing(userId, pageNo){
+		
+		$.ajax({
+	          url: "pointListAll.bo", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성)
+	          type: "get", // 통신 방식 (GET, POST, PUT, DELETE)
+	          data: {
+	            userId: userId,
+	            pageNo: pageNo,
+	          }, // 서블릿에 전송할 데이터
+	          dataType: "json", // 수신받을 데이터 타입(MIME TYPE)
+	          success: function (data) {
+	            // 통신이 성공하면 수행할 함수(콜백 함수)
+	            console.log(data);
+
+	            if (data.status == "success") {
+	             
+	            } else if (data.status == "fail") {
+	              alert("잠시 후, 다시 시도해 주세요");
+	            }
+	          },
+	        });
+		}
+	
 	
 </script>
 <style>
@@ -34,6 +61,7 @@
 </head>
 <body>
 	<c:set var="contextPath" value="<%=request.getContextPath()%>" />
+	
 	<jsp:include page="../header.jsp"></jsp:include>
 	<div class="container">
 		<h4>마이 페이지</h4>
@@ -80,20 +108,23 @@
 					${requestScope.pagingInfo }
 
 					<ul class="pagination">
-						<li class="page-item"><a class="page-link" href="${memberInfo.userId }&pointPage=${i -1}">Previous</a></li>
+						<li class="page-item"><a class="page-link movePage" href="#">Previous </a></li>
+						<!-- ${memberInfo.userId }&pointPage=${i -1} -->
 						
 					<c:forEach var="i" begin="1" end="${requestScope.pagingInfo.totalPageCnt }" step="1">
 					<c:choose>
 						<c:when test="${requestScope.pagingInfo.pageNo == i }">
-							<li class="page-item active"><a class="page-link" href="myPage.mem?userid=${memberInfo.userId }&point&Page=${i }">${i }</a></li>
+							<li class="page-item active"><a class="page-link movePage" href="#">${i }</a></li>
+							<!-- myPage.mem?userid=${memberInfo.userId }&point&Page=${i } -->
 						</c:when>
 						<c:otherwise>
-							<li class="page-item"><a class="page-link" href="myPage.mem?userid=${memberInfo.userId }&pointPage=${i }">${i }</a></li>
+							<li class="page-item"><a class="page-link movePage" href="#" >${i }</a></li>
+							<!-- myPage.mem?userid=${memberInfo.userId }&pointPage=${i } -->
 						</c:otherwise>
 					</c:choose>
 					</c:forEach>	
-
-						<li class="page-item"><a class="page-link" href="${memberInfo.userId }&pointPage=${i +1}">Next</a></li>
+						<li class="page-item"><a class="page-link movePage" href="#">Next</a></li>
+						<!-- ${memberInfo.userId }&pointPage=${i +1} -->
 					</ul>
 
 				</div></li>
