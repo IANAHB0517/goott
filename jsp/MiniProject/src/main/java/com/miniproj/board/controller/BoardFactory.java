@@ -40,9 +40,7 @@ public class BoardFactory {
 			service = new BoardReplyService();
 		} else if (command.equals("/popTop3.bo")) {
 			service = new Pop3BoardService();
-		} else if (command.equals("/pointListAll.bo")) {
-			service = new PointListBoardService();
-		}
+		} 
 
 		
 		
