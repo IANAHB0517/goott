@@ -14,6 +14,7 @@ import com.miniproj.member.dao.DBConnection;
 import com.miniproj.member.dao.MemberDAOImpl;
 import com.miniproj.vodto.BoardVo;
 import com.miniproj.vodto.ReadCountProcess;
+import com.miniproj.vodto.SearchCriteria;
 
 public class BoardDAOImpl implements BoardDAO {
 	private static BoardDAOImpl instance = null;
@@ -54,8 +55,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 		return lst;
 	}
-	
-	
+
 	@Override
 	public List<BoardVo> selectEntireBoard(PagingInfo pi) throws NamingException, SQLException {
 		// List<BoardVo> lst = null; // 리스트를 초기화 할때는 null 로 하지 말것 null에는 아무리 add를 해봐야
@@ -70,9 +70,42 @@ public class BoardDAOImpl implements BoardDAO {
 			PreparedStatement pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, pi.getStartRowIndex());
 			pstmt.setInt(2, pi.getViewPostCntPerPage());
-			
+
 			ResultSet rs = pstmt.executeQuery();
-			
+
+			while (rs.next()) {
+				lst.add(new BoardVo(rs.getInt("no"), rs.getString("writer"), rs.getString("title"),
+						rs.getTimestamp("postDate"), rs.getString("content"), rs.getString("imgFile"),
+						rs.getInt("readcount"), rs.getInt("likecount"), rs.getInt("ref"), rs.getInt("step"),
+						rs.getInt("reforder")));
+			}
+			DBConnection.dbClose(rs, pstmt, con);
+		}
+
+		return lst;
+	}
+
+	@Override
+	public List<BoardVo> selectEntireBoard(PagingInfo pi, SearchCriteria sc) throws NamingException, SQLException {
+		List<BoardVo> lst = new ArrayList<>();
+
+		Connection con = DBConnection.dbconnect();
+
+		if (con != null) {
+			String query = "select * from board where ";
+			System.out.println(query);
+			query += sc.getSearchType();
+			System.out.println(query);
+			query += " like ? order by ref desc, reforder asc limit ?,?";
+			System.out.println(query);
+
+			PreparedStatement pstmt = con.prepareStatement(query);
+			pstmt.setString(1, "%" + sc.getSearchWord() + "%"); // setString으로 변환시 작은따옴표를 포함하기때문에 이렇게 해주어야한다
+			pstmt.setInt(2, pi.getStartRowIndex());
+			pstmt.setInt(3, pi.getViewPostCntPerPage());
+			System.out.println(pstmt);
+
+			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				lst.add(new BoardVo(rs.getInt("no"), rs.getString("writer"), rs.getString("title"),
@@ -498,7 +531,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 				if (insertResult == 1) {
 					int PointResult = MemberDAOImpl.getInstance().addPoint(reply.getWriter(), "답글쓰기", con);
-					
+
 					if (PointResult == 1) {
 						con.commit();
 						result = 1;
@@ -517,7 +550,7 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public ArrayList<BoardVo> getTop3() throws NamingException, SQLException {
 		ArrayList<BoardVo> lst = new ArrayList<>();
-		
+
 		Connection con = DBConnection.dbconnect();
 
 		if (con != null) {
@@ -534,21 +567,20 @@ public class BoardDAOImpl implements BoardDAO {
 			DBConnection.dbClose(rs, pstmt, con);
 		}
 
-		
 		return lst;
 	}
 
 	@Override
 	public int getTotalPostCnt(String tableName) throws NamingException, SQLException {
 		int result = -1;
-		//ArrayList<BoardVo> lst = new ArrayList<>();
-		
+		// ArrayList<BoardVo> lst = new ArrayList<>();
+
 		Connection con = DBConnection.dbconnect();
 
 		if (con != null) {
 			String query = "select count(*) as cnt from " + tableName;
 			PreparedStatement pstmt = con.prepareStatement(query);
-			
+
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -557,11 +589,35 @@ public class BoardDAOImpl implements BoardDAO {
 			DBConnection.dbClose(rs, pstmt, con);
 		}
 
-		
 		return result;
 	}
 
-	
-	
+	@Override
+	public int getTotalPostCnt(String tableName, SearchCriteria sc) throws NamingException, SQLException {
+		int result = -1;
+		// ArrayList<BoardVo> lst = new ArrayList<>();
+
+		Connection con = DBConnection.dbconnect();
+
+		if (con != null) {
+			String query = "select count(*) as cnt from " + tableName + " where " + sc.getSearchType() + " like ?" ;
+			System.out.println(query);
+
+			PreparedStatement pstmt = con.prepareStatement(query);
+
+			pstmt.setString(1, "%" + sc.getSearchWord() + "%"); // setString으로 변환시 작은따옴표를 포함하기때문에 이렇게 해주어야한다
+
+			System.out.println(pstmt);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				result = rs.getInt("cnt");
+			}
+			DBConnection.dbClose(rs, pstmt, con);
+		}
+
+		return result;
+	}
 	
 }

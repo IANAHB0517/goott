@@ -15,6 +15,7 @@ import com.miniproj.board.dao.BoardDAOImpl;
 import com.miniproj.error.CommonException;
 import com.miniproj.etc.PagingInfo;
 import com.miniproj.vodto.BoardVo;
+import com.miniproj.vodto.SearchCriteria;
 
 public class BoardListService implements BoardService {
 
@@ -24,6 +25,22 @@ public class BoardListService implements BoardService {
 
 		BoardFactory bf = BoardFactory.getInstance();
 
+		// 검색어 타입
+//		String searchType = null; // 강사님은 null 로 초기화 함 왜지?
+		String searchType = "";
+		if (req.getParameter("searchType") != null && !req.getParameter("searchType").equals("")) {
+			searchType = req.getParameter("searchType");
+		}
+		
+		// 검색어
+//		String searchWord = null; // 강사님은 null 로 초기화 함 왜지? // 그냥 했던 듯 null 예외가 나서 고침  
+		String searchWord = "";
+		if (req.getParameter("searchWord") != null && !req.getParameter("searchWord").equals("")) {
+			searchWord = req.getParameter("searchWord");
+		}
+		
+		SearchCriteria sc = new SearchCriteria(searchType, searchWord);
+		System.out.println(sc.toString());
 		
 		// 페이지 번호
 		int pageNo = -1;
@@ -47,11 +64,20 @@ public class BoardListService implements BoardService {
 
 		try {
 			// 페이지 번호, 전체 글의 개수로 페이징 처리를 해서.
-			PagingInfo pi = getPagingInfo(pageNo,viewPostCntPerPage, dao);
+			PagingInfo pi = getPagingInfo(pageNo,viewPostCntPerPage, dao, sc);
 
-
+			List<BoardVo> lst = null;
 			// 페이징 처리한 쿼리문이 실행 되도록 dao 단 호출
-			List<BoardVo> lst = dao.selectEntireBoard(pi);
+			if(!sc.getSearchWord().equals("")) { // 검색어가 있다면
+				// sc를 받는 메서드 호출
+				lst  = dao.selectEntireBoard(pi, sc);
+			} else if (sc.getSearchWord().equals("") || sc.getSearchWord() == null) { // 검색어가 없다면
+				// sc를 받지 않는 메서드 호출
+				lst  = dao.selectEntireBoard(pi);
+			}
+			
+			
+			
 			
 			// 현재 페이지에 보여줄 글을 받아옴
 
@@ -95,13 +121,18 @@ public class BoardListService implements BoardService {
 		return bf;
 	}
 
-	private PagingInfo getPagingInfo(int pageNo,int viewPostCntPerPage, BoardDAO dao) throws NamingException, SQLException {
+	private PagingInfo getPagingInfo(int pageNo,int viewPostCntPerPage, BoardDAO dao, SearchCriteria sc) throws NamingException, SQLException {
 		PagingInfo pi = new PagingInfo();
 		
 		// 실질적인 페이징에 필요한 변수들 setting
 		pi.setViewPostCntPerPage(viewPostCntPerPage);
 		pi.setPageNo(pageNo);
-		pi.setTotalPostCnt(dao.getTotalPostCnt("board"));
+		
+		if(!sc.getSearchWord().equals("")) { // 검색어가 있다면
+			pi.setTotalPostCnt(dao.getTotalPostCnt("board", sc) ); // 검색어로 검색한 글의 개수	
+		} else if (sc.getSearchWord().equals("") || sc.getSearchWord() == null) { // 검색어가 없다면
+			pi.setTotalPostCnt(dao.getTotalPostCnt("board")); // 전체 글의 개수
+		}
 		pi.setTotalPageCnt(pi.getTotalPostCnt(), pi.getViewPostCntPerPage());
 		pi.setStartRowIndex(pi.getPageNo());
 		

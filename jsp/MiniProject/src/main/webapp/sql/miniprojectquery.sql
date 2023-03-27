@@ -379,6 +379,36 @@ select count(*) from board where step < 1;
 -- 마이페이지 포인트 페이징
 select count(*) as cnt from memberpoint where who = 'abcd1230';
 
+select * from memberpoint where who = 'gogi';
+
+--  ===============================================================================================================================================================
+-- 게시판 검색
+-- 제목으로 검색
+select * from board where title like %?% order by ref desc, reforder asc limit ?,?; 
+-- 계층형이 무너지면 안되고 페이징도 무너지면 안되기 때문에 
+
+select * from board where title like '%글%' order by ref desc, reforder asc;
+
+-- 작성자 검색
+select * from board where writer like %?% order by ref desc, reforder asc limit ?,?; 
+
+select * from board where writer like '%a%' order by ref desc, reforder asc;
+
+-- 본문 검색
+select * from board where content like %?% order by ref desc, reforder asc limit ?,?; 
+
+select * from board where content like '%가%' order by ref desc, reforder asc;
+
+-- 값에 해당하는 부분만 ? 로 처리 할 수 있기 때문에 where절은 동적 쿼리로 처리 해야한다
+-- setString의 경우 해당 조건에 작은 따옴표가 표함 되기때문에 쿼리문이 작동하지 않는다.
+
+-- 제목 + 내용 검색
+
+select * from board where content like %?% or title like %?% order by ref desc, reforder asc limit ?,?; 
+
+--  ===============================================================================================================================================================
+-- 좋아요 테이블
+-- 누가 몇번 글을 좋아요를 눌렀다. 재 클릭시 삭제 or 
 
 --  ===============================================================================================================================================================
 -- 테이블 조회

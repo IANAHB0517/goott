@@ -13,6 +13,7 @@ import com.miniproj.etc.PagingInfo;
 import com.miniproj.vodto.LoginDTO;
 import com.miniproj.vodto.MemberDTO;
 import com.miniproj.vodto.MemberPointVo;
+import com.miniproj.vodto.SearchCriteria;
 import com.mysql.cj.xdevapi.Result;
 
 /**
@@ -329,7 +330,7 @@ public class MemberDAOImpl implements MemberDAO {
 		Connection con =DBConnection.dbconnect();
 		
 		if (con != null) {
-			String query ="select * from memberpoint where who = ? order by no desc";
+			String query ="select * from memberpoint where who = ?  order by no desc limit ?,?";
 			PreparedStatement pstmt = con.prepareStatement(query);
 			
 			pstmt.setString(1, userId);
@@ -378,5 +379,34 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		return lst;
 	}
+	
+	@Override
+	public int getTotalPointCnt(String userId) throws NamingException, SQLException {
+		int result = -1;
+		
+
+		Connection con = DBConnection.dbconnect();
+
+		if (con != null) {
+			String query = "select count(*) as cnt from memberpoint where who = ?";
+//			System.out.println(query);
+
+			PreparedStatement pstmt = con.prepareStatement(query);
+
+			pstmt.setString(1, userId); // setString으로 변환시 작은따옴표를 포함하기때문에 이렇게 해주어야한다
+
+			System.out.println(pstmt);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				result = rs.getInt("cnt");
+			}
+			DBConnection.dbClose(rs, pstmt, con);
+		}
+
+		return result;
+	}
+	
 
 }

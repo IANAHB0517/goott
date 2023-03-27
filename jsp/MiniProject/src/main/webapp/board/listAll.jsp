@@ -40,6 +40,87 @@
 		console.log(vpc)
 	}
 	
+	//function searchValid(){
+	//	let isValid = false;
+	//	// 검색어의 경우 sql injection 공격의 타겟이 된다.
+	//	// 쿼리문으로 DB를 동작 하기 때문에
+	//	// 강력하게 보호해야 한다.
+	//	
+	//	// 검색어가 입력 되지 않거나, sql injection 공격요소가 있다면 검색이 되지 않도록 처리
+	//	let lenValid = false;
+	//	let inValid = false;
+	//	
+	//	let sw = $("#searchWord").val();
+	//	
+	//	if(sw.length == 0){
+	//		alert("검색어를 입력하세요");
+	//	} else if (sw.length >= 1){
+	//		lenValid = true;
+	//	}
+	//	
+	//	let expText= /[%=><]/; // 데이터 베이스에서 조건 연산자에 해당하는 문자
+	//	if(expText.test(sw) == true){
+	//		alert("특수문자를 입력 할 수 없습니다.");
+	//	} else {
+	//		inValid = true;
+	//	}
+	//	
+	//	
+	//	if(lenValid && inValid){
+	//		isValid = true;			
+	//	}
+	//	
+	//	return isValid
+	//}
+	
+	function searchValid(){
+		let isValid = false;
+		// 검색어의 경우 sql injection 공격의 타겟이 된다.
+		// 쿼리문으로 DB를 동작 하기 때문에
+		// 강력하게 보호해야 한다.
+		
+		// 검색어가 입력 되지 않거나, sql injection 공격요소가 있다면 검색이 되지 않도록 처리
+		let lenValid = false;
+		let inValid = false;
+		
+		let sw = $("#searchWord").val();
+		
+		if(sw.length == 0){
+			alert("검색어를 입력하세요");
+			return false;
+		} 
+		
+		let expText= /[%=><]/; // 데이터 베이스에서 조건 연산자에 해당하는 문자
+		if(expText.test(sw) == true){
+			alert("특수문자를 입력 할 수 없습니다.");
+			return false;
+		} 
+		
+		const sql = new Array(
+			"or", "select", "insert", "update", "delete", "create", "alter", "drop", "exec", "union", "fetch", "declare", "truncate"
+				// exec 프로시저 키워드
+				// fetch 데이터 인출
+				// declare 
+		);
+		
+		let regEx = "";	
+		
+		for (let i = 0; i < sql.length; i++){
+			regEx = new RegExp(sql[i],"gi");
+			// RegExp 정규 표현식 객체
+			// gi = 쿼리문의 어디에라도 
+			
+			if (regEx.test(sw) == true){
+				alert("특정 문자로 검색할 수 없습니다");
+				return false;
+			}
+		}
+		
+		
+		
+		return true;
+	}
+	
 </script>
 <style type="text/css">
 .board {
@@ -125,26 +206,38 @@
 				<button type="button" class="btn btn-primary writeBtn"
 					onclick="location.href='writeBoard.jsp';">글쓰기</button>
 			</div>
+			
+			<form class="searchBoard" action="listAll.bo">
+				<select name="searchType">
+					<option value="title">제목</option>
+					<option value="writer">글쓴이</option>
+					<option value="content">본문</option>
+				</select>
+				
+				<input type="text" name="searchWord" id="searchWord"/>
+				<button type="submit" onclick="return searchValid()">검색</button>
+			</form>
 
 			<div class="paging">
 				<!-- ${requestScope.pagingInfo } -->
 				${requestScope.pagingInfo }
 				<ul class="pagination">
 					<c:if test="${requestScope.pagingInfo.startNumOfCurrentPagingBlock > 1}">
-						<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo - 1 }&viewPost=${param.viewPost}">Previous</a></li>
+						<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo - 1 }&viewPost=${param.viewPost}&searchType=${param.searchType}&searchWord=${param.searchWord}">Previous</a></li>
+						<!-- 한번 검색을 해서 쿼리스트링에 검색 타입과 검색어가 붙어있기 때문에 param으로 붙일 수 있다 -->
 					</c:if>
 					<c:forEach var="i" begin="${requestScope.pagingInfo.startNumOfCurrentPagingBlock }" end="${requestScope.pagingInfo.endNumOfCurrentPagingBlock }" step="1">
 						<c:choose>
 							<c:when test="${requestScope.pagingInfo.pageNo == i }">
-								<li class="page-item active" ><a class="page-link" href="listAll.bo?pageNo=${i }&viewPost=${param.viewPost}">${i }</a></li>
+								<li class="page-item active" ><a class="page-link" href="listAll.bo?pageNo=${i }&viewPost=${param.viewPost}&searchType=${param.searchType}&searchWord=${param.searchWord}">${i }</a></li>
 							</c:when>
 							<c:otherwise>
-								<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${i }&viewPost=${param.viewPost}">${i }</a></li>						
+								<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${i }&viewPost=${param.viewPost}&searchType=${param.searchType}&searchWord=${param.searchWord}">${i }</a></li>						
 							</c:otherwise>							
 						</c:choose>
 					</c:forEach>
 					<c:if test="${requestScope.pagingInfo.pageNo < requestScope.pagingInfo.totalPageCnt }">
-						<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo + 1 }&viewPost=${param.viewPost}">Next</a></li>
+						<li class="page-item"><a class="page-link" href="listAll.bo?pageNo=${param.pageNo + 1 }&viewPost=${param.viewPost}&searchType=${param.searchType}&searchWord=${param.searchWord}">Next</a></li>
 					</c:if>	
 				</ul>
 			</div>

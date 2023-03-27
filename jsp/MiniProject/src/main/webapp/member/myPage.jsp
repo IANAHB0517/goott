@@ -23,19 +23,17 @@
 		$(".memberPoint").hide();
 	}
 
-	function showPoint() {
+	function showPoint(pageNo) {
 		$(".card").hide();
-		$(".memberPoint").show();
-	}
-	
-	function movePaing(userId, pageNo){
 		
+		
+				
 		$.ajax({
-	          url: "pointListAll.bo", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성)
+	          url: "getMemPoint.mem", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성)
 	          type: "get", // 통신 방식 (GET, POST, PUT, DELETE)
 	          data: {
-	            userId: userId,
-	            pageNo: pageNo,
+	            "userId": "${memberInfo.userId}",
+	            "pageNo": pageNo
 	          }, // 서블릿에 전송할 데이터
 	          dataType: "json", // 수신받을 데이터 타입(MIME TYPE)
 	          success: function (data) {
@@ -43,13 +41,44 @@
 	            console.log(data);
 
 	            if (data.status == "success") {
-	             
+	             parsePoint(data);
+	            	
 	            } else if (data.status == "fail") {
 	              alert("잠시 후, 다시 시도해 주세요");
 	            }
 	          },
 	        });
+		
+		
+	}
+	
+	function parsePoint(json){
+		let output = "<table class='table table-striped'><thead><tr><th>적립 일시</th><th>적립 사유</th><th>적립금</th></tr></thead><tbody>";
+		
+		$.each(json.memberpoints, function(i, item){
+			output += "<tr>";
+			output += "<td>" + item.when + "</td>";
+			output += "<td>" + item.why + "</td>";
+			output += "<td>" + item.howmuch + "</td>";
+			output += "</tr>";
+			console.log(output);
+		});
+		output += "</tbody></table>";
+		
+		$(".memberPoint").html(output);
+		
+		let pagination = "<ul class='pagination'>";
+		
+		for (let i = json.startNumOfCurrentPagingBlock; i <= json.endNumOfCurrentPagingBlock; i++){
+			pagination += "<li class='page-item'><a class='page-link' href='#' onclick='showPoint("+ i +");'> " + i +" </a></li>";
 		}
+		
+		pagination += "</ul>";
+		
+		$(".mpPagination").html(pagination);
+			
+		$(".memberPoint").show();
+	}
 	
 	
 </script>
@@ -61,7 +90,7 @@
 </head>
 <body>
 	<c:set var="contextPath" value="<%=request.getContextPath()%>" />
-	
+
 	<jsp:include page="../header.jsp"></jsp:include>
 	<div class="container">
 		<h4>마이 페이지</h4>
@@ -84,50 +113,17 @@
 						</div>
 					</div>
 				</div></li>
+				
 			<li class="nav-item"><a class="nav-link" href="#"
 				onclick="showPoint();">포인트 적립내역</a>
+				
 				<div class="memberPoint">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>적립 일시</th>
-								<th>적립 사유</th>
-								<th>적립금</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="mp" items="${memberpoint}">
-								<tr>
-									<td>${mp.when }</td>
-									<td>${mp.why }</td>
-									<td>${mp.howmuch }</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-					${requestScope.pagingInfo }
+				</div>
 
-					<ul class="pagination">
-						<li class="page-item"><a class="page-link movePage" href="#">Previous </a></li>
-						<!-- ${memberInfo.userId }&pointPage=${i -1} -->
-						
-					<c:forEach var="i" begin="1" end="${requestScope.pagingInfo.totalPageCnt }" step="1">
-					<c:choose>
-						<c:when test="${requestScope.pagingInfo.pageNo == i }">
-							<li class="page-item active"><a class="page-link movePage" href="#">${i }</a></li>
-							<!-- myPage.mem?userid=${memberInfo.userId }&point&Page=${i } -->
-						</c:when>
-						<c:otherwise>
-							<li class="page-item"><a class="page-link movePage" href="#" >${i }</a></li>
-							<!-- myPage.mem?userid=${memberInfo.userId }&pointPage=${i } -->
-						</c:otherwise>
-					</c:choose>
-					</c:forEach>	
-						<li class="page-item"><a class="page-link movePage" href="#">Next</a></li>
-						<!-- ${memberInfo.userId }&pointPage=${i +1} -->
-					</ul>
+				<div class="mpPagination">
+				</div>
 
-				</div></li>
+				</li>
 			<!-- 
 			<li class="nav-item"><a class="nav-link" href="#">내가 쓴 글</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">Disabled</a>

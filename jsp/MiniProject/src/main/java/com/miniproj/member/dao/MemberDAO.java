@@ -29,16 +29,19 @@ public interface MemberDAO {
 
 	// 로그인한 유저의 로그인 기록 (insert or update)
 	int writtenLoginDate(int mode, String userId, Connection con) throws NamingException, SQLException;
-	
+
 	// 로그인, 포인트 부여를 트랜잭션 처리
 	MemberDTO loginWithTransaction(LoginDTO dto) throws NamingException, SQLException;
-	
+
 	// 유저아이디로 회원 정보 불러오기
 	MemberDTO getMemberInfo(String userId) throws NamingException, SQLException;
-	
-	//포인트 내역 가져오기
-	List<MemberPointVo> getMemberPoint(String userId)throws NamingException, SQLException;
-	
-	//포인트 내역 가져오기 페이징
-	List<MemberPointVo> getMemberPoint(String userId, PagingInfo pi)throws NamingException, SQLException;
+
+	// 포인트 내역 가져오기
+	List<MemberPointVo> getMemberPoint(String userId) throws NamingException, SQLException;
+
+	// 포인트 내역 가져오기 페이징
+	List<MemberPointVo> getMemberPoint(String userId, PagingInfo pi) throws NamingException, SQLException;
+
+	// 유저의 멤버 포인트 개수 얻어오기
+	int getTotalPointCnt(String userId) throws NamingException, SQLException;
 }
