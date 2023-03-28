@@ -379,7 +379,7 @@ select count(*) from board where step < 1;
 -- 마이페이지 포인트 페이징
 select count(*) as cnt from memberpoint where who = 'abcd1230';
 
-select * from memberpoint where who = 'gogi';
+select * from memberpoint where who = 'gogi' order by no desc limit 5,5;;
 
 --  ===============================================================================================================================================================
 -- 게시판 검색
