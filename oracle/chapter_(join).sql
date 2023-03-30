@@ -98,7 +98,7 @@ where e1.manager_id = e2.employee_id; --포린 키와 프라이머리 키의 컬
 select count(*)
 from employees cross join departments;
 
--- 2) ANSI INNER JOIN : EQUI JOIN과 동일
+oracle/chapter_(join).sql-- 2) ANSI INNER JOIN : EQUI JOIN과 동일
 -- join 조건을 where 절이 아니라 on 절에 기술한다
 -- where 절에 일반 조건을 기술 할 수 있다.
 select e.first_name, d.department_name
