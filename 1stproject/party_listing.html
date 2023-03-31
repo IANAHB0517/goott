@@ -606,21 +606,21 @@ https://templatemo.com/tm-564-plot-listing
       });
 
       //쿠키 영역
-      // let cookieDate = new Date();
-      // cookieDate.setDate(cookieDate.getDate() + 60);
+      let cookieDate = new Date();
+      cookieDate.setDate(cookieDate.getDate() + 60);
 
-      // function readCookies() {
-      //   let cookAr = document.cookie;
-      //   console.log(cookAr);
-      //   let checkAr = cookAr.split(";");
-      //   console.log(checkAr);
-      //   let findFlag = false;
-      //   //  for (let i = 0; i < checkAr.length; i++) {
-      //   //   let cookId = checkAr[i].split("=")[0].trim();
-      //   //   if (cookId == "")
+      function readCookies() {
+        let cookAr = document.cookie;
+        console.log(cookAr);
+        let checkAr = cookAr.split(";");
+        console.log(checkAr);
+        let findFlag = false;
+        //  for (let i = 0; i < checkAr.length; i++) {
+        //   let cookId = checkAr[i].split("=")[0].trim();
+        //   if (cookId == "")
 
-      //   //  }
-      // }
+        //  }
+      }
 
       function addCookie(cookieId, imgUrl, title) {
         console.log(cookieId, imgUrl, title);
@@ -659,8 +659,6 @@ https://templatemo.com/tm-564-plot-listing
         dateString = Number(currentDate);
         console.log(dateString);
         baseUrl = `https://apis.data.go.kr/B551011/KorService/searchFestival?serviceKey=4F6HAPDoVB3FHDYvgt%2Fvmfa1NF7xD6m97UFCrUuzR6VbOhVXHSp24vutnt61xVrMNdMmvWpINT45qmIoTvwv4A%3D%3D&MobileOS=ETC&MobileApp=AppTest&_type=json&eventStartDate=${dateString}&pageNo=${currentPage}&numOfRows=${numOfRows}`;
-
-        console.log(baseUrl);
 
         ajaxCall(baseUrl);
       }

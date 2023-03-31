@@ -16,10 +16,13 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
+	<!-- 이미지, js, css파일 등의 view에서 사용할 기타 자원들이 위치하는 폴더 정의(일반 유저가 webapp 접근 할 
+		수 없게 되어 있다. 그래서 자원이 있는곳만 접근 할 수 있게 허락해주는 것) -->
 	<resources mapping="/resources/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
+	<!-- 렌더링 되어 response될 jsp 문서를 찾는다 -->
 	<!-- userbean 태그와 동일 -->
 	<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -33,9 +36,15 @@
 		<!-- 반환 받은 값의 뒤에 .jsp 를 붙여라 -->
 		<!-- /WEB-INF/views/반환 받은 값.jsp 호출한 페이지의 경로가 된다. -->
 	</beans:bean>
-
+	<!-- com.springbasic.controller 패키지의 클래스를 조사(scan)하여 컨트롤러 객체를 찾는다 -->
+	<!-- 패키지를 만들고 나면 여기에 추가해서 no mapping 에러가 나지 않도록 하자 -->
 	<context:component-scan
-		base-package="com.springbasic.controller" />
+		base-package="com.springbasic.controller" /> 
+		<!--  하위 패키지는 인식하지만 다른 패키지는 인식하지 못한다. -->
+
+<context:component-scan
+		base-package="com.springbasic.memberController" />
+
 
 
 

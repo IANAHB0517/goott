@@ -151,6 +151,14 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.1</version>
+			<!-- 의존성에 의해서jackson-annotations-2.13.1.ja 과 core도 함께 다운로드 됨  -->
+		</dependency>
+
 
 	</dependencies>
 	<build>
