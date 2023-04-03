@@ -74,7 +74,7 @@ CREATE TABLE `pointpolicy` (
 -- 로그인 기록 테이블
 CREATE TABLE `latestloginlog` (
   `who` varchar(8) NOT NULL,
-  `latestlogindate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `latestLoginDate` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`who`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -158,13 +158,13 @@ insert into memberpoint (who, why, howmuch)
 values (?, '회원가입', (select howmuch from pointpolicy where why ='회원가입'));
 
 -- 최근 로그인 한 날짜가 바뀌었는가?
-select datediff(now(), (select latestlogindate from latestloginlog where who='a1a1'));
+select datediff(now(), (select latestLoginDate from latestloginlog where who='a1a1'));
 
 -- 회원 가입후 처음 로그인 하면 -1
-select ifnull(a.diff, -1) as datediff from (select datediff(now(), (select latestlogindate from latestloginlog where who= 'kimlay')) as diff) a;
+select ifnull(a.diff, -1) as datediff from (select datediff(now(), (select latestLoginDate from latestloginlog where who= 'kimlay')) as diff) a;
 
 -- 처음 로그인 x, 로그인 하고 날짜가 바뀌었으면 > 0
-select datediff(now(), (select latestlogindate from latestloginlog where who='a1a1'))  as diff;
+select datediff(now(), (select latestLoginDate from latestloginlog where who='a1a1'))  as diff;
 
 -- 처음 로그인 x, 로그인 하고 날짜가 바뀌지 않았으면 0
 
@@ -172,11 +172,11 @@ select datediff(now(), (select latestlogindate from latestloginlog where who='a1
 insert into latestloginlog(who) values (?);
 
 -- 기존 로그인기록이 있는 사람 update 하는 sql문
-update latestloginlog set latestlogindate = now() where who=?;
+update latestloginlog set latestLoginDate = now() where who=?;
 
 
 
-select TIMESTAMPDIFF(day, now(), (select latestlogindate from latestloginlog where who='kimlay')) as diff;
+select TIMESTAMPDIFF(day, now(), (select latestLoginDate from latestloginlog where who='kimlay')) as diff;
 
 -- 로그인한 회원의 전체 정보 조회
 select * from member where userId = ?;
@@ -419,3 +419,18 @@ select * from latestloginlog;
 SELECT * FROM pointpolicy;
 select * from board order by ref desc, reforder asc;
 select * from readcountprocess;
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- insert member
+insert into member values(?,sha1(md5(?)),?,?,?,?,?,?,?,?);
+
+-- update member
+update member set userimg='uploadMember/noimg.png' where userId=? ;
+
+select count(*) from member where userId='test2';
+
+insert into memberpoint(who,  why, howmuch) values (userId, "로그인", 10); 
+
+insert into memberpoint(who, why, howmuch) values ('test2', '로그인', (select howmuch from pointpolicy 
+where why = '로그인' ));

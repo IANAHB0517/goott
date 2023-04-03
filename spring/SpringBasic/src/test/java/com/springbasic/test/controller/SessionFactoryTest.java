@@ -1,4 +1,4 @@
-package com.springbasic.controller;
+package com.springbasic.test.controller;
 
 import javax.inject.Inject;
 

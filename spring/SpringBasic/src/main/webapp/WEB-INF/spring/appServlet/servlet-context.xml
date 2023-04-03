@@ -12,7 +12,8 @@
 		infrastructure -->
 
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<annotation-driven />
+	<annotation-driven /> 
+	<!-- 어노테이션 방식으로 동작 한다는 뜻 -->
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
@@ -39,7 +40,7 @@
 	<!-- com.springbasic.controller 패키지의 클래스를 조사(scan)하여 컨트롤러 객체를 찾는다 -->
 	<!-- 패키지를 만들고 나면 여기에 추가해서 no mapping 에러가 나지 않도록 하자 -->
 	<context:component-scan
-		base-package="com.springbasic.controller" /> 
+		base-package="com.springbasic.test.controller" /> 
 		<!--  하위 패키지는 인식하지만 다른 패키지는 인식하지 못한다. -->
 
 <context:component-scan

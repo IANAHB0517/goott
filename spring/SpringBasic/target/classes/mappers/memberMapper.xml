@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springbasic.mapper.memberMapper">
+	<!-- 쿼리문을 넣는다 -->
+	<select id="getDateTime" resultType="string"> <!-- 쿼리문의 명칭과 반환값 타입 -->
+		select now() <!-- 쿼리문 -->
+	</select>
+
+	<!-- resultType은 select tag에만 설정해준다 -->
+	<insert id="insertMemberWithFile">
+		insert into member values(
+		#{userId},sha1(md5(#{userPwd})),#{userEmail},#{userMobile},
+		#{userGender},#{hobbies},#{job},#{userImg},#{memo},#{isAdmin})
+	</insert>
+
+	<select id="isDuplicate" resultType="int">
+		select count(*) from member
+		where userId=#{userId}
+	</select>
+
+
+	<update id="updateMember">
+		update member set userImg=#{userImg} where userId=
+		#{userId}\
+	</update>
+
+	<delete id="deleteMember">
+		delete from member where userId=#{userId}
+	</delete>
+
+	<select id="viewMemberByUserId"
+		resultType="com.springbasic.domain.MemberVO">
+		select * from member where userId=#{userId}
+	</select>
+
+	<select id="viewAllMember"
+		resultType="com.springbasic.domain.MemberVO"> <!-- 결과 타입을 가지고 와서 리스트에 담아준다 -->
+		select * from member
+	</select>
+
+	<select id="loginMember"
+		resultType="com.springbasic.domain.MemberVO">
+		select * from member where userId=#{userId} and userPwd=
+		sha1(md5(#{userPwd}))
+	</select>
+
+	<insert id="addPoint"> <!-- 서브쿼리의 경우 쿼리문을 순차적으로 실행해야 하기 때문에 트랜잭션 처리가 필요하다 -->
+		insert into memberpoint(who, why, howmuch) values (#{who}, #{why},
+		(select howmuch from pointpolicy where why = #{why} ))
+	</insert>
+
+	<select id="whenLatestLogin" resultType="int">
+		select datediff(now(), (select latestLoginDate from latestloginlog where
+		who=#{userId}))
+	</select>
+	
+	<select id="memberPointList" resultType="com.springbasic.domain.MemberPointVO">
+		select * from memberpoint where who = #{userId}
+	</select>
+	
+
+</mapper>

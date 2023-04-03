@@ -45,7 +45,7 @@ public class MemberDAOImpl implements MemberDAO {
 			String sql = "";
 			PreparedStatement pstmt = null;
 			if (!dto.getUserImg().equals("")) { // 업로드 파일이 있는 경우
-				sql = "insert into member " + "values(?,sha1(md5(?)),?,?,?,?,?,?,?)";
+				sql = "insert into member " + "values(?,sha1(md5(?)),?,?,?,?,?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, dto.getUserId());
 				pstmt.setString(2, dto.getUserPwd());
@@ -56,6 +56,8 @@ public class MemberDAOImpl implements MemberDAO {
 				pstmt.setString(7, dto.getJob());
 				pstmt.setString(8, dto.getUserImg());
 				pstmt.setString(9, dto.getMemo());
+				pstmt.setString(10, "N");
+				
 
 			} else { // 업로드 파일이 없는 경우
 				sql = "insert into member(userId, userPwd, userEmail, userMobile,  userGender, "

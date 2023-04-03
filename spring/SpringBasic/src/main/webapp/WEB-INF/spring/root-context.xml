@@ -10,30 +10,58 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
-	
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
-		
-		<!-- DB Connection 설정 -->
+
+
+	<!-- DB Connection 설정 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"> </property> 
+		<property name="url" value="jdbc:mysql://localhost:3306/lsj?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8"> 
+		</property> <property name="username" value="root"></property> <property 
+		name="password" value="1234"></property> </bean> -->
+
+	<!-- DB (log4jdbc) 설정 -->
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
-			value="com.mysql.cj.jdbc.Driver">
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy">
 		</property>
 		<property name="url"
-			value="jdbc:mysql://localhost:3306/selfproj?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8">
+			value="jdbc:log4jdbc:mysql://localhost:3306/lsj?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8">
 		</property>
 		<property name="username" value="root"></property>
 		<property name="password" value="1234"></property>
 	</bean>
-	
+
 	<!-- SqlSessionFactory 객체 설정(mybatis 객체) dataSource 객체를 참조 -->
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"></property>
-
+		<property name="dataSource" ref="dataSource"></property> <!-- Mybatis 환경 설정 파일이 위치해 있는곳 -->
 		<property name="configLocation"
-			value="classpath:/mybatis-config.xml"><!-- configLocation 같이 컴파일되는 루트 -->
+			value="classpath:/mybatis-config.xml">
+			<!-- configLocation 같이 컴파일되는 루트 -->
 		</property>
+
+		<!--Mapper 파일이 위치해 있는곳 -->
+		<property name="mapperLocations"
+			value="classpath:mappers/**/memberMapper.xml">
+		</property>
+
 	</bean>
+
+	<!-- SqlSessionTemplate(spring-batis) 객체 설정 (SqlSessionFactory 와 DB Connection을 
+		연결해줌) -->
+
+	<bean class="org.mybatis.spring.SqlSessionTemplate"
+		id="sqlSession" destroy-method="clearCache">
+		<constructor-arg ref="sqlSessionFactory"
+			name="sqlSessionFactory"></constructor-arg>
+	</bean>
+
+	<!-- 아래의 패키지를 조사(scan)하여 스프링 컨테이너가 확보해야하는 객체를 수집 -->
+	<context:component-scan
+		base-package="com.springbasic.persistence" /><!-- repository 어노테이션을 찾도록 
+		함 -->
+
+
 </beans>
