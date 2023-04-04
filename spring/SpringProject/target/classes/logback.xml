@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- <appenders> <Console name="Console" target="SYSTEM_OUT"> <PatternLayout 
+		pattern="%d{HH:mm:ss.SSS} [%t] %level - %m%n%ex%n"/> </Console> <File name="log4jdbc_file" 
+		fileName="log4jdbc.out"> <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %level 
+		- %m%n%ex%n"/> </File> </appenders> -->
+	<loggers>
+		<logger name="jdbc.sqlonly" level="DEBUG"></logger>
+		<logger name="jdbc.sqltiming" level="INFO"></logger>
+		<logger name="jdbc.audit" level="WARN"></logger>
+		<logger name="jdbc.resultset" level="ERROR"></logger>
+		<logger name="jdbc.resultsettable" level="ERROR"></logger>
+		<logger name="jdbc.connection" level="INFO"></logger>
+	</loggers>
+</configuration>

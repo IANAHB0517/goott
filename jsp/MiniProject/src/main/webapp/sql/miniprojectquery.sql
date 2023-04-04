@@ -434,3 +434,25 @@ insert into memberpoint(who,  why, howmuch) values (userId, "로그인", 10);
 
 insert into memberpoint(who, why, howmuch) values ('test2', '로그인', (select howmuch from pointpolicy 
 where why = '로그인' ));
+
+-- board 조회
+select * from board order by no desc;
+-- 게시판 여러개 파일 생성을 위한 테이블
+
+-- Spring project
+
+
+
+CREATE TABLE `lsj`.`boardimg` (
+  `boardImgNo` INT NOT NULL AUTO_INCREMENT,
+  `boardNo` INT NOT NULL,
+  `fileType` VARCHAR(5) NOT NULL,
+  `fileName` VARCHAR(50) NOT NULL,
+  `base64file` VARCHAR(2000) NOT NULL,
+  PRIMARY KEY (`boardImgNo`),
+  INDEX `boardImg_boardNo_fk_idx` (`boardNo` ASC) VISIBLE,
+  CONSTRAINT `boardImg_boardNo_fk`
+    FOREIGN KEY (`boardNo`)
+    REFERENCES `lsj`.`board` (`no`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);

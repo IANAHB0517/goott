@@ -10,28 +10,28 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
-
+		
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
-
-	<!-- DB Connection 설정 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
-		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"> </property> 
-		<property name="url" value="jdbc:mysql://localhost:3306/lsj?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8"> 
-		</property> <property name="username" value="root"></property> <property 
-		name="password" value="1234"></property> </bean> -->
-
-	<!-- DB (log4jdbc) 설정 -->
+	<!-- DB Connection 설정 -->
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
-			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy">
+			value="com.mysql.cj.jdbc.Driver">
 		</property>
 		<property name="url"
-			value="jdbc:log4jdbc:mysql://localhost:3306/lsj?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8">
+			value="jdbc:mysql://localhost:3306/lsj?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8">
 		</property>
 		<property name="username" value="root"></property>
 		<property name="password" value="1234"></property>
 	</bean>
+
+	<!-- DB (log4jdbc) 설정 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"> 
+		</property> <property name="url" value="jdbc:log4jdbc:mysql://localhost:3306/lsj?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8"> 
+		</property> <property name="username" value="root"></property> <property 
+		name="password" value="1234"></property> </bean> -->
+
 
 	<!-- SqlSessionFactory 객체 설정(mybatis 객체) dataSource 객체를 참조 -->
 	<bean id="sqlSessionFactory"
@@ -44,9 +44,8 @@
 
 		<!--Mapper 파일이 위치해 있는곳 -->
 		<property name="mapperLocations"
-			value="classpath:mappers/**/memberMapper.xml">
+			value="classpath:mappers/**/*Mapper.xml">
 		</property>
-
 	</bean>
 
 	<!-- SqlSessionTemplate(spring-batis) 객체 설정 (SqlSessionFactory 와 DB Connection을 
@@ -57,9 +56,9 @@
 		<constructor-arg ref="sqlSessionFactory"
 			name="sqlSessionFactory"></constructor-arg>
 	</bean>
+<!-- 아래의 패키지를 조사하여 필요한 객체들을 설정,확보 -->
+<context:component-scan base-package="com.springproj.service" />
+<context:component-scan base-package="com.springproj.persistence" />
 
-	<!-- 아래의 패키지를 조사(scan)하여 스프링 컨테이너가 확보해야하는 객체를 수집 -->
-	<context:component-scan
-		base-package="com.springbasic.persistence" /><!-- repository 어노테이션을 찾도록 
-		함 -->
-		</beans>
+
+</beans>
