@@ -28,6 +28,7 @@ public class CommonException {
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandling(Exception e, Model model) {
 		System.out.println("Exception 발생");
+		e.printStackTrace();
 		model.addAttribute("errorMsg", e.getMessage());
 		model.addAttribute("stacktrace", e.getStackTrace());
 		return "/error";

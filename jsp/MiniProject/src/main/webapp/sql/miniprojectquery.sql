@@ -443,16 +443,15 @@ select * from board order by no desc;
 
 
 
-CREATE TABLE `lsj`.`boardimg` (
-  `boardImgNo` INT NOT NULL AUTO_INCREMENT,
-  `boardNo` INT NOT NULL,
-  `fileType` VARCHAR(5) NOT NULL,
-  `fileName` VARCHAR(50) NOT NULL,
-  `base64file` VARCHAR(2000) NOT NULL,
+CREATE TABLE `boardimg` (
+  `boardImgNo` int(11) NOT NULL AUTO_INCREMENT,
+  `boardNo` int(11) NOT NULL,
+  `fileType` varchar(25) NOT NULL,
+  `fileExt` varchar(5) NOT NULL,
+  `fileName` varchar(100) NOT NULL,
+  `thumbFileName` varchar(120) DEFAULT NULL,
+  `base64file` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`boardImgNo`),
-  INDEX `boardImg_boardNo_fk_idx` (`boardNo` ASC) VISIBLE,
-  CONSTRAINT `boardImg_boardNo_fk`
-    FOREIGN KEY (`boardNo`)
-    REFERENCES `lsj`.`board` (`no`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION);
+  KEY `boardImg_boardNo_fk_idx` (`boardNo`),
+  CONSTRAINT `boardImg_boardNo_fk` FOREIGN KEY (`boardNo`) REFERENCES `board` (`no`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

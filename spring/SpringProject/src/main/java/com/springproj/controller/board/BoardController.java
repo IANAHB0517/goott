@@ -1,7 +1,10 @@
 package com.springproj.controller.board;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,9 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.springproj.domain.BoardVo;
+import com.springproj.etc.UploadFileInfo;
 import com.springproj.etc.UploadFilesProc;
 import com.springproj.service.BoardService;
 
@@ -24,6 +29,9 @@ public class BoardController {
 
 	@Inject
 	private BoardService service; // BoardService 객체 주입
+	
+	// 업로드된 파일의 리스트
+	private List<UploadFileInfo> upFileList = new ArrayList<UploadFileInfo>();
 
 	@RequestMapping("listAll") // listAll.jsp
 	public void listAll(Model model) throws Exception {
@@ -40,7 +48,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "upfiles", method = RequestMethod.POST)
-	public void uploadFileProcess(MultipartFile upfiles, HttpServletRequest req ) throws IOException { // 컨트롤러 단이기 때문에 request 객체가 살아있다
+	public @ResponseBody UploadFileInfo uploadFileProcess(MultipartFile upfiles, HttpServletRequest req ) throws IOException { // 컨트롤러 단이기 때문에 request 객체가 살아있다
 		System.out.println("컨트롤러 단 : 파일  업로드 처리");
 		System.out.println("업로드된 파일 이름 : " + upfiles.getOriginalFilename());
 		System.out.println("업로드된 파일 타입 : " + upfiles.getContentType());
@@ -52,7 +60,18 @@ public class BoardController {
 		// 저장될 물리적 경로
 		String realPath = req.getSession().getServletContext().getRealPath("resources/upFiles");
 		
-		UploadFilesProc.uploadFile(originFileName, originFileType, upfilesContent, realPath);
+		UploadFileInfo fileInfo = UploadFilesProc.uploadFile(originFileName, originFileType, upfilesContent, realPath);
+		
+		if (fileInfo != null) {
+			this.upFileList.add(fileInfo);
+		}
+		
+		for (UploadFileInfo ufi : this.upFileList) {
+			System.out.println(ufi.toString());
+		}
+		
+		return fileInfo;
+		
 		
 	}
 
