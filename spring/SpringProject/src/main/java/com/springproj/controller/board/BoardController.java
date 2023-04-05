@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,8 +72,21 @@ public class BoardController {
 		}
 		
 		return fileInfo;
+	}
+	
+	@RequestMapping(value ="delfiles" , method = RequestMethod.POST)
+	public int deleteUploadedFile(HttpServletRequest req, @RequestParam("removeTarget") String removeTarget) {
+		;
+		
+		System.out.println("컨트롤러 단 : 업로드 파일 삭제 처리");
+		int result = -1;
 		
 		
+		System.out.println(removeTarget);
+		
+		
+		
+		return result;
 	}
 
 }

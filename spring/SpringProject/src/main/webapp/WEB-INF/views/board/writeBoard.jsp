@@ -71,7 +71,25 @@
 		$(".uploadFile").append(output);
 	}
 	
-	
+	function remUploadFile(target){
+				console.log(target);
+		$.ajax({ 
+			url : "/board/delfiles", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성) // 기능을 구현할때 먼저 상의해서 정의해야함
+			type : "post", // 통신 방식 (GET, POST, PUT, DELETE)
+			data : {
+				"removeTarget" : target,
+			}, // 서블릿에 전송할 데이터
+			dataType : "json", // 수신받을 데이터 타입(MIME TYPE)
+			contentType : false, // content type이 기본 값이 아님 
+			success : function(data) {
+				// 통신이 성공하면 수행할 함수(콜백 함수)
+				console.log(data);
+				if (data != null){
+					// front단에 있는 태그 지우는 메서드 호출
+				}
+			}
+		});
+	}
 	
 </script>
 <style>
