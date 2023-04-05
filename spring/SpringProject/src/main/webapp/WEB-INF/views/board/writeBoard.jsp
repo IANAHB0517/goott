@@ -17,7 +17,7 @@
 			let remTarget = $(this).prev();
 			alert($(remTarget).attr("id") + "를 삭제 시키자");
 			
-			remUploadFile($(remTarget).attr("id"));
+			remUploadFile($(remTarget).attr("id"),$(remTarget).attr("src") );
 		});	
 		
 	$(".fileDrop").on("dragenter dragover", function(evt){
@@ -71,24 +71,34 @@
 		$(".uploadFile").append(output);
 	}
 	
-	function remUploadFile(target){
-				console.log(target);
+	function remUploadFile(originFileName, fileNameWithExt){
+				// console.log("originFileName : " + originFileName, "fileNameWithExt : " + fileNameWithExt);
 		$.ajax({ 
-			url : "/board/delfiles", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성) // 기능을 구현할때 먼저 상의해서 정의해야함
-			type : "post", // 통신 방식 (GET, POST, PUT, DELETE)
+			url : "/board/delfiles" , // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성) // 기능을 구현할때 먼저 상의해서 정의해야함
+			type : "get", // 통신 방식 (GET, POST, PUT, DELETE)
 			data : {
-				"removeTarget" : target,
+				"originFileName" : originFileName,
+				"fileNameWithExt" : fileNameWithExt
 			}, // 서블릿에 전송할 데이터
 			dataType : "json", // 수신받을 데이터 타입(MIME TYPE)
-			contentType : false, // content type이 기본 값이 아님 
+			contentType : "text", // content type이 기본 값이 아님 
 			success : function(data) {
 				// 통신이 성공하면 수행할 함수(콜백 함수)
 				console.log(data);
-				if (data != null){
+				if (!data.equals("")){
+					alert("삭제 메서드 호출");
+					removeCurTag(data);
 					// front단에 있는 태그 지우는 메서드 호출
 				}
 			}
 		});
+	}
+	
+	function removeCurTag(id){
+	
+		$(id).attr("id").next().remove();
+		$(id).attr("id").remove();
+		alert("썸네일, 삭제 버튼 삭제 ");
 	}
 	
 </script>
