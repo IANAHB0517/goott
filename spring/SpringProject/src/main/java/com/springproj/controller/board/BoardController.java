@@ -8,6 +8,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +27,10 @@ import com.springproj.service.BoardService;
 @RequestMapping("/board/*") // /board로 들어오는 모든 request를 여기에서 매핑하겠다.
 public class BoardController {
 
+	private String realPath;
+	
 	@Inject
-	private BoardService service; // BoardService 객체 주입
+	private BoardService service; // BoardService 객체 주입 
 
 	// 업로드된 파일의 리스트
 	private List<UploadFileInfo> upFileList = new ArrayList<UploadFileInfo>();
@@ -58,7 +62,7 @@ public class BoardController {
 		String originFileType = upfiles.getContentType();
 		byte[] upfilesContent = upfiles.getBytes(); // 파일의 실질적인 내용
 		// 저장될 물리적 경로
-		String realPath = req.getSession().getServletContext().getRealPath("resources/upFiles");
+		realPath = req.getSession().getServletContext().getRealPath("resources/upFiles");
 
 		UploadFileInfo fileInfo = UploadFilesProc.uploadFile(originFileName, originFileType, upfilesContent, realPath);
 
@@ -74,33 +78,33 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "delfiles")
-	public @ResponseBody String deleteUploadedFile(HttpServletRequest req,
-			@RequestParam("originFileName") String originFileName, @RequestParam("fileNameWithExt") String fileNameWithExt) {
+	public ResponseEntity<String> deleteUploadedFile(
+			@RequestParam("originFileName") String originFileName) {
 
 		System.out.println("컨트롤러 단 : 업로드 파일 삭제 처리");
-		String result = "";
+		System.out.println("삭제 대상 파일 : " + originFileName);
+		
+		
 
 		
 		System.out.println("originFileName : " + originFileName);
-		System.out.println("fileNameWithExt : " + req.getSession().getServletContext().getRealPath(fileNameWithExt));
 		
-		String savedThumb = req.getSession().getServletContext().getRealPath(fileNameWithExt);
-		String savedOrigin = (req.getSession().getServletContext().getRealPath(fileNameWithExt)).replace("thumb_", "");
-
-		File delThumb = new File(savedThumb);
-		File delFile = new File(savedOrigin);
-
-		if (delThumb.exists()) {
-
-			if (delThumb.delete() && delFile.delete()) {
-				System.out.println("파일 삭제 완료");
-				result = originFileName;
-			} else {
-				System.out.println("파일 삭제 실패");
+		for(UploadFileInfo ufi : upFileList) {
+			if(ufi.getOriginFileName().equals(originFileName)) {
+				
+				File delFile = new File(realPath + ufi.getFileNameWithExt());
+				
+				delFile.delete();
+				
+				if(ufi.isImage()) {
+					File delThumbFile = new File(realPath + ufi.getThumbImgName());
+					delThumbFile.delete();
+				}
+				
 			}
-		} else {
-			System.out.println("파일 없음");
 		}
+		ResponseEntity<String> result = new ResponseEntity<String>("success", HttpStatus.OK);
+		
 
 		return result;
 	}

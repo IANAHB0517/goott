@@ -15,7 +15,7 @@
 	
 		$(".uploadFile").on("click", ".delFile", function(){
 			let remTarget = $(this).prev();
-			alert($(remTarget).attr("id") + "를 삭제 시키자");
+			//alert($(remTarget).attr("id") + "를 삭제 시키자");
 			
 			remUploadFile($(remTarget).attr("id"),$(remTarget).attr("src") );
 		});	
@@ -71,14 +71,14 @@
 		$(".uploadFile").append(output);
 	}
 	
-	function remUploadFile(originFileName, fileNameWithExt){
+	function remUploadFile(originFileName){
 				// console.log("originFileName : " + originFileName, "fileNameWithExt : " + fileNameWithExt);
 		$.ajax({ 
 			url : "/board/delfiles" , // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성) // 기능을 구현할때 먼저 상의해서 정의해야함
 			type : "get", // 통신 방식 (GET, POST, PUT, DELETE)
 			data : {
 				"originFileName" : originFileName,
-				"fileNameWithExt" : fileNameWithExt
+				
 			}, // 서블릿에 전송할 데이터
 			dataType : "json", // 수신받을 데이터 타입(MIME TYPE)
 			contentType : "text", // content type이 기본 값이 아님 
