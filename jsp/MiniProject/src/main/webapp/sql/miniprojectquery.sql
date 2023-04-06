@@ -417,6 +417,7 @@ select * from member;
 select * from memberpoint;
 select * from latestloginlog;
 SELECT * FROM pointpolicy;
+SELECT * FROM boardimg;
 select * from board order by ref desc, reforder asc;
 select * from readcountprocess;
 
@@ -442,7 +443,6 @@ select * from board order by no desc;
 -- Spring project
 
 
-
 CREATE TABLE `boardimg` (
   `boardImgNo` int(11) NOT NULL AUTO_INCREMENT,
   `boardNo` int(11) NOT NULL,
@@ -450,8 +450,21 @@ CREATE TABLE `boardimg` (
   `fileExt` varchar(5) NOT NULL,
   `fileName` varchar(100) NOT NULL,
   `thumbFileName` varchar(120) DEFAULT NULL,
-  `base64file` varchar(2000) DEFAULT NULL,
+  `base64file` mediumtext,
   PRIMARY KEY (`boardImgNo`),
   KEY `boardImg_boardNo_fk_idx` (`boardNo`),
   CONSTRAINT `boardImg_boardNo_fk` FOREIGN KEY (`boardNo`) REFERENCES `board` (`no`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 게시판 저장 (답글 게시판 처리 안함, 답글 게시판은 jsp miniproj 참고)
+insert into board(writer, title, content) values(?,?,?) ;
+
+-- 게시글 파일 저장 
+insert into boardimg(boardNo, fileType, fileExt, fileName, thumbFileName, base64file)
+values(?, ?, ?, ?, ?, ?) ;
+
+-- 최근 insert된 글의 번호
+select max(no) from board;
+
+-- 게시물 파일 조회
+select * from boardimg;

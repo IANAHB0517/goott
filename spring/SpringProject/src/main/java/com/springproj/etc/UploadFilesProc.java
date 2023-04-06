@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
@@ -16,6 +17,31 @@ import org.imgscalr.Scalr.Mode;
 import org.springframework.util.FileCopyUtils;
 
 public class UploadFilesProc {
+	
+	
+	/**
+	 * 삭제될 파일이 이미지 인지 아닌지 판단하여 이미지면 (원본 + 썸네일 삭제)
+	 * 이미지가 아니라면 원본 파일을 삭제한다
+	 * 
+	 * @param ufi 삭제 될 파일의 정보
+	 * @param realPath /resource/upFiles의 물리적 경로
+	 */
+	public static void deleteUpFile(UploadFileInfo ufi, String realPath) {
+		// 원본 삭제
+		File target = new File(realPath + ufi.getFileNameWithExt());
+		
+		System.out.println("파일 삭제 결과 : " + target.delete());
+		target.delete();
+		
+		
+		if (ufi.isImage()) {// 삭제할 파일이 이미지 이다
+			// 썸네일 파일 삭제
+			File targetThumb = new File(realPath + ufi.getThumbImgName());
+			targetThumb.delete();
+		}
+	}
+	
+	
 
 	/**
 	 * @param originFileName : 업로드 된 파일 이름(확장자 포함)
@@ -188,5 +214,9 @@ public class UploadFilesProc {
 
 		return new UploadFileInfo(newFileName, ext);
 	}
+
+
+
+	
 
 }
