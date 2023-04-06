@@ -29,6 +29,8 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean saveBoard(BoardVo newBoard, List<UploadFileInfo> fileList) throws Exception {
 		System.out.println("서비스단 : 게시글 저장");
+		boolean result = false;
+		
 		// 글 insert
 		int insertResult = dao.insertNewBoard(newBoard);
 		
@@ -46,9 +48,11 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		// 글쓴 멤버에서 포인트 부여
-		dao.addPointToMember(new MemberPointVo(0, newBoard.getWriter(), null, "게시판글쓰기", 0));
+		if(dao.addPointToMember(new MemberPointVo(0, newBoard.getWriter(), null, "게시판글쓰기", 0)) == 1) {
+			result = true;
+		};
 		
-		return false;
+		return result;
 	}
 
 }

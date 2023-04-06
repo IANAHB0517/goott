@@ -53,7 +53,9 @@ public class BoardController {
 		System.out.println("컨트롤러 단 : 글 저장");
 		System.out.println(newBoard.toString());
 		
-		this.service.saveBoard(newBoard, upFileList);
+		if(this.service.saveBoard(newBoard, upFileList)) {
+			this.upFileList.clear();
+		};
 		
 	}
 
