@@ -3,11 +3,11 @@ package com.springproj.etc;
 public class UploadFileInfo {
 	private String originFileName; // 경로 없는 unique한 파일 이름
 	private String fileNameWithExt; // 경로 포함
-	private String ext;
-	private String mimeType;
+	private String ext; // 확장자
+	private String mimeType; // 파일 타입
 	private String base64Str; // 이미지인 경우 base64
 	private String thumbImgName; // 이미지인 경우 썸네일 파일 이름 (경로포함)
-	private boolean isImage;
+	private boolean isImage; // 이미지 인가
 	
 	
 
@@ -118,9 +118,11 @@ public class UploadFileInfo {
 	@Override
 	public String toString() {
 		return "UploadFileInfo [originFileName=" + originFileName + ", fileNameWithExt=" + fileNameWithExt + ", ext="
-				+ ext + ", mimeType=" + mimeType + ", base64Str=" + base64Str + ", thumbImgName=" + thumbImgName
-				+ ", isImage=" + isImage + "]";
+				+ ext + ", mimeType=" + mimeType + ", thumbImgName=" + thumbImgName + ", isImage=" + isImage + "]";
 	}
+
+
+
 
 	
 }

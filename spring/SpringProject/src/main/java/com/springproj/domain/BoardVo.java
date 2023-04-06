@@ -17,7 +17,7 @@ public class BoardVo {
 	private int reforder;
 	
 	public BoardVo() {
-		super();
+	
 	}
 
 	public BoardVo(int no, String writer, String title, Timestamp postDate, String content, String imgFile,
