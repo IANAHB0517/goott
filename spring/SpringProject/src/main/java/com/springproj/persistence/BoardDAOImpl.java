@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.springproj.domain.BoardImg;
 import com.springproj.domain.BoardVo;
 import com.springproj.domain.MemberPointVo;
 import com.springproj.etc.UploadFileInfo;
@@ -37,6 +38,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Override
 	public int insertBoardFile(int boardNo, UploadFileInfo ufi) throws Exception {
+		System.out.println("DAO단 : 파일 업로드");
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("boardNo", boardNo);
@@ -51,14 +53,44 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Override
 	public int selectLatest() throws Exception {
+		System.out.println("DAO단 : 최근글 번호 조회");
 		
 		return session.selectOne(ns + ".latestBoardNo");
 	}
 
 	@Override
 	public int addPointToMember(MemberPointVo mpv) throws Exception {
+		System.out.println("DAO단 : 멤버 포인트 증가");
 		
 		return session.insert(ns + ".addPointToMember", mpv);
+	}
+
+	@Override
+	public int updateReadCount(int no) throws Exception {
+		System.out.println("DAO단 : "+ no +" 번글 조회수 증가");
+		
+		return session.update(ns + ".updateReadCount", no);
+	}
+
+	@Override
+	public BoardVo selectByBoardNo(int no) throws Exception {
+		System.out.println("DAO단 : "+ no +" 번글 조회");
+		
+		return session.selectOne(ns + ".selectByBoardNo", no);
+	}
+
+	@Override
+	public List<BoardImg> selectUploadFile(int no) throws Exception {
+		System.out.println("DAO단 : "+ no +" 번글 첨부파일 조회");
+	
+		return session.selectList(ns + ".selectUploadFile", no);
+	}
+
+	@Override
+	public int deleteBoardByNo(int no) throws Exception {
+		System.out.println("DAO단 : 게시글 삭제");
+	
+		return session.delete(ns + ".deleteBoardByNo", no);
 	}
 
 	

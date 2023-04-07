@@ -11,6 +11,9 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
+	function goViewBoard(no){
+		location.href='viewBoard?no='+no;
+	}
 </script>
 <style type="text/css">
 .board {
@@ -68,6 +71,7 @@
 					<c:forEach var="board" items="${boardList }">
 						<tr onclick="goViewBoard(${board.no });">
 							<td>${board.no }</td>
+							<td>${board.title }</td>
 							<td>${board.writer }</td>
 							<td><fmt:formatDate value="${board.postDate }" /></td>
 							<td>${board.readcount }</td>

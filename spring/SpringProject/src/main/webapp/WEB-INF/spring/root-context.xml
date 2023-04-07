@@ -5,13 +5,18 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 		
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- 트랜잭션 처리를 annotation 방식으로 하겠다 -->
+	<tx:annotation-driven/>
 
 	<!-- DB Connection 설정
 	<bean id="dataSource"
@@ -56,9 +61,16 @@
 		<constructor-arg ref="sqlSessionFactory"
 			name="sqlSessionFactory"></constructor-arg>
 	</bean>
-<!-- 아래의 패키지를 조사하여 필요한 객체들을 설정,확보 -->
-<context:component-scan base-package="com.springproj.service" />
-<context:component-scan base-package="com.springproj.persistence" />
+	
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property><!-- DB Connection 객체와 같은 이름으로 설정 -->
+	</bean>
+	
+	
+<!-- 아래의 패키지를 조사하여 필요한 객체들을 설정,확보 --> <!-- Spring container 가 가지고 있는 객체들 -->
+<context:component-scan base-package="com.springproj.service" /><!-- 서비스 객체 -->
+<context:component-scan base-package="com.springproj.persistence" /><!-- DAO 객체 -->
 
 
 </beans>

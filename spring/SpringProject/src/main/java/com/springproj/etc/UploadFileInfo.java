@@ -1,6 +1,6 @@
 package com.springproj.etc;
 
-public class UploadFileInfo {
+public class UploadFileInfo { //DB의 Table과 컬럼명이 맞지 않아서 읽어오기 위한 VO를 별도로 만들어 주어서 DTO 와 VO를 구분 하는 것이 좋다
 	private String originFileName; // 경로 없는 unique한 파일 이름
 	private String fileNameWithExt; // 경로 포함
 	private String ext; // 확장자

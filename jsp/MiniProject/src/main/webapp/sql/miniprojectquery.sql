@@ -468,3 +468,6 @@ select max(no) from board;
 
 -- 게시물 파일 조회
 select * from boardimg;
+
+-- 글 번호로 첨부 파일 가져오기
+select * from boardimg where boardNo = ?
