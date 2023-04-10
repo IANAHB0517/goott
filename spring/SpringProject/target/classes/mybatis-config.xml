@@ -8,6 +8,9 @@
 	<typeAliases>
 		<typeAlias type="com.springproj.domain.BoardVo"
 			alias="BoardVo" />
+			
+		<typeAlias type="com.springproj.domain.MemberVo"
+			alias="MemberVo" />
 	</typeAliases>
 
 	<!-- < DB 여러개 사용> <environments default=""> <environment id="mySql"> <dataSource 

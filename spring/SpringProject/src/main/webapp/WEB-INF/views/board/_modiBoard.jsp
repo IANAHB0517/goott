@@ -7,37 +7,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시판 글 쓰기</title>
+<title>게시판 글 수정</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
 	$(function() {
+		
+		//if(${upFiles != null}){
+	//		for( upFiles)
+		//}
 	
-//		$(".uploadFile").on("click", ".delFile", function(){
-//			let remTarget = $(this).prev();
-//			let removeId = $(remTarget).attr("id");
-//			
-//			$.ajax({ 
-//				url : "/board/remfile", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성) // 기능을 구현할때 먼저 상의해서 정의해야함
-//				type : "get", // 통신 방식 (GET, POST, PUT, DELETE)
-//				data : {
-//					"remFileName" : removeId // 삭제될 파일의 originalFileName
-//				}, // 서블릿에 전송할 데이터
-//				dataType : "text", // 수신받을 데이터 타입(MIME TYPE)
-//				success : function(data) {
-//					// 통신이 성공하면 수행할 함수(콜백 함수)
-//					console.log(data);
-//					if (data == "success"){
-//						$(remTarget).remove();
-//					}
-//					
-//				}
-//			});
-//						$(this).remove();
-//		}
-//			
-//			remUploadFile(removeId, remTarget);
-//		});	
+		수정 하면 인서트 문이 날아가도록 되어 있는데 업데이트 문이 들어가도록 수정하기
+		
 		
 	$(".fileDrop").on("dragenter dragover", function(evt){
 		evt.preventDefault(); // 진행중인 이벤트 버블링 캔슬
@@ -126,6 +107,9 @@
 					
 	}
 	
+	console.log( "${upFiles}" );
+	console.log( "${board.content}" );
+	
 </script>
 <style>
 #ImgPreview {
@@ -154,33 +138,34 @@
 </style>
 </head>
 <body>
-	<img src="/resources/images/new.png" />
 	<jsp:include page="../header.jsp"></jsp:include>
 
 	<div class="container">
 		<h4 style="margin-top: 15px;">게시판 글 쓰기 페이지</h4>
 
 
+
 		<form method="post" action="writeBoard">
 
 			<div class="mb-3 mt-3">
 				<label for="writer">글쓴이 :</label> <input type="text"
-					class="form-control" id="writer" value="${sessionScope.loginMember.userId } " name="writer"  readonly />
+					class="form-control" id="writer" value="${board.writer }" name="writer" />
 			</div>
 
 			<div class="mb-3 mt-3">
 				<label for="title">글제목 :</label> <input type="text"
-					class="form-control" id="title" name="title" />
+					class="form-control" id="title" name="title" value="${board.title }" />
 			</div>
 
 			<div class="mb-3 mt-3">
 				<label for="content">본 문 :</label>
-				<textarea class="form-control" rows="20" id="content" name="content"></textarea>
+				<textarea class="form-control" rows="20" id="content" name="content" >${board.content }</textarea>
 			</div>
 
 			<div class="form-check">
 				<div class="fileDrop">업로드 할 파일을 드래그 드랍 해 보세요!</div>
 				<div class="uploadFile"></div>
+				
 			</div>
 
 

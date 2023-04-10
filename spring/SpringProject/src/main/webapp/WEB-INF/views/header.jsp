@@ -18,10 +18,12 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
 <style>
-.userImg {
+.uploadMemberImg {
 	width: 40px;
 	border-radius: 20px;
 }
+
+
 </style>
 </head>
 <body>
@@ -38,7 +40,22 @@
 				<ul class="navbar-nav me-auto">
 					<li class="nav-item"><a class="nav-link" href="#">회원가입</a></li>
 					<li class="nav-item"><a class="nav-link" href="/board/listAll">게시판</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">로그인</a></li>
+					<c:choose>
+						<c:when test="${sessionScope.loginMember != null }">
+							
+							<li class="nav-item"><a class="nav-link" href="/myPage">
+							<img class="uploadMemberImg" src="/resources/${sessionScope.loginMember.userImg}" />
+							${sessionScope.loginMember.userId}
+							</a></li>
+						
+							<li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
+						
+						</c:otherwise>
+					</c:choose>
+					
 
 				</ul>
 				<form class="d-flex">

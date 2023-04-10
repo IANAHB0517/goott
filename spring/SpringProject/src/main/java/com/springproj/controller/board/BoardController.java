@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.springproj.domain.BoardImg;
 import com.springproj.domain.BoardVo;
+import com.springproj.domain.MemberVo;
 import com.springproj.etc.UploadFileInfo;
 import com.springproj.etc.UploadFilesProc;
 import com.springproj.service.BoardService;
@@ -166,41 +168,75 @@ public class BoardController {
 		return "redirect:" + redirectPage;
 	}
 
+//  강사님이 풀어줘서 하다 멈춤
+//	@RequestMapping("modiBoard")
+//	public void modiBoard(@RequestParam("no") int no, Model model) throws Exception {
+//		System.out.println("컨트롤러 단 : " + no + "번 글 수정을 위한 조회");
+//
+//
+//		// 리턴된 Map으로 부터 다시 원래 객체를 얻어옴
+//		Map<String, Object> map = this.service.viewByBoardNoForMod(no);
+//		BoardVo board = (BoardVo) map.get("board");
+////		List<BoardImg> lst = (List<BoardImg>) map.get("upFiles");
+//
+//
+//		System.out.println(board.getNo() + " " + no);
+//		
+//		if (board.getNo() == no) {
+//			// 바인딩
+//			model.addAttribute("board", board);
+//			model.addAttribute("upFiles", lst);
+//			
+//		} else {
+//			//redirectPage = "viewBoard?no=" + no + "modiStatus=fail";
+//		}
+//
+//
+//	}
+
 	@RequestMapping("modiBoard")
-	public void modiBoard(@RequestParam("no") int no, Model model) throws Exception {
-		System.out.println("컨트롤러 단 : " + no + "번 글 수정을 위한 조회");
-
-
-		// 리턴된 Map으로 부터 다시 원래 객체를 얻어옴
-		Map<String, Object> map = this.service.viewByBoardNoForMod(no);
-		BoardVo board = (BoardVo) map.get("board");
-		List<BoardImg> lst = (List<BoardImg>) map.get("upFiles");
-
-
-		System.out.println(board.getNo() + " " + no);
+	public void modiBoard(@RequestParam("no") int no,
+			@RequestParam("writer") String writer,
+			Model model) throws Exception {
+//		// 본인이 쓴 글인지 아닌지 검사 해야함 // interceptor 로 구현함
+//		// Authentication 인터셉터에 의해 로그인 여부 검사 후 -> 로그인 처리
+//		System.out.println(no + "번 글 DB에서 가져오기");
+//		
+//		String forward = "";
+//
+//		// 로그인 한 유저가 작성자와 같을때 만 수정 되어야함
+//		MemberVo loginMember =(MemberVo)req.getSession().getAttribute("loginMember");
+//		
+//		if(loginMember.getUserId().equals(writer)) {
+//			// 리턴된 Map으로 부터 다시 원래 객체를 얻어옴
+//			Map<String, Object> map = this.service.viewByBoardNo(no);
+//			BoardVo board = (BoardVo) map.get("board");
+//			List<BoardImg> lst = (List<BoardImg>) map.get("upFiles");
+//			
+//			// 바인딩
+//			model.addAttribute("board", board);
+//			model.addAttribute("upFiles", lst);
+//			
+//			forward = "board/modiBoard";
+//			
+//		//res.sendRedirect("modiBoard?no="+no + "&writer=" + writer); // 이렇게 하면 무한 호출이 된다고 함 호출 리디렉션 초과
+//		} else {
+//			forward ="board/viewBoard?no" + no;
+//		}
+//		return forward;
+//		String으로 반환 하려고 했었는데 방법이 별로다 인터셉터로 구현하는게 나을 것 같다고 한다.
 		
-		if (board.getNo() == no) {
-			// 바인딩
-			model.addAttribute("board", board);
-			model.addAttribute("upFiles", lst);
-			
-		} else {
-			//redirectPage = "viewBoard?no=" + no + "modiStatus=fail";
-		}
-
-
+		
+		
 	}
 
-	
-
 	@RequestMapping("modi")
-	public String modifyBoard(@RequestParam("no") int no , Model model) throws Exception{
+	public String modifyBoard(@RequestParam("no") int no, Model model) throws Exception {
 		System.out.println("컨트롤러 단 : " + no + "번 글 수정");
-		
+
 		String redirectPage = "";
-		
+
 		return "redirect:" + redirectPage;
 
-		
 	}
 }

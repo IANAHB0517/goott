@@ -17,6 +17,9 @@
 	<div class="container">
 	<h1>index.jsp</h1>
 	
+	<div>
+		${sessionScope.loginMember }
+	</div>
 	
 	</div>
 	<jsp:include page="footer.jsp"></jsp:include>

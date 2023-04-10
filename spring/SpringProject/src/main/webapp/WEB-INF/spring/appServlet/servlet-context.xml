@@ -33,5 +33,42 @@
 	<context:component-scan base-package="com.springproj.controller" /> <!--controller 가 제대로 올라오지 않으면 확인  -->
 	<context:component-scan base-package=" com.springproj.exception" />
 	
+	<!--  연습용  -->
+	<beans:bean id="exampleInterceptor"
+		class="com.springproj.interceptor.ExampleInterceptor">
+	</beans:bean>
 	
+	<!--  실제 로그인 수행 하는 인터셉터 -->
+	<beans:bean id="loginInterceptor"
+		class="com.springproj.interceptor.LoginInterceptor">
+	</beans:bean>
+	
+	<!--  로그인 했는지 안했는지를 검사를 수행 Intercepter -->
+	<beans:bean id="authenticationInterceptor"
+		class="com.springproj.interceptor.AuthenticationInterceptor">
+	</beans:bean>
+	
+	<interceptors>
+		<interceptor>
+		<!-- 아래의 매핑 주소가 request가 요청 될 때 -->
+			<mapping path="/exam" />
+			
+			<!-- 가로채어 아래 객체가 수행되도록 -->
+			<beans:ref bean="exampleInterceptor" />
+		</interceptor>
+		
+		<interceptor> <!-- 명령을 가로채서 로그인 했는지 검사 -->
+			<mapping path="/board/writeBoard" /> <!-- 게시판 글 쓰기 -->
+			<mapping path="/board/modiBoard" /> <!-- 게시판 글 수정 -->
+			
+			<beans:ref bean="authenticationInterceptor" />
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/login" /> <!--  로그인 페이지  -->
+			
+			<beans:ref bean="loginInterceptor" />
+		</interceptor>
+	
+	</interceptors>
 </beans:beans>

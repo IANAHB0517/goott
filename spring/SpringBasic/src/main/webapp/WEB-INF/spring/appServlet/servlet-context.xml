@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans
-	xmlns="http://www.springframework.org/schema/mvc"
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -37,6 +36,8 @@
 		<!-- 반환 받은 값의 뒤에 .jsp 를 붙여라 -->
 		<!-- /WEB-INF/views/반환 받은 값.jsp 호출한 페이지의 경로가 된다. -->
 	</beans:bean>
+	
+	
 	<!-- com.springbasic.controller 패키지의 클래스를 조사(scan)하여 컨트롤러 객체를 찾는다 -->
 	<!-- 패키지를 만들고 나면 여기에 추가해서 no mapping 에러가 나지 않도록 하자 -->
 	<context:component-scan
@@ -46,7 +47,10 @@
 <context:component-scan
 		base-package="com.springbasic.memberController" />
 
-
+<beans:bean id="exampleinterceptor"
+		class="com.springbasic.Inerceptor.ExampleInterceptor">
+	</beans:bean>
+	
 
 
 </beans:beans>

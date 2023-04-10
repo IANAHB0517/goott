@@ -55,6 +55,23 @@
 		return isValid;
 	}
 
+//	function isOwner(mode) {
+//		let userId = '${sessionScope.loginMember.userId}';
+//		
+//		if(userId == '${board.writer}'){
+//			
+//		 if(mode === modify){
+//			 // 수정
+//			 location.href='modiBoard?no=+ ${param.no }';
+//		 } else if (modde === 'remove'){
+//			 // 삭제
+///			 location.href='delete?no= + ${board.no }';
+//		 }
+//		} else {
+//			alert(" 본인이 작성한 글이 아니라면 수정, 삭제를 하지 못합니다!");
+//		}
+//		
+//	}
 	
 </script>
 <style>
@@ -151,11 +168,17 @@
 				disabled>답글 달기</button>
 		</c:if>
 		 -->
-		
+		<!-- 
 		<button type="submit" class="btn btn-success"
-			onclick="location.href='modiBoard?no=' + ${board.no };">수정</button>
+			onclick="location.href='modiBoard?no=' + ${param.no };">수정</button>
 		<button type="submit" class="btn btn-danger"
 			onclick="location.href='delete?no=' + ${board.no };">삭제</button>
+		 -->	
+		 
+			<button type="submit" class="btn btn-success"
+			onclick="location.href='modiBoard?no=${param.no }&writer=${board.writer}'">수정</button>
+		<button type="submit" class="btn btn-danger"
+			onclick="location.href='delete?no='${board.no };'">삭제</button>
 		
 
 		<button type="button" class="btn btn-warning"

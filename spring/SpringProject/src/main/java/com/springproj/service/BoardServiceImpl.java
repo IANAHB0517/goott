@@ -36,6 +36,7 @@ public class BoardServiceImpl implements BoardService {
 		boolean result = false;
 
 		// 글 insert
+		newBoard.setContent(newBoard.getContent().replace("\n", "<br />"));
 		int insertResult = dao.insertNewBoard(newBoard);
 
 		// 위에서 insert 된 글의 번호 가져오기
