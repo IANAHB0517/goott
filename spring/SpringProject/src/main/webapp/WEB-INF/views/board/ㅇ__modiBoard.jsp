@@ -91,6 +91,7 @@
 			type : "get", // 통신 방식 (GET, POST, PUT, DELETE)
 			data : {
 				"remFileName" : removeId // 삭제될 파일의 originalFileName
+				"mode" : "modi"
 			}, // 서블릿에 전송할 데이터
 			dataType : "text", // 수신받을 데이터 타입(MIME TYPE)
 			success : function(data) {

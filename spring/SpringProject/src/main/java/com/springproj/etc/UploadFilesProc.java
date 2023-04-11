@@ -16,6 +16,8 @@ import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Mode;
 import org.springframework.util.FileCopyUtils;
 
+import com.springproj.domain.BoardImg;
+
 public class UploadFilesProc {
 	
 	
@@ -41,6 +43,21 @@ public class UploadFilesProc {
 		}
 	}
 	
+	// 게시판 수정시 파일 삭제 오버로드
+	public static void deleteUpFile(BoardImg bi, String realPath) {
+		// 원본 삭제
+		File target = new File(realPath + bi.getFileName());
+		
+		System.out.println("파일 삭제 결과 : " + target.delete());
+		target.delete();
+		
+		
+		if (!bi.getThumbFileName().equals("")) {// 삭제할 파일이 이미지 이다
+			// 썸네일 파일 삭제
+			File targetThumb = new File(realPath + bi.getThumbFileName());
+			targetThumb.delete();
+		}
+	}
 	
 
 	/**

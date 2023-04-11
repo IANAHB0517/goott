@@ -69,22 +69,19 @@ public class BoardServiceImpl implements BoardService {
 		dao.updateReadCount(no);
 
 		// 글 수정을 위해서 글과 첨부파일을 읽어 오는 구문을 메서드로 분리
-		
+
 		// 2) no번 글 읽어옴
 		Map<String, Object> returnMap = selectBoardByNO(no);
-		
 
 		return returnMap;
 	}
-	
 
-	
 	@Override
 	public Map<String, Object> viewByBoardNoForMod(int no) throws Exception {
 		System.out.println("서비스단 : 글 수정을 위한 조회");
-		
+
 		Map<String, Object> returnMap = selectBoardByNO(no);
-		
+
 		return returnMap;
 	}
 
@@ -95,7 +92,7 @@ public class BoardServiceImpl implements BoardService {
 
 		// 4) 첨부 파일 읽어오기
 		List<BoardImg> upFiles = dao.selectUploadFile(no);
-		
+
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		returnMap.put("board", board);
 		returnMap.put("upFiles", upFiles);
@@ -105,17 +102,44 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int delBoard(int no) throws Exception {
 		System.out.println("서비스단 : 게시글 삭제");
-		
+
 		return dao.deleteBoardByNo(no);
 	}
 
 	@Override
 	public BoardVo modiBoard(int no) throws Exception {
 		System.out.println("서비스단 : 게시글 수정");
-		
+
 		return dao.modifyBoardByNo(no);
 	}
-	
-	
+
+	@Override
+	@Transactional
+	public boolean modifyBoard(BoardVo modiBoard, List<UploadFileInfo> fileList) throws Exception {
+		modiBoard.setContent(modiBoard.getContent().replace("\n", "<br />"));
+		
+
+		// 1) 게시물 update ( 작성일, 제목, 본문)
+		int updateBoardResult = dao.updateBoard(modiBoard);
+
+		// 2) 업로드 된 파일 업데이트
+		if (updateBoardResult == 1) {
+			// -> ㄱ) no 번 글의 첨부파일을 모두 삭제
+			// -> ㄴ) no 번 글에 모두 insert
+			dao.deleteBoardImg(modiBoard.getNo());
+			// 파일이 있다면 위에서 가지고 온 글 번호로 파일 insert
+			int saveTurns = 0;
+			
+			for (UploadFileInfo ufi : fileList) {
+				// size() 가 0 이면 안돌아감
+				dao.insertBoardFile(modiBoard.getNo(), ufi);
+				System.out.println("파일 저장 완료" + saveTurns);
+				saveTurns++;
+			}
+
+		}
+		return false;
+
+	}
 
 }

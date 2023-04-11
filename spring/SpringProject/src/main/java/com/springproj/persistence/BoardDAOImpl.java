@@ -93,6 +93,28 @@ public class BoardDAOImpl implements BoardDAO {
 		return session.delete(ns + ".deleteBoardByNo", no);
 	}
 
+	@Override
+	public int updateBoard(BoardVo modiBoard) throws Exception {
+		System.out.println("DAO단 : 게시글 수정");
+
+		return session.update(ns + ".updateBoard", modiBoard);
+	}
+
+	@Override
+	public int deleteBoardImg(int no) throws Exception {
+		System.out.println("DAO단 : 게시글 첨부 파일 삭제");
+		
+		return session.delete(ns + ".deleteBoardImg", no);
+	}
+
+	@Override
+	public BoardVo modifyBoardByNo(int no) throws Exception {
+		System.out.println("DAO단 : 쓰지 않게 된 메서드");
+		
+		return null;
+	}
+	
+	
 	
 	
 }

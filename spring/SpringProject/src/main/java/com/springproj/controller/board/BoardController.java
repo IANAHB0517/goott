@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,8 +35,13 @@ public class BoardController {
 	@Inject
 	private BoardService service; // BoardService 객체 주입
 
-	// 업로드된 파일의 리스트
+	// 신규 업로드 파일()
+	// 업로드된 파일의 리스트(게시판 저장시 사용)
 	private List<UploadFileInfo> upFileList = new ArrayList<UploadFileInfo>();
+
+	// 기존 업로드된 파일
+	// 게시판 수정시 사용될 파일 리스트
+	// private List<BoardImg> modifyFileList;
 
 	@RequestMapping("listAll") // listAll.jsp
 	public void listAll(Model model) throws Exception {
@@ -104,6 +110,7 @@ public class BoardController {
 
 		int indexOfDeletedFile = 0; // 삭제 되는 파일의 리스트 인덱스 번호
 
+		// 게시판 글 등록시 파일 삭제
 		System.out.println("Size of List : " + this.upFileList.size());
 		for (UploadFileInfo ufi : upFileList) {
 
@@ -143,7 +150,7 @@ public class BoardController {
 		// 리턴된 Map으로 부터 다시 원래 객체를 얻어옴
 		Map<String, Object> map = this.service.viewByBoardNo(no);
 		BoardVo board = (BoardVo) map.get("board");
-		List<BoardImg> lst = (List<BoardImg>) map.get("upFiles");
+		List<BoardImg> lst = (List<BoardImg>) map.get("upFiles"); // 첨부파일
 
 		// 바인딩
 		model.addAttribute("board", board);
@@ -195,9 +202,8 @@ public class BoardController {
 //	}
 
 	@RequestMapping("modiBoard")
-	public void modiBoard(@RequestParam("no") int no,
-			@RequestParam("writer") String writer,
-			Model model) throws Exception {
+	public void modiBoard(@RequestParam("no") int no, @RequestParam("writer") String writer, Model model)
+			throws Exception {
 //		// 본인이 쓴 글인지 아닌지 검사 해야함 // interceptor 로 구현함
 //		// Authentication 인터셉터에 의해 로그인 여부 검사 후 -> 로그인 처리
 //		System.out.println(no + "번 글 DB에서 가져오기");
@@ -225,9 +231,29 @@ public class BoardController {
 //		}
 //		return forward;
 //		String으로 반환 하려고 했었는데 방법이 별로다 인터셉터로 구현하는게 나을 것 같다고 한다.
-		
-		
-		
+
+		// DB 다녀옴(no 번 글 + 글의 첨부파일을 같이 얻어옴)
+
+		Map<String, Object> map = this.service.viewByBoardNo(no);
+		BoardVo board = (BoardVo) map.get("board"); // no 번 글
+		board.getContent().replace("<br />", "\n");
+
+		List<BoardImg> lst = (List<BoardImg>) map.get("upFiles");
+
+		// 바인딩
+		model.addAttribute("board", board);
+		model.addAttribute("upFiles", lst);
+
+		this.upFileList.clear();
+
+		for (BoardImg bi : lst) {
+			this.upFileList.add(new UploadFileInfo(bi));
+		}
+
+		for (UploadFileInfo ufi : this.upFileList) {
+			System.out.println("최초 수정 바인딩 한 업로드 리스트 : " + ufi.toString());
+		}
+
 	}
 
 	@RequestMapping("modi")
@@ -239,4 +265,18 @@ public class BoardController {
 		return "redirect:" + redirectPage;
 
 	}
+
+	@RequestMapping(value = "modifyBoard", method = RequestMethod.POST)
+	
+	public String modifyBoard(BoardVo modifyBoard) throws Exception {
+		System.out.println(modifyBoard.toString() + "로 수정 하자");
+
+		this.service.modifyBoard(modifyBoard, upFileList); // 예외가 나면 exception으로 넘어가기 때문에 if문을 걸 필요가 없다.
+
+		this.upFileList.clear();
+		
+		return "redirect:viewBoard?no=" + modifyBoard.getNo();
+
+	}
+
 }

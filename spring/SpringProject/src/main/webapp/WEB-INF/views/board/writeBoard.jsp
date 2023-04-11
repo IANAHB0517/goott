@@ -165,7 +165,7 @@
 
 			<div class="mb-3 mt-3">
 				<label for="writer">글쓴이 :</label> <input type="text"
-					class="form-control" id="writer" value="${sessionScope.loginMember.userId } " name="writer"  readonly />
+					class="form-control" id="writer" value="${sessionScope.loginMember.userId }" name="writer"  readonly />
 			</div>
 
 			<div class="mb-3 mt-3">

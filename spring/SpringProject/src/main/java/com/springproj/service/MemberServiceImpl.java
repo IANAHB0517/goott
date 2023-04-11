@@ -1,5 +1,7 @@
 package com.springproj.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -34,6 +36,17 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 		return loginMember;
+	}
+
+
+	@Override
+	public List<MemberPointVo> getMemPoint(String userId) throws Exception {
+		System.out.println("service 단 : 멤버 포인트 조회");
+		// 1) userId로 포인트 조회 및 반환
+		
+		List<MemberPointVo> mpList = dao.selectMemberPoint(userId);
+		
+		return mpList;
 	}
 
 }

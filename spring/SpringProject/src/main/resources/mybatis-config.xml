@@ -11,6 +11,9 @@
 			
 		<typeAlias type="com.springproj.domain.MemberVo"
 			alias="MemberVo" />
+			
+			<typeAlias type="com.springproj.domain.MemberPointVo"
+			alias="MemberPointVo" />
 	</typeAliases>
 
 	<!-- < DB 여러개 사용> <environments default=""> <environment id="mySql"> <dataSource 

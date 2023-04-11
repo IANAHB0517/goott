@@ -6,6 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.springproj.domain.MemberVo;
+
 // 제어를 빼앗아 로그인을 했는지 안했는지 검사하는 interceptor
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
@@ -29,6 +31,25 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 			
 		} else {
 			// 로그인 하였음
+			String uri = request.getRequestURI();
+			if (uri.indexOf("/modiBoard") != -1 || uri.indexOf("/remBoard") != -1) {
+				System.out.println("수정 / 삭제 페이지 로그인 되어 있음");
+				
+				MemberVo loginMember= (MemberVo)ses.getAttribute("loginMember");
+				String writer = request.getParameter("writer");
+				System.out.println(writer);
+				
+				if(!loginMember.getUserId().equals(writer)) {
+					// 작성자와 로그인 유저가 다를 때
+					response.sendRedirect("viewBoard?no="+request.getParameter("no") +
+							"&status=notPermission");
+					return result;
+				}
+				
+				//
+				
+			}
+			
 			result = true; // 원래 하던 역할 수행 하도록
 		}
 		return result;

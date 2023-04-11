@@ -55,23 +55,6 @@
 		return isValid;
 	}
 
-//	function isOwner(mode) {
-//		let userId = '${sessionScope.loginMember.userId}';
-//		
-//		if(userId == '${board.writer}'){
-//			
-//		 if(mode === modify){
-//			 // 수정
-//			 location.href='modiBoard?no=+ ${param.no }';
-//		 } else if (modde === 'remove'){
-//			 // 삭제
-///			 location.href='delete?no= + ${board.no }';
-//		 }
-//		} else {
-//			alert(" 본인이 작성한 글이 아니라면 수정, 삭제를 하지 못합니다!");
-//		}
-//		
-//	}
 	
 </script>
 <style>

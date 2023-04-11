@@ -1,5 +1,7 @@
 package com.springproj.etc;
 
+import com.springproj.domain.BoardImg;
+
 public class UploadFileInfo { //DB의 Table과 컬럼명이 맞지 않아서 읽어오기 위한 VO를 별도로 만들어 주어서 DTO 와 VO를 구분 하는 것이 좋다
 	private String originFileName; // 경로 없는 unique한 파일 이름
 	private String fileNameWithExt; // 경로 포함
@@ -29,6 +31,20 @@ public class UploadFileInfo { //DB의 Table과 컬럼명이 맞지 않아서 읽
 		this.isImage = isImage;
 	}
 
+	public UploadFileInfo(BoardImg bi) {
+		this.originFileName = bi.getFileName();
+		this.base64Str = bi.getBase64file();
+		this.ext = bi.getFileExt();
+		this.fileNameWithExt = bi.getFileName();
+		this.mimeType = bi.getFileType();
+		this.thumbImgName = bi.getThumbFileName();
+		
+		if(bi.getThumbFileName().equals("")) {
+			this.isImage = false;
+		} else {
+			this.isImage = true;			
+		}
+	}
 
 
 	public String getOriginFileName() {

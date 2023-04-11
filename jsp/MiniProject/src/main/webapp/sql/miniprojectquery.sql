@@ -471,3 +471,8 @@ select * from boardimg;
 
 -- 글 번호로 첨부 파일 가져오기
 select * from boardimg where boardNo = ?
+
+-- 게시물 수정
+update board set title =?, content=?, postDate=now() where no = ?;
+
+delete from boardimg where boardNo = ?;

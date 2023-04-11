@@ -19,8 +19,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		System.out.println("LoginInterceptor : 로그인 처리");
 
 		HttpSession ses = request.getSession();
-		ses.removeAttribute("loginMember");
-		ses.removeAttribute("returnPath");
+//		ses.removeAttribute("loginMember");
+//		ses.removeAttribute("returnPath");
 		
 		return true;
 	}

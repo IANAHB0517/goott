@@ -14,8 +14,7 @@
 	</select>
 
 	<insert id="saveNewBoard">
-		insert into board(writer, title, content)
-		values(#{writer},#{title},#{content})
+		insert into board(writer, title, content) values(#{writer}, #{title}, #{content})
 	</insert>
 
 	<insert id="saveUpFile">
@@ -44,31 +43,19 @@
 	</insert>
 
 	<update id="updateReadCount">
-		update board set readcount = readcount + 1 where no =
-		#{no}
+		update board set readcount = readcount + 1 where no = #{no}
 	</update>
-
+	
 	<select id="selectByBoardNo" resultType="BoardVo">
-		select * from board
-		where no = #{no}
+		select * from board where no = #{no}
 	</select>
-
-	<select id="selectUploadFile"
-		resultType="com.springproj.domain.BoardImg">
-		select * from boardimg where boardNo = #{no}
+	
+	<select id="selectUploadFile" resultType="com.springproj.domain.BoardImg">
+	select * from boardimg where boardNo = #{no}
 	</select>
-
+	
 	<delete id="deleteBoardByNo">
-		delete from board where no = #{no}
-	</delete>
-
-	<update id="updateBoard">
-		update board set title =#{title}, content=#{content},
-		postDate=now() where no = #{no}
-	</update>
-
-	<delete id="deleteBoardImg">
-		delete from boardimg where boardNo = #{no}
+		 delete from board where no = #{no}
 	</delete>
 
 </mapper>

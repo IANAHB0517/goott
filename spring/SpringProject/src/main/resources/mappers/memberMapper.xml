@@ -6,7 +6,12 @@
 
 <mapper namespace="com.springproj.mappers.memberMapper"> <!-- 여기 대소문자 틀려서 점심시간 통으로 날림 문자열에 주의하자 -->
 
-<select id ="login" resultType="MemberVo">
-	select * from member where userId = #{userId} and userPwd = sha1(md5(#{userPwd}))
-	</select> 
+	<select id="login" resultType="MemberVo">
+		select * from member where userId = #{userId} and userPwd =
+		sha1(md5(#{userPwd}))
+	</select>
+
+	<select id="memberPoint" resultType="MemberPointVo">
+		select * from memberpoint where who = #{userId} order by no desc
+	</select>
 </mapper>

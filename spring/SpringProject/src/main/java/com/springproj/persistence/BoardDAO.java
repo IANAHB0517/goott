@@ -40,4 +40,10 @@ public interface BoardDAO {
 	// no 번 글 수정
 	BoardVo modifyBoardByNo(int no)throws Exception;
 	
+	// no 번 게시물 수정
+	int updateBoard(BoardVo modiBoard) throws Exception;
+	
+	// no 번 첨부 파일 삭제
+	int deleteBoardImg(int no)  throws Exception;
+	
 }
