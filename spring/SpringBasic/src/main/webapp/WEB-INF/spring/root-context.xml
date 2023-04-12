@@ -23,11 +23,35 @@
 		<property name="username" value="root"></property>
 		<property name="password" value="1234"></property>
 	</bean>
+	
+	
+	<!-- DB (log4jdbc) 설정 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy">
+		</property>
+		<property name="url"
+			value="jdbc:log4jdbc:mysql://localhost:3306/lsj?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+	
 	<bean id="sqlsessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="configLocation"
 			value="classpath:/mybatis-config.xml">
 		</property>
+		<property name="mapperLocations"
+			value="classpath:mapper/**/memberMapper.xml">
+		</property>
 	</bean>
+	<bean class="org.apache.ibatis.session.SqlSessionFactory"
+		id="sqlSession" destroy-method="clearCache">
+	<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	<context:component-scan base-package="com.springbasic.persistence"></context:component-scan>
 </beans>

@@ -35,5 +35,11 @@ public class HomeController {
 		
 		return "home";
 	}
-	
+
+	@RequestMapping("memberView")
+	public String doMemberView() {
+		
+		return "doMemberView";
+		
+	}
 }
