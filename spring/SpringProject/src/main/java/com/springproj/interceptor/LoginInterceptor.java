@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.springproj.domain.MemberVo;
+import com.springproj.etc.DestinationPathProc;
 
 // 제어를 빼앗아 실제 로그인을 처리하는 interceptor
 public class LoginInterceptor extends HandlerInterceptorAdapter {
@@ -16,9 +17,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		System.out.println("LoginInterceptor : 로그인 처리");
-
+		System.out.println("LoginInterceptor : 로그인 처리 preHandel");
+		
 		HttpSession ses = request.getSession();
+		//DestinationPathProc.returnPathProc(request); // 이전 경로 저장
 //		ses.removeAttribute("loginMember");
 //		ses.removeAttribute("returnPath");
 		
@@ -28,7 +30,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		System.out.println("LoginInterceptor : 로그인 처리하려고 DB 다녀 왔음 ");
+		System.out.println("LoginInterceptor : 로그인 처리하려고 DB 다녀 왔음 postHandle");
 		// session 객체에 로그인 성공한 객체를 바인딩
 
 		HttpSession ses = request.getSession();

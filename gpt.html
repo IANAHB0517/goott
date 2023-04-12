@@ -1,83 +1,51 @@
-깃 덮기
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>chatgpt</title>
-    <script>
-      const canvas = document.getElementById("game");
-      const ctx = canvas.getContext("2d");
-
-      // set canvas size
-      canvas.width = 200;
-      canvas.height = 400;
-
-      // define block size and number of rows and columns
-      const blockSize = 20;
-      const rows = canvas.height / blockSize;
-      const columns = canvas.width / blockSize;
-
-      // define an array of tetrominos
-      const tetrominos = [
-        [
-          [0, 1, 0],
-          [1, 1, 1],
-          [0, 0, 0],
-        ],
-        [
-          [2, 2, 0],
-          [0, 2, 2],
-          [0, 0, 0],
-        ],
-        [
-          [0, 3, 3],
-          [3, 3, 0],
-          [0, 0, 0],
-        ],
-        [
-          [4, 0, 0],
-          [4, 4, 4],
-          [0, 0, 0],
-        ],
-        [
-          [0, 0, 5],
-          [5, 5, 5],
-          [0, 0, 0],
-        ],
-        [
-          [6, 6, 6, 6],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-        ],
-        [
-          [7, 7],
-          [7, 7],
-        ],
-      ];
-
-      // choose a random tetromino and its color
-      const randomTetromino =
-        tetrominos[Math.floor(Math.random() * tetrominos.length)];
-      const color = "blue";
-
-      // draw a tetromino on the canvas
-      function draw() {
-        for (let r = 0; r < randomTetromino.length; r++) {
-          for (let c = 0; c < randomTetromino[r].length; c++) {
-            if (randomTetromino[r][c] > 0) {
-              ctx.fillStyle = color;
-              ctx.fillRect(c * blockSize, r * blockSize, blockSize, blockSize);
-            }
-          }
-        }
-      }
-
-      draw();
-    </script>
-  </head>
-  <body></body>
-</html>
+<div class="list-group replies">
+  <a id="7" href="#" class="list-group-item list-group-item-action"
+    ><div class="reply">강사님은 조건식을 어떻게 주셨으려나</div>
+    <div>
+      <span class="writer">ramen</span
+      ><span class="postdate">2023. 4. 12. 오후 4:50:53</span>
+      <div class="icons">
+        <img
+          src="/resources/images/modigear.png"
+          class="icon"
+          onclick="replyModi(this);"
+        /><img
+          src="/resources/images/deletetrash.png"
+          class="icon"
+          onclick="replyRem(this);"
+        />
+      </div></div></a
+  ><a id="6" href="#" class="list-group-item list-group-item-action"
+    ><div class="reply">ㅇㅇ</div>
+    <div>
+      <span class="writer">ramen</span
+      ><span class="postdate">2023. 4. 12. 오후 4:21:43</span>
+      <div class="icons">
+        <img
+          src="/resources/images/modigear.png"
+          class="icon"
+          onclick="replyModi(this);"
+        /><img
+          src="/resources/images/deletetrash.png"
+          class="icon"
+          onclick="replyRem(this);"
+        />
+      </div></div></a
+  ><a id="5" href="#" class="list-group-item list-group-item-action"
+    ><div class="reply">부대찌개면</div>
+    <div>
+      <span class="writer">ramen</span
+      ><span class="postdate">2023. 4. 12. 오후 4:21:05</span>
+      <div class="icons">
+        <img
+          src="/resources/images/modigear.png"
+          class="icon"
+          onclick="replyModi(this);"
+        /><img
+          src="/resources/images/deletetrash.png"
+          class="icon"
+          onclick="replyRem(this);"
+        />
+      </div></div
+  ></a>
+</div>

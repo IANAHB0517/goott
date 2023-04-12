@@ -48,6 +48,7 @@
 		class="com.springproj.interceptor.AuthenticationInterceptor">
 	</beans:bean>
 	
+	<!-- 생성된 Interceptor 객체의 mapping -->
 	<interceptors>
 		<interceptor>
 		<!-- 아래의 매핑 주소가 request가 요청 될 때 -->
@@ -60,6 +61,8 @@
 		<interceptor> <!-- 명령을 가로채서 로그인 했는지 검사 -->
 			<mapping path="/board/writeBoard" /> <!-- 게시판 글 쓰기 -->
 			<mapping path="/board/modiBoard" /> <!-- 게시판 글 수정 -->
+			<mapping path="/board/remBoard" /> <!-- 게시판 글 삭제 -->
+			<!-- <mapping path="/reply" />  댓글 등록 -->
 			
 			<beans:ref bean="authenticationInterceptor" />
 		</interceptor>

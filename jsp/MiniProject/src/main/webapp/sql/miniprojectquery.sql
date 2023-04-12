@@ -475,4 +475,33 @@ select * from boardimg where boardNo = ?
 -- 게시물 수정
 update board set title =?, content=?, postDate=now() where no = ?;
 
+-- 해당 게시물의 이전 업로드 파일 모두 삭제
 delete from boardimg where boardNo = ?;
+
+
+-- ================================================================================================================================================
+-- 게시판 댓글 처리
+
+-- 댓글 테이블 생성
+CREATE TABLE `lsj`.`replies` (
+  `replyNo` INT NOT NULL AUTO_INCREMENT COMMENT '댓글 번호(PK, 자동증가)',
+  `boardNo` INT NOT NULL COMMENT '부모글(게시글 번호)을 참조하는 컬럼',
+  `replier` VARCHAR(8) NULL COMMENT '게시자(유저 아이디)를 참조',
+  `replytext` VARCHAR(1000) NOT NULL COMMENT '댓글의 내용',
+  `postdate` DATETIME NULL DEFAULT now() COMMENT '댓글 등록, 수정 날짜',
+  PRIMARY KEY (`replyNo`),
+  INDEX `reply_boardNo_fk_idx` (`boardNo` ASC) VISIBLE,
+  INDEX `reply_replyer_fk_idx` (`replier` ASC) VISIBLE,
+  CONSTRAINT `reply_boardNo_fk`
+    FOREIGN KEY (`boardNo`)
+    REFERENCES `lsj`.`board` (`no`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `reply_replier_fk`
+    FOREIGN KEY (`replier`)
+    REFERENCES `lsj`.`member` (`userId`)
+    ON DELETE SET NULL
+    ON UPDATE NO ACTION);
+    
+    -- 댓글 등록
+    insert into replies(boardNo, replier, replytext) values (?,?,?);
