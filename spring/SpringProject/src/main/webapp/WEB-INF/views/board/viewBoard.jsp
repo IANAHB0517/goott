@@ -12,6 +12,11 @@
 <script>
       $(function () {
         getAllReplies(); // 현재 글의 모든 댓글 가져오기
+        
+       // setInterval(getAllReplies, 5000)
+       
+       
+       
       });
 
       $(function () {
@@ -111,53 +116,206 @@
         let boardNo = "${board.no}";
 
         $.ajax({
-          url: "/reply/all/" + boardNo, // 뒤에서 reply 밑에 아무 것도 달려있지 않고 post 방식일때 받기로 했기때문에 아무것도 더하지 않는다
-          type: "GET", // 통신 방식 (GET, POST, PUT, DELETE)
-          dataType: "json", // 수신 받을 데이터 타입 Json 과 Text 모두 가능
-          async : false, // 동기 방식
-          success: function (data) {
-            // 통신이 성공하면 수행할 함수(콜백 함수)
+            url: "/reply/all/" + boardNo, // 뒤에서 reply 밑에 아무 것도 달려있지 않고 post 방식일때 받기로 했기때문에 아무것도 더하지 않는다
+            type: "GET", // 통신 방식 (GET, POST, PUT, DELETE)
+            dataType: "json", // 수신 받을 데이터 타입 Json 과 Text 모두 가능
+            async : false, // 동기 방식
+            success: function (data) {
+              // 통신이 성공하면 수행할 함수(콜백 함수)
+                console.log(data);
+              if (data.length > 0) {
+              	displayAllReply(data);
+              } else {
+              	$(".allReplies").html("작성된 댓글이 없습니다");
+              }
+            },
+            error: function (data) {
               console.log(data);
-            if (data.length > 0) {
-            	displayAllReply(data);
-            } else {
-            	$(".allReplies").html("작성된 댓글이 없습니다");
-            }
-          },
-          error: function (data) {
-            console.log(data);
-          },
-        });
-      }
+            },
+          });
+        }
       
       function displayAllReply(data){
-    	  let output ="<div class='list-group replies'>";
+    	  let output ="<ul class='list-group replies'>";
     	  
     	  $.each(data, function(i, item) {
-    		  output += "<a href='#' class='list-group-item list-group-item-action'>";
-    		  output += "<div class='reply'>" + item.replytext + "</div>";
-    		  output += "<div><span class='writer'>" + item.replier + "</span>";
-    		  output += "<span class='postdate'>" + new Date(item.postdate).toLocaleString() + "</span>";
-    		  output += "<div class='icons'><img src='/resources/images/modigear.png' class='icon' onclick='replyModi("+ item.replyNo +");' />";
-    		  output += "<img src='/resources/images/deletetrash.png' class='icon' onclick='replyRem("+ item.replyNo +");'/></div>";
-    		  output += "</div></a>";
+    		  output += "<li id='replyBody" + item.replyNo + "'; class='list-group-item'>";
+    		  if(item.replyNo != item.ref){
+    			  output += "<img class='repToreply' src='/resources/images/rep.png' width='30px' />"
+    		  }
+    		  output += "<p id='replyText" + item.replyNo + "'; class='reply'>" + item.replytext + "</p>";
+    		  output += "<div><span id='reply" + item.replyNo+ "'; class='writer'>" + item.replier + "</span>";
+    		  output += "<span class='postdate'>" + elapsedTime(item.postdate) + "</span>";
+    		  if( item.replier == '${sessionScope.loginMember.userId}' ){    			  
+    		  output += "<div id= icons" + item.replyNo+" class='icons'><img src='/resources/images/modigear.png' class='icon' onclick='replyModi("+ item.replyNo +");' />";
+    		  output += "<img src='/resources/images/deletetrash.png' class='icon' onclick='replyRem("+ item.replyNo +");'/></div></div>";
+    		  }
+    		  output += '<button type="button" class="btn btn-success" onclick="addRep(this);">답글</button>';
+    		  output += "</li>";
+    		  
+    		 // acceptable(item.replier, item.replyNo);
     	  });
-    	  output += "</div>"
+    	  output += "</ul>"
     	  
-    	  console.log(data)
+    	  //console.log(data)
     	      	
     	  $(".allReplies").html(output);
+    	  // 글이 언제 작성 되었는지를 알려 주는 알고리즘
+    	  // postdate 로 얻어온 timestamp 값으로Date 객체를 생성
+    	  function elapsedTime(date){
+    		  let postDate = new Date(date); // 넘겨진 시간(댓글 작성 날짜)
+    		  let current = new Date(); // 현재 시간
+    		  
+    		  let diff = (current - postDate) /1000; // 시간차를 second 단위로
+    		 //console.log(diff);
+    		  
+    		  let times = [
+    			  //{name : "년", ms : 60 * 60 * 24 * 365},
+    			  //{name : "개월", ms : 60 * 60 * 24 * 30},
+    			  {name : "일", ms : 60 * 60 * 24},
+    			  {name : "시간", ms : 60 * 60},
+    			  {name : "분", ms : 60 },
+    		  ];
+    		  
+    		  for ( let val of times ) {
+    			// 글 작성된 시간과 현재 시간의 초단위 시간 차가 기준 시간(val.ms으로 나누어봄)
+    			  let betweenTime = Math.floor(diff / val.ms);
+    			  
+    			  if(betweenTime > 0){ // 몫이 있을 경우 
+    				  if(diff > 60 * 60 * 24){
+    					  return postDate.toLocaleDateString();
+    				  }
+    			  return betweenTime + val.name + "전";
+    			  }
+    		  }
+    		  return "방금 전";
+    	 }
+    	  
+    	  
       }
       
+      // 댓글 수정
       function replyModi(replyNo){
-    	  console.log(replyNo);    	  
+    	  //console.log(replyNo);
+    	  //console.log($("#reply" + replyNo).html());
+    	  let user = '${sessionScope.loginMember.userId}';
+    	 
+    	  if(user === ''){
+    		  alert('댓글 수정 삭제는 로그인 해야 가능 합니다');
+    		  return;
+    	  } else  {
+    		  if (user !== $("#reply" + replyNo).html()){
+    			  alert('댓글 수정 삭제는 본인 글만 가능합니다');
+    			  return;
+    		  } else {
+    			  let inputArea = '<textarea class="form-control" rows="5" id="modiContent' + replyNo +'">'+
+    			  $("#replyText" + replyNo).html() +'</textarea>'
+    			  + '<button type="button" class="btn btn-success" onclick="modiReply(' + replyNo + ');">댓글수정</button>'
+    			  + '<button type="button" class="btn btn-danger" onclick="modiCancle();">취소</button>';
+    			  
+    			  $("#replyBody" + replyNo).html(inputArea);
+    		  }
+    	  }
       }
       
       function replyRem(replyNo){
-    	  console.log(replyNo);    	  
+    	  console.log(replyNo);
+    	  alert("개인 구현");
+    	  getAllReplies();
       }
+      
+      function modiCancle(){
+    	  getAllReplies();
+      }
+      
+      function modiReply(replyNo){
+    	  console.log(replyNo);
+    	  
+    	  let replytext = $("#modiContent" + replyNo).val();
+    	  
+    	  let reply = {
+    			  "replyNo" : replyNo,
+    			  "replytext" : replytext
+    	  };
+    	  
+    	  console.log(JSON.stringify(reply))
+    	  
+    	  $.ajax({
+              url: "/reply/" + replyNo, // 뒤에서 reply 밑에 아무 것도 달려있지 않고 post 방식일때 받기로 했기때문에 아무것도 더하지 않는다
+              type: "PUT", // 통신 방식 (GET, POST, PUT, DELETE)
+              dataType: "text", // 수신 받을 데이터 타입 Json 과 Text 모두 가능
+              headers: {
+                  "Content-Type": "application/json", // 보내는 데이터의 타입이 JSON임을 명시
+                  "X-HTTP-Method-Override": "POST", // PUT, DELETE, PATCH 등의 REST HTTP Method가 동작하지 않는 과거의
+                  //	웹브라우저 에서는 "POST" 방식으로 동작하도록 한다
+                }, // 데이터를 전송할 때 packet Header에 추가할 내용
+              data: JSON.stringify(reply), // 전송할 데이터를 Json 문자열로 바꾸어 전송
+              async : false, // 동기 방식
+              success: function (data) {
+              console.log(data);
+              if (data = 'success'){
+            	  getAllReplies();            	  
+              }
+              },
+              error: function (data) {
+            	  getAllReplies();
+            	  alert("댓글 수정에 실패 했습니다");
+              },
+            });
+      }
+      /*
+      function acceptable(replier , replyNo){
+    	  let userId = '${sessionScope.loginMember.userId}';
+    	  console.log("로그인한 id : " + userId + " 댓글 작성자 : "+ replier);
+    	  
+    	  if(userId != replier){
+    		  console.log("css 변경");
+    		  console.log("id 명 : " + "icons"+replyNo);
+    		  $("#icons"+replyNo).css("display","none");
+    	  }
+      }
+      */
+      function addRep(obj){
+    	  console.log(obj);
+    	  let rep = '<textarea class="form-control" rows="5" id="repContent"></textarea>' +
+					'<button type="button" class="btn btn-success" onclick="saveRep(replyNo);">답글달기</button>' +
+					'<button type="button" class="btn btn-danger" onclick="canRep()">취소</button>' ;
+    		  
+    		  
+    	  $(obj).parent().html(rep);
+      }
+      
+      function saveRep(replyNo){
+    	  $.ajax({
+              url: "/reply/" + replyNo, // 뒤에서 reply 밑에 아무 것도 달려있지 않고 post 방식일때 받기로 했기때문에 아무것도 더하지 않는다
+              type: "PUT", // 통신 방식 (GET, POST, PUT, DELETE)
+              dataType: "text", // 수신 받을 데이터 타입 Json 과 Text 모두 가능
+              headers: {
+                  "Content-Type": "application/json", // 보내는 데이터의 타입이 JSON임을 명시
+                  "X-HTTP-Method-Override": "POST", // PUT, DELETE, PATCH 등의 REST HTTP Method가 동작하지 않는 과거의
+                  //	웹브라우저 에서는 "POST" 방식으로 동작하도록 한다
+                }, // 데이터를 전송할 때 packet Header에 추가할 내용
+              data: JSON.stringify(reply), // 전송할 데이터를 Json 문자열로 바꾸어 전송
+              async : false, // 동기 방식
+              success: function (data) {
+              console.log(data);
+              if (data = 'success'){
+            	  getAllReplies();            	  
+              }
+              },
+              error: function (data) {
+            	  getAllReplies();
+            	  alert("댓글 수정에 실패 했습니다");
+              },
+            });
+      }
+      
     </script>
 <style>
+.repToreply {
+	float: left;
+}
+
 .icons {
 	float: right;
 	maring-right: 3px;

@@ -5,13 +5,15 @@ import java.util.List;
 import com.springproj.domain.BoardImg;
 import com.springproj.domain.BoardVo;
 import com.springproj.domain.MemberPointVo;
+import com.springproj.domain.PagingInfo;
+import com.springproj.domain.SearchCriteria;
 import com.springproj.etc.UploadFileInfo;
 
 public interface BoardDAO {
 	// DB 와 가깝기 때문에 쿼리문의 종류로 메서드 명을 짓는것이 일반적
 	
 	// 게시판 전체 목록 조회
-	List<BoardVo> selectAllBoard() throws Exception;
+	List<BoardVo> selectAllBoard(PagingInfo pi) throws Exception;
 	
 	// 신규 게시물 저장(일반 데이터)
 	int insertNewBoard(BoardVo newBoard)throws Exception;
@@ -44,6 +46,15 @@ public interface BoardDAO {
 	int updateBoard(BoardVo modiBoard) throws Exception;
 	
 	// no 번 첨부 파일 삭제
-	int deleteBoardImg(int no)  throws Exception;
+	int deleteBoardImg(int no) throws Exception;
+
+	// 전체 게시글 수 조회
+	int getBoardCnt() throws Exception;
+
+	// 검색어가 있을 때 검색된 게시글의 글 개수 가져오기
+	int getBoardCntWithSearch(SearchCriteria sc);
+
+	// 검색어가 있을 때 검색된 글을 페이징 하여 가져오기
+	List<BoardVo> selectAllBoardWithSearch(PagingInfo pi, SearchCriteria sc);
 	
 }

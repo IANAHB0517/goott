@@ -10,7 +10,8 @@
 		resultType은 패키지가 아닌 해당 클래스까지 적어주자 -->
 
 	<select id="getAllBoards" resultType="BoardVo"> <!-- mybatis-config.xml 에 별칭을 지정해준 다음에는 이렇게 쓸 수 있다. -->
-		select * from board order by no desc
+		select * from board order by no desc limit
+		#{startRowIndex},#{viewPostCntPerPage}
 	</select>
 
 	<insert id="saveNewBoard">
@@ -71,4 +72,39 @@
 		delete from boardimg where boardNo = #{no}
 	</delete>
 
+	<select id="getTotalBoardCnt" resultType="int">
+		select count(*) from
+		board
+	</select>
+
+	<select id="getTotalBoardCntWithSearch" resultType="int">
+		select count(*) from board where
+		<choose>
+			<when test="searchType == 'title'">
+				 title like #{searchWord} 
+			</when>
+			<when test="searchType == 'writer'">
+				 writer like #{searchWord} 
+			</when>
+			<otherwise>
+				 content like #{searchWord}
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="getAllBoardWithSearch" resultType="BoardVo">
+		select * from board where
+		<choose>
+			<when test="searchType == 'title'">
+				 title like #{searchWord} 
+			</when>
+			<when test="searchType == 'writer'">
+				 writer like #{searchWord} 
+			</when>
+			<otherwise>
+				 content like #{searchWord}
+			</otherwise>
+		</choose>
+	order by no desc limit #{startRowIndex},#{viewPostCntPerPage}
+	</select>
 </mapper>

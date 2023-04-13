@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.springproj.domain.BoardImg;
 import com.springproj.domain.BoardVo;
 import com.springproj.domain.MemberVo;
+import com.springproj.domain.PagingInfo;
+import com.springproj.domain.SearchCriteria;
 import com.springproj.etc.UploadFileInfo;
 import com.springproj.etc.UploadFilesProc;
 import com.springproj.service.BoardService;
@@ -44,12 +46,20 @@ public class BoardController {
 	// private List<BoardImg> modifyFileList;
 
 	@RequestMapping("listAll") // listAll.jsp
-	public void listAll(Model model) throws Exception {
-		System.out.println("컨트롤러단 : 게시판 목록 조회");
+	public void listAll(Model model , @RequestParam (value="pageNo", defaultValue = "1") int pageNo, @RequestParam (value="viewPost", defaultValue = "3" ) int viewPostCnt, 
+			@RequestParam(value="searchType", defaultValue= "") String searchType,
+			@RequestParam(value="searchWord", defaultValue= "") String searchWord
+			) throws Exception {
+		System.out.println("컨트롤러단 : 게시판 목록 조회, 페이지 번호 : " + pageNo + ", 보여줄 글의 개수 : " + viewPostCnt);
+		
+		SearchCriteria sc = new SearchCriteria(searchType, searchWord);
+		System.out.println("검색 : " + sc.toString());
+		
+		Map<String, Object> map = this.service.listAll(pageNo, viewPostCnt, sc);
+		
 
-		List<BoardVo> lst = this.service.listAll();
-
-		model.addAttribute("boardList", lst);
+		model.addAttribute("boardList", (List<BoardVo>)map.get("boardList"));
+		model.addAttribute("pagingInfo", (PagingInfo)map.get("pagingInfo"));
 	}
 
 	@RequestMapping("writeBoard")

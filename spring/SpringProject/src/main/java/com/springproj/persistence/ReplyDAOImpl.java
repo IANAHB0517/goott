@@ -29,4 +29,10 @@ public class ReplyDAOImpl implements ReplyDAO {
 		return ses.selectList(ns + ".selectAllReplies", boardNo);
 	}
 
+	@Override
+	public int updateReply(Replies reply) throws Exception {
+		
+		return ses.update(ns + ".updateReply", reply);
+	}
+
 }

@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.springproj.domain.BoardImg;
 import com.springproj.domain.BoardVo;
 import com.springproj.domain.MemberPointVo;
+import com.springproj.domain.PagingInfo;
+import com.springproj.domain.SearchCriteria;
 import com.springproj.etc.UploadFileInfo;
 import com.springproj.persistence.BoardDAO;
 
@@ -23,10 +25,65 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDAO dao; // BoardDAO 객체 주입
 
 	@Override
-	public List<BoardVo> listAll() throws Exception {
+	public Map<String, Object> listAll(int pageNo , int viewPostCnt, SearchCriteria sc) throws Exception {
 		System.out.println("서비스단 : 게시판 목록 조회");
+		
+		PagingInfo pi = getPagingInfo(pageNo, viewPostCnt, sc);
+		List<BoardVo> lst = null;
+		
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		
+		// SearchWord에 초기 값이 없기 때문에 처음에는 getSearchWord() 가 null 이라고 나온다
+		
+		if (!sc.getSearchWord().equals("")) { // 검색어가 있을때
+			lst = this.dao.selectAllBoardWithSearch(pi, sc);
+		} else if (sc.getSearchWord().equals("") || sc.getSearchWord() == null) { // 검색어가 없을 때
+			lst = this.dao.selectAllBoard(pi);
+		}
+		
+		returnMap.put("boardList", lst);
+		returnMap.put("pagingInfo", pi);
+		
+		return returnMap;
+	}
 
-		return this.dao.selectAllBoard();
+	private PagingInfo getPagingInfo(int pageNo, int viewPostCnt, SearchCriteria sc) throws Exception {
+		
+		// 스프링 컨테이너가 관리하는 객체 가 아니기 때문에 new를 해줌
+		PagingInfo pi = new PagingInfo();
+		
+		pi.setViewPostCntPerPage(viewPostCnt); // 1 페이지당 보여줄 글의 개수
+		pi.setPageNo(pageNo); // 요청된 페이지 변호
+		
+		if (!sc.getSearchWord().equals("")) { // 검색어가 있을때
+			pi.setTotalPostCnt(dao.getBoardCntWithSearch(sc)); // 검색어로 검색된 글의 개수
+		} else if (sc.getSearchWord().equals("") || sc.getSearchWord() == null) { // 검색어가 없을 때
+			pi.setTotalPostCnt(dao.getBoardCnt()); // 검색어가 없이 얻어온 글의 개수
+		}
+		
+		pi.setTotalPostCnt(dao.getBoardCnt()); // 전체 글의 개수
+		
+		pi.setTotalPageCnt(pi.getTotalPostCnt(), pi.getViewPostCntPerPage()); // 전체 페이지 수
+		
+		pi.setStartRowIndex(pi.getPageNo()); // 현재 페이지 번호에서 보여줘야 할 row index;
+		
+		// ==========================페이징 처리끝====================================================
+		
+		// pagination 을 위한 코드
+		
+		pi.setPageBlockOfCurrentPage(pi.getPageNo()); // 현재 페이지가 속한 페이징 블럭
+		
+		// 현재 페이징 블럭 시작 번호
+		pi.setStartNumOfCurrentPagingBlock(pi.getPageBlockOfCurrentPage());
+		
+		// 현재 페이징 블럭 끝 번호
+		pi.setEndNumOfCurrentPagingBlock(pi.getStartNumOfCurrentPagingBlock());
+		
+		
+		
+		
+		
+		return pi;
 	}
 
 	@Override

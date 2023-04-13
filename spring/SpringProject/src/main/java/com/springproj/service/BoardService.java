@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.springproj.domain.BoardVo;
+import com.springproj.domain.SearchCriteria;
 import com.springproj.etc.UploadFileInfo;
 
 public interface BoardService {
 	//게시판 목록 조회
-	List<BoardVo> listAll() throws Exception;
+	Map<String, Object> listAll(int pageNo, int viewPostCnt, SearchCriteria sc) throws Exception;
 	
 	// 신규 게시물 저장 
 	boolean saveBoard(BoardVo newBoard, List<UploadFileInfo> fileList) throws Exception;

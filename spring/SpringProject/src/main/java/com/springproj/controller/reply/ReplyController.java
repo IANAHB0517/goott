@@ -65,4 +65,23 @@ public class ReplyController {
 		return result;
 		
 	}
+	
+	@RequestMapping(value="/{replyNo}", method = RequestMethod.PUT)
+	public ResponseEntity<String> modifyReply(@PathVariable("replyNo") int replyNo, @RequestBody Replies reply) {
+		System.out.println("수정할 댓글 번호 : " + replyNo + ", 수정 내용 : " + reply.toString());
+		
+		
+		ResponseEntity<String> result = null;
+		
+		try {
+			if(service.modifyReply(reply)) {
+				result = new ResponseEntity<String>("success", HttpStatus.OK);
+				
+			}
+		} catch (Exception e) {
+			result = new ResponseEntity<String>("fail", HttpStatus.CONFLICT);
+		};
+		
+		return result;
+	}
 }

@@ -504,4 +504,13 @@ CREATE TABLE `lsj`.`replies` (
     ON UPDATE NO ACTION);
     
     -- 댓글 등록
-    insert into replies(boardNo, replier, replytext) values (?,?,?);
+    insert into replies(boardNo, replier, replytext, ref) values (?,?,?,?);
+    
+    -- 해당 글의 모든 댓글 조회
+    select * from replies where boardNo =? order by replyNo desc;
+    
+    --
+    update replies set replytext =? , postdate=now() where replyNo =?;
+    
+    -- 대댓글 부모댓글의 replyNo 값 가져와서 ref에 넣기
+    insert into replies(boardNo, replier, replytext, ref) values (?,?,?,?);

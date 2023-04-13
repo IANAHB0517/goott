@@ -11,4 +11,8 @@ public interface ReplyService {
 
 	// 전체 댓글 조회
 	List<Replies> getAllReplies(int boardNo) throws Exception;
+
+	// reply로 댓글 수정
+	boolean modifyReply(Replies reply)throws Exception;
+
 }

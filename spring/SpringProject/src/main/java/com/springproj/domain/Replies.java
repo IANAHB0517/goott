@@ -19,4 +19,5 @@ public class Replies {
 	private String replier;
 	private String replytext;
 	private Timestamp postdate;
+	private int ref;
 }

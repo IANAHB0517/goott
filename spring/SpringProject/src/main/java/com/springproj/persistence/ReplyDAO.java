@@ -11,4 +11,8 @@ public interface ReplyDAO {
 
 	// boardNo번 글의 모든 댓글 가져오기
 	List<Replies> selectAllReplies(int boardNo)throws Exception;
+
+	// 댓글 수정
+	int updateReply(Replies reply)throws Exception;
+
 }

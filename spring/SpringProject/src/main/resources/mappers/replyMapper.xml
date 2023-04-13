@@ -7,13 +7,21 @@
 <mapper namespace="com.springproj.mappers.replyMapper">
 
 	<insert id="insertReply">
-		insert into replies(boardNo, replier, replytext) values
-		(#{boardNo},#{replier},#{replytext})
+	<selectKey keyProperty="replyNo" resultType="int"
+			order="BEFORE">
+			select max(replyNo) +1 from replies
+		</selectKey>
+		insert into replies(boardNo, replier, replytext, ref) values
+		(#{boardNo},#{replier},#{replytext},#{replyNo})
 	</insert>
 
 	<select id="selectAllReplies"
 		resultType="com.springproj.domain.Replies">
-		select * from replies where boardNo =#{boardNo} order by replyNo desc
+		SELECT * FROM lsj.replies where boardNo =#{boardNo}  order by ref desc, replyNo asc
 	</select>
+	
+	<update id="updateReply">
+		update replies set replytext =#{replytext} , postdate=now() where replyNo =#{replyNo}
+	</update>
 
 </mapper>
