@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.springproj.domain.LoginDTO;
 import com.springproj.domain.MemberPointVo;
 import com.springproj.domain.MemberVo;
+import com.springproj.domain.SessionDTO;
 import com.springproj.persistence.BoardDAO;
 import com.springproj.persistence.MemberDAO;
 
@@ -47,6 +48,28 @@ public class MemberServiceImpl implements MemberService {
 		List<MemberPointVo> mpList = dao.selectMemberPoint(userId);
 		
 		return mpList;
+	}
+
+
+	@Override
+	public boolean remember(SessionDTO ses) throws Exception {
+		System.out.println("service 단 : 자동 로그인 처리 " + ses.toString());
+		
+		int result = dao.updateRemember(ses);
+		
+		if (result == 1) {
+			return true;
+		}
+		return false;
+	}
+
+
+	@Override
+	public MemberVo sesValid(String sesIdCookie) throws Exception {
+		
+		MemberVo validMember = dao.selectRemember( sesIdCookie );
+		
+		return validMember;
 	}
 
 }

@@ -14,4 +14,12 @@
 	<select id="memberPoint" resultType="MemberPointVo">
 		select * from memberpoint where who = #{userId} order by no desc
 	</select>
+	
+	<update id="updateRemember">
+		update member set sesId = #{sesId}, seslimit = #{seslimit} where userId = #{userId}
+	</update>
+	
+	<select id="selectRemember" resultType="MemberVo">
+		select * from member where sesId = #{sesId} and seslimit > now() 
+	</select>
 </mapper>

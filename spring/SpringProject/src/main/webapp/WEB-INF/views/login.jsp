@@ -11,6 +11,14 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="resources/js/commonJS.js"></script>
+<script>
+	function rememberBox() {
+		if($("#remember").is(':checked')) { // css의 가상 클래스를 활용함
+			alert("자동 로그인 기능은 개인 PC에서만 사용하세요");
+			//
+		}
+	}
+</script>
 
 
 
@@ -35,7 +43,7 @@
 						class="form-control" id="pwd1" placeholder="Enter password"
 						name="userPwd" />
 					<div class="form-check">
-  						<input class="form-check-input" type="checkbox" id="remember" name="remember">
+  						<input class="form-check-input" type="checkbox" id="remember" name="remember" onclick="rememberBox();">
   						<label class="form-check-labe">자동 로그인</label>
 					</div>
 						<div class='errMsg'></div>

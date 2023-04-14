@@ -107,4 +107,8 @@
 		</choose>
 	order by no desc limit #{startRowIndex},#{viewPostCntPerPage}
 	</select>
+	
+	
+	
+	
 </mapper>

@@ -514,3 +514,44 @@ CREATE TABLE `lsj`.`replies` (
     
     -- 대댓글 부모댓글의 replyNo 값 가져와서 ref에 넣기
     insert into replies(boardNo, replier, replytext, ref) values (?,?,?,?);
+
+-- ================================================================================================================================================
+-- 자동 로그인 처리
+-- 1명의 회원과 자동 로그인을 처리 할 때 필요한 데이터와의 관계가 1: 1관계이므로
+-- 따로 테이블을 생성 하지 않고 기존의 member 테이블을 수정하여 사용한다.
+-- 별도로 테이블을 생성하여 처리 할 수 도 있다. (이럴 경우 member 테이블의 userId를 참조 하는 컬럼이 필요하다)
+
+CREATE TABLE `member` (
+  `userId` varchar(8) NOT NULL,
+  `userPwd` varchar(200) NOT NULL,
+  `userEmail` varchar(50) NOT NULL,
+  `userMobile` varchar(13) DEFAULT NULL,
+  `userGender` varchar(1) NOT NULL,
+  `hobbies` varchar(100) DEFAULT NULL,
+  `job` varchar(20) DEFAULT NULL,
+  `userImg` varchar(100) DEFAULT 'uploadMember/noimg.png',
+  `memo` varchar(200) DEFAULT NULL,
+  `isAdmin` varchar(1) DEFAULT 'N',
+  `sesId` varchar(50) DEFAULT NULL, -- 자동 로그인 시에 부여된 sessionID 값check
+  `seslimit` datetime DEFAULT NULL, -- 자동 로그인 세션의 만료일
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+--  ===============================================================================================================================================================
+
+-- 자동로그인을 체크 했을 때 member 테이블 update
+update member set sesId = #{sesId}, seslimit = #{seslimit} where userId = #{userId};
+
+-- 쿠키에 저장된 세션이 유효한지 안한지 검사하는 쿼리문
+select userId from member where sesId = #{sesId} and  seslimit > now() 
+
+
+--  ===============================================================================================================================================================
+-- 테이블 조회
+use lsj;
+select * from member;
+select * from memberpoint;
+select * from latestloginlog;
+SELECT * FROM pointpolicy;
+SELECT * FROM boardimg;
+select * from board order by ref desc, reforder asc;
+select * from readcountprocess;

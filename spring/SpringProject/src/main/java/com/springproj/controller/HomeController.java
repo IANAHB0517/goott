@@ -5,7 +5,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.WebUtils;
 
 import com.springproj.domain.LoginDTO;
 import com.springproj.domain.MemberVo;
@@ -83,10 +86,16 @@ public class HomeController {
 	}
 	
 	@RequestMapping("logout")
-	public String logout(HttpServletRequest req) {
+	public String logout(HttpServletRequest req, HttpServletResponse resp) {
 		HttpSession ses = req.getSession();
 		
 		System.out.println("로그아웃");
+		
+//		4) 유저가 자동 로그인 상태에서 로그아웃을 눌렀을 경우 쿠키 삭제
+		Cookie sesCookie = WebUtils.getCookie(req, "ses");
+		sesCookie.setMaxAge(0); // 쿠키 삭제
+		resp.addCookie(sesCookie);
+		
 		ses.removeAttribute("loginMember");
 		ses.removeAttribute("returnPath");
 		ses.invalidate();
