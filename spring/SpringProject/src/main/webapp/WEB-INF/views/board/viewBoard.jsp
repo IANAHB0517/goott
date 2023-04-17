@@ -7,17 +7,67 @@
 <head>
 <meta charset="UTF-8" />
 <title>게시판 글 조회</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
       $(function () {
         getAllReplies(); // 현재 글의 모든 댓글 가져오기
+       // getLike();
         
        // setInterval(getAllReplies, 5000)
        
-       
+        $( "i" ).click(function() { // e 는 클릭된 곳의 이벤트 정보를 얻어오는 매개변수
+            
+        	  let user = '${sessionScope.loginMember.userId}';
+          	 
+        	  if(user === ''){
+        		  alert('좋아요는 로그인 해야 가능 합니다');
+        		  return false; // onclick에도 return을 주어서 로그인 하지 않았을때 하트를 눌렀을때의 모든 이벤트 자체를 false로 만들도록한다
+        	  } else {
+        	  
+            console.log($(this).attr("class"));
+            
+            let isLike = $(this).attr("class") + "";
+            if(isLike == 'press'){
+            	likeClicked(false, user)
+            } else {
+            	likeClicked(true, user)
+            	
+            }
+        	  }
+            $( ".likeDiv i, .likeDiv span" ).toggleClass( "press", 1000);
+          });
        
       });
+      
+      function likeClicked(isLike, user){
+    	
+ 
+        	  $.ajax({
+                  url: "/board/like", // 뒤에서 reply 밑에 아무 것도 달려있지 않고 post 방식일때 받기로 했기때문에 아무것도 더하지 않는다
+                  type: "post", // 통신 방식 (GET, POST, PUT, DELETE)
+                  dataType: "text", // 수신 받을 데이터 타입 Json 과 Text 모두 가능
+                  data: {
+                	  "isLike" : isLike,
+                	  "boardNo" : '${board.no}',
+                	  "who" : user
+                	  },
+                  success: function (data) {
+                  console.log(data);
+                  if (data== true){
+                	  
+                  }
+                  }
+                });
+        	  
+          
+    	  
+    	  
+      }
+    	  
+      
+      
 
       $(function () {
         $("#imgFile").change(function (e) {
@@ -310,6 +360,8 @@
             });
       }
       
+  
+      
     </script>
 <style>
 .repToreply {
@@ -356,6 +408,82 @@
 .replies {
 	clear: right;
 }
+/*새좋아요*/
+body {
+  margin:0;
+  text-align:center;
+  /*padding-top:120px;*/
+  font-family:'open sans',sans-serif;
+  background:#ddd;
+  height:100%;
+}
+
+div.likeDiv {
+  height:100px;
+  margin:0 auto;
+  position: relative;
+}
+
+i {
+  cursor:pointer;
+  padding:10px 12px 8px;
+  background:#fff;
+  border-radius:50%;
+  display:inline-block;
+  margin:0 0 15px;
+  color:#aaa;
+  transition:.2s;
+}
+
+i:hover {
+  color:#666;
+}
+
+i:before {
+  font-family:fontawesome;
+  content:'\f004';
+  font-style:normal;
+}
+
+span.likeSpan {
+  position: absolute;
+  bottom:70px;
+  left:0;
+  right:0;
+  visibility: hidden;
+  transition:.6s;
+  z-index:-2;
+  font-size:2px;
+  color:transparent;
+  font-weight:400;
+}
+
+i.press {
+  animation: size .4s;
+  color:#e23b3b;
+}
+
+span.press {
+  bottom:120px;
+  font-size:14px;
+  visibility:visible;
+  animation: fade 1s;
+}
+
+@keyframes fade {
+  0% {color:#transparent;}
+  50% {color:#e23b3b;}
+  100% {color:#transparent;}
+}
+
+@keyframes size {
+  0% {padding:10px 12px 8px;}
+  50% {padding:14px 16px 12px;  
+    margin-top:-4px;}
+  100% {padding:10px 12px 8px;}
+}
+
+
 </style>
 </head>
 <body>
@@ -368,18 +496,115 @@
 		<h4 style="margin-top: 15px">게시판 상세 조회 페이지</h4>
 
 		<div class="mb-3 mt-3">
-			<label for="no">글 번호 :</label> <span> <input id="no"
-				value="${board.no }" readonly />
-			</span> <label for="writer">작성일 :</label> <span> <input
+			<label for="no">글 번호 :</label>
+			<span>
+			<input id="no" value="${board.no }" readonly />
+			</span>
+			
+				
+				
+				
+			<label for="likecount">좋아요 : </label>
+			<input id="likecount" value="${board.likecount }" readonly />
+				<div class="likeDiv">
+		 		
+			 	<c:set var="isHeart" value="false"></c:set>
+			
+			<!-- 그냥 반복문으로 검사해서 현재유저가 좋아요 했는지를 검사해서
+				true or false 로 저장해서 출력문을 정하면 될듯한데 지금 너무 복잡함-->
+				<c:forEach items="${likeList}" var="likedUser">
+					<c:if test="${isHeart==false}"></c:if>
+					<c:choose>
+						<c:when test="${sessionScope.loginMember.userId == likedUser.who}">
+						<!-- 로그인한 유저가 이 글을 좋아요 했다면 -->
+							<i class="press"></i>
+							<span class="likeSpan press">liked!</span>
+							<c:set var="isHeart" value="true"></c:set>
+						</c:when>
+					</c:choose>
+				</c:forEach>
+				<c:if test="${isHeart==false }">
+					<i></i>
+					<span class="likeSpan">liked!</span>
+				</c:if>
+				
+		 		</div>
+		 		<div>이 글을
+		 			<c:forEach items="${likeList}" var="likedUser">
+		 				${likedUser.who },
+		 			</c:forEach>
+		 			가 좋아합니다.
+		 		</div>
+		 			
+		 	
+ 			
+			<label for="writer">작성일 :</label> <span> <input
 				value="${board.postDate }" readonly />
 			</span> <label for="writer">조회수 :</label> <span> <input
 				value="${board.readcount }" readonly />
 			</span>
+			<div class="mb-3 mt-3">
+			<!-- 
+         <div>
+            <input type="checkbox" id="like" onclick="return likeClicked();"/> <label for="like">
+               <svg id="heart-svg" viewBox="467 392 58 57"
+                  xmlns="http://www.w3.org/2000/svg">
+        <g id="Group" fill="none" fill-rule="evenodd"
+                     transform="translate(467 392)">
+          <path
+                     d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z"
+                     id="heart" fill="#AAB8C2" />
+          <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5"
+                     cy="29.5" r="1.5" />
+
+          <g id="grp7" opacity="0" transform="translate(7 6)">
+            <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2" />
+            <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2" />
+          </g>
+
+          <g id="grp6" opacity="0" transform="translate(0 28)">
+            <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2" />
+            <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2" />
+          </g>
+
+          <g id="grp3" opacity="0" transform="translate(52 28)">
+            <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2" />
+            <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2" />
+          </g>
+
+          <g id="grp2" opacity="0" transform="translate(44 6)">
+            <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2" />
+            <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2" />
+          </g>
+
+          <g id="grp5" opacity="0" transform="translate(14 50)">
+            <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2" />
+            <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2" />
+          </g>
+
+          <g id="grp4" opacity="0" transform="translate(35 50)">
+            <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2" />
+            <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2" />
+          </g>
+
+          <g id="grp1" opacity="0" transform="translate(24)">
+            <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2" />
+            <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2" />
+          </g>
+        </g>
+      </svg>
+            </label>
+
+         </div>
+      </div>
+		</div>
+		-->
 		</div>
 
 		<div class="mb-3 mt-3">
 			<label for="writer">제 목 :</label> <span> <input
 				value="${board.title }" readonly />
+				
 			</span> <label for="writer">글쓴이 :</label> <span> <input
 				value="${board.writer }" readonly />
 			</span>
@@ -401,6 +626,7 @@
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
+		</div>
 		</div>
 
 		<div style="margin-top: 20px" class="btns">
@@ -443,7 +669,7 @@
 				<textarea class="form-control" rows="5" id="replyContent"></textarea>
 				<button type="button" class="btn btn-success" onclick="saveReply();">
 					댓글달기</button>
-				<button type="button" class="btn btn-danger" onclick="'">취소</button>
+				<button type="button" class="btn btn-danger" onclick="">취소</button>
 			</div>
 		</div>
 		<div class="allReplies" style="margin-top: 10px; padding: 10px;">

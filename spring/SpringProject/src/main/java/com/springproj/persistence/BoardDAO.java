@@ -3,6 +3,7 @@ package com.springproj.persistence;
 import java.util.List;
 
 import com.springproj.domain.BoardImg;
+import com.springproj.domain.BoardLikeDTO;
 import com.springproj.domain.BoardVo;
 import com.springproj.domain.MemberPointVo;
 import com.springproj.domain.PagingInfo;
@@ -52,9 +53,25 @@ public interface BoardDAO {
 	int getBoardCnt() throws Exception;
 
 	// 검색어가 있을 때 검색된 게시글의 글 개수 가져오기
-	int getBoardCntWithSearch(SearchCriteria sc);
+	int getBoardCntWithSearch(SearchCriteria sc) throws Exception;
 
 	// 검색어가 있을 때 검색된 글을 페이징 하여 가져오기
-	List<BoardVo> selectAllBoardWithSearch(PagingInfo pi, SearchCriteria sc);
+	List<BoardVo> selectAllBoardWithSearch(PagingInfo pi, SearchCriteria sc) throws Exception;
+
+	// 좋아요 정보 입력
+	int insertLike(BoardLikeDTO dto) throws Exception;
+
+	// 좋아요 정보 삭제
+	int deleteLike(BoardLikeDTO dto) throws Exception;
+
+	// like/dislike 처리시 likeCount 증감
+	int addLikeCount(int boardNo, int result) throws Exception;
+
+	// boardNo번 글의 likecount 가져오기
+	int getLikeCountByBoardNo(int boardNo)throws Exception;
+
+	// no 번 글을 좋아요한 유저 리스트 가져오기
+	List<BoardLikeDTO> getLikeList(int no)throws Exception;
+
 	
 }

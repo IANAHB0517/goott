@@ -93,8 +93,10 @@ public class HomeController {
 		
 //		4) 유저가 자동 로그인 상태에서 로그아웃을 눌렀을 경우 쿠키 삭제
 		Cookie sesCookie = WebUtils.getCookie(req, "ses");
-		sesCookie.setMaxAge(0); // 쿠키 삭제
-		resp.addCookie(sesCookie);
+		if(sesCookie != null ) {			
+			sesCookie.setMaxAge(0); // 쿠키 삭제
+			resp.addCookie(sesCookie);
+		}
 		
 		ses.removeAttribute("loginMember");
 		ses.removeAttribute("returnPath");

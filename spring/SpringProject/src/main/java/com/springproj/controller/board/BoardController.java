@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.springproj.domain.BoardImg;
+import com.springproj.domain.BoardLikeDTO;
 import com.springproj.domain.BoardVo;
 import com.springproj.domain.MemberVo;
 import com.springproj.domain.PagingInfo;
@@ -46,20 +47,19 @@ public class BoardController {
 	// private List<BoardImg> modifyFileList;
 
 	@RequestMapping("listAll") // listAll.jsp
-	public void listAll(Model model , @RequestParam (value="pageNo", defaultValue = "1") int pageNo, @RequestParam (value="viewPost", defaultValue = "3" ) int viewPostCnt, 
-			@RequestParam(value="searchType", defaultValue= "") String searchType,
-			@RequestParam(value="searchWord", defaultValue= "") String searchWord
-			) throws Exception {
+	public void listAll(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+			@RequestParam(value = "viewPost", defaultValue = "3") int viewPostCnt,
+			@RequestParam(value = "searchType", defaultValue = "") String searchType,
+			@RequestParam(value = "searchWord", defaultValue = "") String searchWord) throws Exception {
 		System.out.println("컨트롤러단 : 게시판 목록 조회, 페이지 번호 : " + pageNo + ", 보여줄 글의 개수 : " + viewPostCnt);
-		
+
 		SearchCriteria sc = new SearchCriteria(searchType, searchWord);
 		System.out.println("검색 : " + sc.toString());
-		
-		Map<String, Object> map = this.service.listAll(pageNo, viewPostCnt, sc);
-		
 
-		model.addAttribute("boardList", (List<BoardVo>)map.get("boardList"));
-		model.addAttribute("pagingInfo", (PagingInfo)map.get("pagingInfo"));
+		Map<String, Object> map = this.service.listAll(pageNo, viewPostCnt, sc);
+
+		model.addAttribute("boardList", (List<BoardVo>) map.get("boardList"));
+		model.addAttribute("pagingInfo", (PagingInfo) map.get("pagingInfo"));
 	}
 
 	@RequestMapping("writeBoard")
@@ -161,10 +161,12 @@ public class BoardController {
 		Map<String, Object> map = this.service.viewByBoardNo(no);
 		BoardVo board = (BoardVo) map.get("board");
 		List<BoardImg> lst = (List<BoardImg>) map.get("upFiles"); // 첨부파일
+		List<BoardLikeDTO> likeList = (List<BoardLikeDTO>)map.get("likeList");
 
 		// 바인딩
 		model.addAttribute("board", board);
 		model.addAttribute("upFiles", lst);
+		model.addAttribute("likeList", likeList);
 
 	}
 
@@ -277,16 +279,36 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "modifyBoard", method = RequestMethod.POST)
-	
+
 	public String modifyBoard(BoardVo modifyBoard) throws Exception {
 		System.out.println(modifyBoard.toString() + "로 수정 하자");
 
 		this.service.modifyBoard(modifyBoard, upFileList); // 예외가 나면 exception으로 넘어가기 때문에 if문을 걸 필요가 없다.
 
 		this.upFileList.clear();
-		
+
 		return "redirect:viewBoard?no=" + modifyBoard.getNo();
 
 	}
 
-}
+	@RequestMapping(value ="like", method= RequestMethod.POST)
+	public ResponseEntity<String> likeBoard(@RequestParam("isLike") boolean isLike,
+			@RequestParam("boardNo") int boardNo, @RequestParam("who") String who) {
+		System.out.println(who + "가 "+ boardNo + "번 글을 좋아요" + isLike );
+		
+		BoardLikeDTO dto = new BoardLikeDTO(0, who, boardNo, isLike);
+		
+		ResponseEntity<String> reuslt = null;
+		
+		try {
+			int likecount = service.likeProc(dto);
+			reuslt = new ResponseEntity<String>(likecount + "" , HttpStatus.OK);
+			
+		} catch (Exception e) {
+			reuslt = new ResponseEntity<String>(e.getMessage() , HttpStatus.CONFLICT);
+		}
+		
+		return reuslt;
+	}
+
+	}

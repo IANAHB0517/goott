@@ -542,9 +542,9 @@ CREATE TABLE `member` (
 update member set sesId = #{sesId}, seslimit = #{seslimit} where userId = #{userId};
 
 -- 쿠키에 저장된 세션이 유효한지 안한지 검사하는 쿼리문
-select userId from member where sesId = #{sesId} and  seslimit > now() 
+select userId from member where sesId = #{sesId} and  seslimit > now() ;
 
-
+;
 --  ===============================================================================================================================================================
 -- 테이블 조회
 use lsj;
@@ -554,4 +554,35 @@ select * from latestloginlog;
 SELECT * FROM pointpolicy;
 SELECT * FROM boardimg;
 select * from board order by ref desc, reforder asc;
+select * from board order by no desc;
 select * from readcountprocess;
+select * from boardlike;
+
+--  ===============================================================================================================================================================
+CREATE TABLE `boardlike` (
+  `likeNo` int(11) NOT NULL AUTO_INCREMENT,
+  `boardNo` int(11) NOT NULL,
+  `who` varchar(8) NOT NULL,
+  PRIMARY KEY (`likeNo`),
+  KEY `boardlike_boardNo_fk_idx` (`boardNo`),
+  KEY `boardlike_who_fk_idx` (`who`),
+  CONSTRAINT `boardlike_boardNo_fk` FOREIGN KEY (`boardNo`) REFERENCES `board` (`no`) ON DELETE CASCADE,
+  CONSTRAINT `boardlike_who_fk` FOREIGN KEY (`who`) REFERENCES `member` (`userId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- like 입력
+insert into boardlike(boardNo, who) values(?,?);
+
+-- like 삭제
+delete from boardlike where who = #{who} and boardNo = #{boardNo};
+
+-- like 클릭시 likecount 업데이트
+update board set likecount = likecount + #{acc} where no = #{boardNo};
+
+-- likecount 가져오기
+select likecount from board where no = ?;
+
+
+-- no 번 글을 좋아요 한 유저 리스트 얻어오기
+select * from boardlike where BoardNo = ?;

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.springproj.domain.BoardImg;
+import com.springproj.domain.BoardLikeDTO;
 import com.springproj.domain.BoardVo;
 import com.springproj.domain.MemberPointVo;
 import com.springproj.domain.PagingInfo;
@@ -129,6 +130,7 @@ public class BoardServiceImpl implements BoardService {
 
 		// 2) no번 글 읽어옴
 		Map<String, Object> returnMap = selectBoardByNO(no);
+		
 
 		return returnMap;
 	}
@@ -150,9 +152,15 @@ public class BoardServiceImpl implements BoardService {
 		// 4) 첨부 파일 읽어오기
 		List<BoardImg> upFiles = dao.selectUploadFile(no);
 
+		// 5) 이글을 좋아요 한 사람 가져오기
+		List<BoardLikeDTO> likeList = dao.getLikeList(no);
+		
+		
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		returnMap.put("board", board);
 		returnMap.put("upFiles", upFiles);
+		returnMap.put("likeList", likeList);
+		
 		return returnMap;
 	}
 
@@ -199,4 +207,34 @@ public class BoardServiceImpl implements BoardService {
 
 	}
 
+	@Override
+	@Transactional
+	public int likeProc(BoardLikeDTO dto) throws Exception {
+		int result = -1;
+		int likecount = 0;
+		
+		
+		if(dto.isLike()) {
+			result= dao.insertLike(dto);
+			
+		} else {
+			result = -1 * dao.deleteLike(dto);
+			
+		}
+		// likeCount를 update
+		int tmp = dao.addLikeCount(dto.getBoardNo(), result);
+		if (tmp == 1 && result != 0) {
+			// boardNo 번 글의 likecount 가져오기
+			likecount = dao.getLikeCountByBoardNo(dto.getBoardNo());
+		}
+		
+		
+		return likecount;
+	}
+
+	
+	
+
+	
+	
 }

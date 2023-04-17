@@ -81,34 +81,54 @@
 		select count(*) from board where
 		<choose>
 			<when test="searchType == 'title'">
-				 title like #{searchWord} 
+				title like #{searchWord}
 			</when>
 			<when test="searchType == 'writer'">
-				 writer like #{searchWord} 
+				writer like #{searchWord}
 			</when>
 			<otherwise>
-				 content like #{searchWord}
+				content like #{searchWord}
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<select id="getAllBoardWithSearch" resultType="BoardVo">
 		select * from board where
 		<choose>
 			<when test="searchType == 'title'">
-				 title like #{searchWord} 
+				title like #{searchWord}
 			</when>
 			<when test="searchType == 'writer'">
-				 writer like #{searchWord} 
+				writer like #{searchWord}
 			</when>
 			<otherwise>
-				 content like #{searchWord}
+				content like #{searchWord}
 			</otherwise>
 		</choose>
-	order by no desc limit #{startRowIndex},#{viewPostCntPerPage}
+		order by no desc limit #{startRowIndex},#{viewPostCntPerPage}
 	</select>
-	
-	
-	
-	
+
+	<insert id="insertLike">
+		insert into boardlike(boardNo, who)
+		values(#{boardNo},#{who})
+	</insert>
+
+	<delete id="deleteLike">
+		delete from boardlike where who = #{who} and boardNo = #{boardNo}
+	</delete>
+
+	<update id="updateLikeCount">
+		update board set likecount = likecount + #{acc} where no = #{boardNo}
+	</update>
+
+	<select id="selectLikeCount" resultType="int">
+		select likecount from board where no = #{boardNo}
+	</select>
+
+	<select id="selectLikeList"
+		resultType="com.springproj.domain.BoardLikeDTO">
+		select * from boardlike where BoardNo = #{boardNo}
+	</select>
+
+
 </mapper>
