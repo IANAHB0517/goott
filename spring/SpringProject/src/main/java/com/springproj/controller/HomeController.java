@@ -66,11 +66,11 @@ public class HomeController {
 	
 	// POST 방식이 동작하기 위해서는 GET 방식으로 호출 했을때 동작하는 메서드가 필요하다????? 아닌듯
 	@RequestMapping(value="login", method = RequestMethod.POST)
-	public void login(LoginDTO login, Model model) throws Exception { 
+	public void login(LoginDTO login, Model model, RedirectAttributes rab , HttpServletRequest req) throws Exception { 
 		// 먼저 loginInterceptor의 preHandle() 호출
 //		System.out.println(login.toString());
 		
-		MemberVo loginMember = service.login(login);
+		MemberVo loginMember = service.login(login, req);
 		
 		
 		if (loginMember != null) {

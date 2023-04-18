@@ -3,6 +3,7 @@ package com.springproj.service;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	@Transactional // Transaction 도 Interceptor 로 수행된다
-	public MemberVo login(LoginDTO login) throws Exception {
+	public MemberVo login(LoginDTO login, HttpServletRequest req) throws Exception {
 		// 1) 로그인 처리
 		MemberVo loginMember = dao.selectMemberWithLoginDTO(login);
 		
