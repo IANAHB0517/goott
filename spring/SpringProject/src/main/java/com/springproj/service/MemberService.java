@@ -24,4 +24,7 @@ public interface MemberService {
 	// 쿠키에 저장된 세션이 유효한지 아닌지
 	MemberVo sesValid(String sesIdCookie) throws Exception;
 	
+	// 멤버 정보 가져오기
+	MemberVo getUserInfo(String userId) throws Exception;
+	
 }

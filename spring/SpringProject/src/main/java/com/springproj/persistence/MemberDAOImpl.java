@@ -47,6 +47,12 @@ public class MemberDAOImpl implements MemberDAO {
 		return this.ses.selectOne(ns + ".selectRemember", sesIdCookie);
 	}
 
+	@Override
+	public MemberVo selectMemberWithUserId(String userId) throws Exception {
+		
+		return ses.selectOne(ns + ".selectMemberWithUserId", userId);
+	}
+
 	
 	
 	

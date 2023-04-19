@@ -586,3 +586,44 @@ select likecount from board where no = ?;
 
 -- no 번 글을 좋아요 한 유저 리스트 얻어오기
 select * from boardlike where BoardNo = ?;
+
+
+-- ====================================================================================================================================================
+-- 쪽지 주고받기
+
+CREATE TABLE message
+(
+	msgId int NOT NULL AUTO_INCREMENT,
+	sender varchar(8) NOT NULL,
+	receiver varchar(8) NOT NULL,
+	messageText varchar(1000),
+	sendTime datetime DEFAULT now(),
+	isRead char(1) DEFAULT 'N',
+	PRIMARY KEY (msgId)
+);
+
+
+ALTER TABLE message MODIFY COLUMN sender int UNSIGNED;
+
+/* Create Foreign Keys */
+
+ALTER TABLE message
+	ADD FOREIGN KEY (sender)
+	REFERENCES member (userId)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE message
+	ADD FOREIGN KEY (receiver)
+	REFERENCES member (userId)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+-- 메세지 발송
+insert into message(sender, receiver, messageText) value(#{sender},#{receiver},#{messageText});
+
+-- 받은 쪽지 확인
+select * from message where receiver = ?;

@@ -22,4 +22,8 @@
 	<select id="selectRemember" resultType="MemberVo">
 		select * from member where sesId = #{sesId} and seslimit > now() 
 	</select>
+	
+	<select id="selectMemberWithUserId" resultType="MemberVo">
+		select * from member where userId = #{userId}
+	</select>
 </mapper>

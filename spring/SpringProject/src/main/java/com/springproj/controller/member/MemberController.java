@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springproj.domain.MemberPointVo;
 import com.springproj.domain.MemberVo;
@@ -25,8 +26,15 @@ public class MemberController {
 	
 	
 	@RequestMapping("myPage")
-	public void myPage(Model model) {
-		System.out.println("컨트롤러 단 : myPage 조회");
+	public void myPage(@RequestParam("userId") String userId, Model model) throws Exception {
+		System.out.println("컨트롤러 단 : "+ userId +" myPage 조회");
+		
+		MemberVo memberInfo = service.getUserInfo(userId);
+		
+		if (memberInfo != null) {
+			model.addAttribute("memberInfo", memberInfo);
+		}
+		
 	}
 	
 	@RequestMapping("getMemPoint")
@@ -44,4 +52,5 @@ public class MemberController {
 		}
 		
 	}
+	
 }

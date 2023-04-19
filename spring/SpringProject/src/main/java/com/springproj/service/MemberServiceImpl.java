@@ -73,4 +73,13 @@ public class MemberServiceImpl implements MemberService {
 		return validMember;
 	}
 
+
+	@Override
+	public MemberVo getUserInfo(String userId) throws Exception {
+		
+		return dao.selectMemberWithUserId(userId);
+	}
+	
+	
+
 }

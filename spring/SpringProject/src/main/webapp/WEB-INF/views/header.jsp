@@ -43,7 +43,7 @@
 					<c:choose>
 						<c:when test="${sessionScope.loginMember != null }">
 							
-							<li class="nav-item"><a class="nav-link" href="/member/myPage">
+							<li class="nav-item"><a class="nav-link" href="/member/myPage?userId=${sessionScope.loginMember}">
 							<img class="uploadMemberImg" src="/resources/${sessionScope.loginMember.userImg}" />
 							${sessionScope.loginMember.userId}
 							</a></li>
