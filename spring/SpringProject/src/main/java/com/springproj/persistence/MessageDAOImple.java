@@ -21,5 +21,15 @@ public class MessageDAOImple implements MessageDAO {
 		return ses.insert(ns + ".sendMsg", msg);
 	}
 
+	@Override
+	public int selectMsgCnt(String userId) throws Exception {
+		
+		
+		return ses.selectOne( ns + ".getMsgCnt",userId);
+		
+	}
+
+	
+	
 }
  

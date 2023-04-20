@@ -17,13 +17,44 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
+<script>
+	$(function() {
+			let user = '${sessionScope.loginMember.userId}';
+		
+			if (user != '') {
+				updateMsgCnt(user);
+			}
+		
+		
+		setInterval(function() {
+			if (user != '') {
+				updateMsgCnt(user);
+			}
+			console.log("메세지 호출");
+		}, 1000 * 60 * 1);
+	});
+
+	function updateMsgCnt(user) {
+		$.ajax({
+			url : "/message/updateMsgCnt/" + user, // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성)
+			type : "post", // 통신 방식 (GET, POST, PUT, DELETE)
+			dataType : "text", // 수신받을 데이터 타입
+			success : function(data) { // 통신이 성공하면 수행할 함수(콜백 함수)
+				console.log(data);
+	$(".badge").html(data);
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		});
+	}
+</script>
+
 <style>
 .uploadMemberImg {
 	width: 40px;
 	border-radius: 20px;
 }
-
-
 </style>
 </head>
 <body>
@@ -42,20 +73,26 @@
 					<li class="nav-item"><a class="nav-link" href="/board/listAll">게시판</a></li>
 					<c:choose>
 						<c:when test="${sessionScope.loginMember != null }">
-							
-							<li class="nav-item"><a class="nav-link" href="/member/myPage?userId=${sessionScope.loginMember}">
-							<img class="uploadMemberImg" src="/resources/${sessionScope.loginMember.userImg}" />
-							${sessionScope.loginMember.userId}
-							</a></li>
-						
+
+							<li class="nav-item">
+								<button type="button" class="btn btn-primary">
+									Messages <span class="badge bg-danger"></span>
+								</button> <a class="nav-link"
+								href="/member/myPage?userId=${sessionScope.loginMember}"> <img
+									class="uploadMemberImg"
+									src="/resources/${sessionScope.loginMember.userImg}" />
+									${sessionScope.loginMember.userId}
+							</a>
+							</li>
+
 							<li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="nav-item"><a class="nav-link" href="/login">로그인</a></li>
-						
+
 						</c:otherwise>
 					</c:choose>
-					
+
 
 				</ul>
 				<form class="d-flex">

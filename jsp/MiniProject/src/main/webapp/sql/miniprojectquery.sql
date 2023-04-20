@@ -557,6 +557,7 @@ select * from board order by ref desc, reforder asc;
 select * from board order by no desc;
 select * from readcountprocess;
 select * from boardlike;
+select * from message;
 
 --  ===============================================================================================================================================================
 CREATE TABLE `boardlike` (
@@ -627,3 +628,9 @@ insert into message(sender, receiver, messageText) value(#{sender},#{receiver},#
 
 -- 받은 쪽지 확인
 select * from message where receiver = ?;
+-- 읽지 않은 쪽지의 갯수 업데이트
+update member set notReadMsg = 
+
+select count( select isRead from message where receiver = ? and isRead = 'N' ) from message where receiver = ?;
+
+select count(*) from message where receiver = ? and isRead = 'N';

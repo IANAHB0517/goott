@@ -3,6 +3,7 @@ package com.springproj.service;
 import java.util.List;
 import java.util.Map;
 
+import com.springproj.domain.BoardImg;
 import com.springproj.domain.BoardLikeDTO;
 import com.springproj.domain.BoardVo;
 import com.springproj.domain.SearchCriteria;
@@ -32,6 +33,9 @@ public interface BoardService {
 
 	// 게시물 좋아요
 	int likeProc(BoardLikeDTO dto)throws Exception;
+	
+	// 게시물의 모든 첨부 파일 가져오기
+	List<BoardImg> getAllAppendFiles()throws Exception;
 
 	
 }

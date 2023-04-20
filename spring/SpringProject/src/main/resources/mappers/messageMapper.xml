@@ -10,4 +10,8 @@
   	insert into message(sender, receiver, messageText) value(#{sender},#{receiver},#{messageText})
   </insert>
   
+  <select id="getMsgCnt" resultType="int">
+  	select count(*) from message where receiver = #{userId} and isRead = 'N'
+  </select>
+  
   </mapper>

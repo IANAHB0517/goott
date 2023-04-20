@@ -180,6 +180,12 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		return session.selectList(ns + ".selectLikeList", no);
 	}
+
+	@Override
+	public List<BoardImg> selectAllBoardImg() {
+		
+		return session.selectList(ns + ".getAllAppendFiles");
+	}
 	
 	
 

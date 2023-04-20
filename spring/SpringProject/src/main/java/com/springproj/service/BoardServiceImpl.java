@@ -232,6 +232,12 @@ public class BoardServiceImpl implements BoardService {
 		return likecount;
 	}
 
+	@Override
+	public List<BoardImg> getAllAppendFiles() throws Exception {
+		
+		return dao.selectAllBoardImg();
+	}
+
 	
 	
 

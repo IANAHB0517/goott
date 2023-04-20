@@ -17,6 +17,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public boolean send(MessageVo msg) throws Exception {
+		System.out.println("service 단 : Message 전송" );
 		
 		int result = dao.sendMassage(msg);
 		if (result == 1) {
@@ -26,4 +27,12 @@ public class MessageServiceImpl implements MessageService {
 		return false;
 	}
 
+	@Override
+	public int getMsgCnt(String userId) throws Exception {
+		
+		return  dao.selectMsgCnt(userId);
+	}
+
+	
+	
 }

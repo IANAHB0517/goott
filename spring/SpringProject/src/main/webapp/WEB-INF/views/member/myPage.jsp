@@ -19,6 +19,20 @@
 	function showBasic() {
 		$(".card").show();
 		$(".memberPoint").hide();
+		$(".msg").hide();
+	}
+	
+	function showBasic() {
+		$(".msg").hide();
+		$(".card").show();
+		$(".memberPoint").hide();
+	}
+
+	function showMessage() {
+		$(".card").hide();
+		$(".msg").show();
+		$(".memberPoint").hide();
+	
 	}
 
 	function showPoint(pageNo) {
@@ -79,6 +93,40 @@
 	}
 	
 	
+	
+	
+	function messageSend() {
+		let receiver = $("#receiver").val();
+		let messageText = $("#messageContent").val();
+		
+		$.ajax({
+			url : "/message/send", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성)
+			type : "post", // 통신 방식 (GET, POST, PUT, DELETE)
+			dataType : "text",  // 수신받을 데이터 타입
+			headers : {
+				"Content-Type" : "application/json",
+				// PUT, DELETE, PATCH 등의 REST HTTP Method가 동작하지 않는 과거의 웹브라우저에서는 
+				// "POST" 방식으로 동작하도록 한다
+				"X-HTTP-Method-Override" : "POST"
+			},
+			data : JSON.stringify ({
+				"receiver" : receiver,
+				"messageText" : messageText
+			}),
+			success : function(data) { // 통신이 성공하면 수행할 함수(콜백 함수)
+				console.log(data);
+				if (data === 'success'){
+					$(".receiver").val('');
+					$("#messageContent").val('');
+				}
+			}, error : function(data) {
+				console.log(data);
+				
+			}
+		});
+		
+	}
+	
 </script>
 </head>
 <body>
@@ -122,6 +170,27 @@
 			<li class="nav-item"><a class="nav-link" href="#">Disabled</a>
 			</li>
 			 -->
+			 <li class="nav-item"><a class="nav-link" href="#"
+				onclick="showMessage();">쪽지 주고받기</a>
+				<div class="msg">
+					<div class="memberMessage"></div>
+
+					<div class="sendMsg">
+						<div class="form-check">
+							<label for="receiver">메세지 받을 유저 : </label> <input type="text"
+								id="receiver" class="form-control" /> <label
+								for="messageContent">보낼 메세지 : </label>
+							<textarea class="form-control" rows="2" id="messageContent"></textarea>
+
+							<button type="button" class="btn btn-info"
+								onclick="messageSend();">send</button>
+							<button type="button" class="btn btn-danger">취소</button>
+
+						</div>
+					</div>
+				</div></li>
+			 
+			 
 		</ul>
 
 

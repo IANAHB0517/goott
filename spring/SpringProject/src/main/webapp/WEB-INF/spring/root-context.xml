@@ -6,14 +6,19 @@
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 		
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- 작업 스케쥴러를 어노테이션 방식으로 설정 -->
+	<task:annotation-driven/>
 	
 	<!-- 자동으로 AspectJ 라이브러리를 이용하여 Proxy 객체를 생성 -->
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
@@ -75,6 +80,7 @@
 <context:component-scan base-package="com.springproj.service" /><!-- 서비스 객체 -->
 <context:component-scan base-package="com.springproj.persistence" /><!-- DAO 객체 -->
 <context:component-scan base-package="com.springproj.aop" /><!-- AOP 객체 -->
+<context:component-scan base-package="com.springproj.task" /><!-- task 객체 -->
 
 
 </beans>
