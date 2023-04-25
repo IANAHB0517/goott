@@ -78,15 +78,28 @@ CREATE TABLE `DescImgs` (
   CONSTRAINT `DescImgs_productId_fk` FOREIGN KEY (`productId`) REFERENCES `Product` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- 교환 테이블
 CREATE TABLE `Exchange` (
   `exchangeNo` int(11) NOT NULL,
-  `exchangeDate` varchar(300) NOT NULL,
+  `exchangeDate` datetime NOT NULL default now(),
   `exchangeStatus` varchar(300) NOT NULL,
   `exchangeReason` varchar(300) NOT NULL,
   `purchaseId` varchar(10) NOT NULL,
   PRIMARY KEY (`exchangeNo`),
   KEY `Exchange_purchaseId_fk_idx` (`purchaseId`),
   CONSTRAINT `Exchange_purchaseId_fk` FOREIGN KEY (`purchaseId`) REFERENCES `Purchase` (`purchaseId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 주문 취소
+CREATE TABLE `OrderCancel` (
+  `orderCancelNo` int(11) NOT NULL,
+  `orderCancelDate` datetime NOT NULL default now(),
+  `orderCancelStatus` varchar(300) NOT NULL,
+  `orderCancelReason` varchar(300) NOT NULL,
+  `purchaseId` varchar(10) NOT NULL,
+  PRIMARY KEY (`orderCancelNo`),
+  KEY `Exchange_purchaseId_fk_idx` (`purchaseId`),
+  CONSTRAINT `OrderCancel_purchaseId_fk` FOREIGN KEY (`purchaseId`) REFERENCES `Purchase` (`purchaseId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Genre` (
@@ -317,6 +330,8 @@ CREATE TABLE `ThumbImg` (
   CONSTRAINT `ThumbImg_productId_fk` FOREIGN KEY (`productId`) REFERENCES `Product` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
+
+
 -- ========================================================================================================
 
 -- 가데이터
@@ -351,13 +366,16 @@ insert into Notice (noticeNo, noticeTitle, noticeContent ) values("N003", "환�
 
 -- QnA
 select * from QnA;
--- qId 는 문의일자 + 문의자로 처리하기
-insert into QnA(qId, qTitle, qCategory, qContent,  memberId) values ('230424ericHan12', "상품문의", "상품", "뱅 추가 상품은 없나요",  "ericHan12" );
-insert into QnA(qId, qTitle, qCategory, qContent,  memberId) values ('230424doni', "배송이 왜케 느려요", "배송", "어제 구매했는데 왜 안와요",  "doni" );
-insert into QnA(qId, qTitle, qCategory, qContent,  memberId) values ('230424sky123', "환불해줘요", "환물", "아그냥 해줘요",  "sky123" );
+-- qId 는 일자 + 아이디 + QA + 숫자값 로 처리하기
+insert into QnA(qId, qTitle, qCategory, qContent,  memberId) values ('230424ericHan12QA002', "상품문의", "상품", "뱅 추가 상품은 없나요",  "ericHan12" );
+insert into QnA(qId, qTitle, qCategory, qContent,  memberId) values ('230424doniQA001', "배송이 왜케 느려요", "배송", "어제 구매했는데 왜 안와요",  "doni" );
+insert into QnA(qId, qTitle, qCategory, qContent,  memberId) values ('230424sky123QA003', "환불해줘요", "환불", "아그냥 해줘요",  "sky123" );
 
 -- Answer
 select * from Answer;
+insert into Answer(aId, aContent, qId) values ('230425QAN001', '뱅에 는 추가상품이 없습니다', '230424ericHan12QA002');
+insert into Answer(aId, aContent, qId) values ('230424doniQAN002', '모든 배송은 주문후 3일 이내에 완료됩니다', '230424doniQA001');
+insert into Answer(aId, aContent, qId) values ('230424sky123QAN003', '모든 배송은 주문후 3일 이내에 완료됩니다', '230424sky123QA003');
 
 
 
