@@ -51,6 +51,8 @@ public class MemberController {
 			System.out.println(mp);
 		}
 		
+		model.addAttribute("mpList", mpList);
+		
 	}
 	
 }

@@ -9,6 +9,7 @@
 <title>마이 페이지</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
+	
 	$(function() {
 	$(".movePage").click(function(){
 		console.log($(this).html())
@@ -22,31 +23,33 @@
 		$(".msg").hide();
 	}
 	
-	function showBasic() {
-		$(".msg").hide();
-		$(".card").show();
-		$(".memberPoint").hide();
-	}
 
 	function showMessage() {
-		$(".card").hide();
 		$(".msg").show();
+		$(".card").hide();
 		$(".memberPoint").hide();
 	
 	}
 
-	function showPoint(pageNo) {
+	function showPoint() {
+		$(".msg").hide();
+		$(".card").hide();
+		$(".memberPoint").show();
+		getMPList(1);
+	
+	}
+
+	
+	function getMPList(pageNo) {
+		$(".msg").hide();
 		$(".card").hide();
 		
 		
 				
 		$.ajax({
-	          url: "getMemPoint", // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성)
+	          url: "getMemPoint?userId=" + '${sessionScope.loginMember.userId }' +'&pageNo='+pageNo, // 데이터가 송수신될 서버의 주소(서블릿의 매핑주소작성)
 	          type: "get", // 통신 방식 (GET, POST, PUT, DELETE)
-	          data: {
-	            "userId": "${sessionScope.loginMember.userId }",
-	            "pageNo": pageNo
-	          }, // 서블릿에 전송할 데이터
+	           // 서블릿에 전송할 데이터
 	          dataType: "json", // 수신받을 데이터 타입(MIME TYPE)
 	          success: function (data) {
 	            // 통신이 성공하면 수행할 함수(콜백 함수)
@@ -90,6 +93,8 @@
 		$(".mpPagination").html(pagination);
 			
 		$(".memberPoint").show();
+		
+		
 	}
 	
 	
