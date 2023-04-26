@@ -35,31 +35,24 @@ turtle2.goto(+100, -100)
 turtle3.goto(+100, +100)
 
 while True :
+    maxPos = screenWidth/2
+    maxMinPos = -(screenWidth/2)
+
     angle1 = random.randrange(0, 60) # 0 <= 난수 < 359
-    dist1 = random.randrange(1,100) # 1 <= 난수 < 99
+    dist1 = random.randrange(maxPos,maxMinPos) # 1 <= 난수 < 99
 
     angle2 = random.randrange(0, 60) # 0 <= 난수 < 359
-    dist2 = random.randrange(1,100) # 1 <= 난수 < 99
+    dist2 = random.randrange(maxPos,maxMinPos) # 1 <= 난수 < 99
 
     angle3 = random.randrange(0, 60) # 0 <= 난수 < 359
-    dist3 = random.randrange(1,100) # 1 <= 난수 < 99
+    dist3 = random.randrange(maxPos,maxMinPos) # 1 <= 난수 < 99
 
     # 각 거북이들의 좌표를 구하자
     turtle1X = turtle1.xcor(); turtle1Y = turtle1.ycor()
     turtle2X = turtle2.xcor(); turtle2Y = turtle2.ycor()
     turtle3X = turtle3.xcor(); turtle3Y = turtle3.ycor()
 
-    if turtle1X < 300 or turtle1X < -300 :
-        angle1 = random.randrange(0, 60)
-        dist1 = random.randrange(1,100)
-
-    if turtle2X < 300 or turtle2X < -300 :
-        angle2 = random.randrange(0, 60)
-        dist2 = random.randrange(1,100)
-
-    if turtle3X < 300 or turtle3X < -300 :
-        angle3 = random.randrange(0, 60)
-        dist3 = random.randrange(1,100)
+   
 
     turtle1.left(angle1); turtle1.forward(dist1)
     turtle2.left(angle2); turtle2.forward(dist2)
