@@ -379,6 +379,12 @@ insert into Answer(aId, aContent, qId) values ('230425QAN001', '뱅에 는 추�
 insert into Answer(aId, aContent, qId) values ('230424doniQAN002', '모든 배송은 주문후 3일 이내에 완료됩니다', '230424doniQA001');
 insert into Answer(aId, aContent, qId) values ('230424sky123QAN003', '모든 배송은 주문후 3일 이내에 완료됩니다', '230424sky123QA003');
 
+update QnA set qStatus = '응답됨' where qId = '230424ericHan12QA002';
+
+select * from QnA ;
+select * from QnA order by qDate limit 0,1;
+
+select * from QnA where memberId  like '%doni%' order by qDate desc limit 0,10 ;
 
 
 commit;
@@ -409,6 +415,4 @@ select * from QnAUpfiles ;
 select * from Review ;
 select * from ShippingAddr ;
 select * from ThumbImg ;
-
-
 
