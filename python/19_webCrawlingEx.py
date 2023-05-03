@@ -46,3 +46,5 @@ if html is not None : # 웹 문서를 로딩 했다면
 
 # 크롤링도 웹의 구조를 이용해야 한다
 # 리스트 페이지에서 꼭필요한 공통 데이터를 얻어오고 세부사항을 디테일 페이지 에서 한다
+
+# select * from product where prodNo = productNo

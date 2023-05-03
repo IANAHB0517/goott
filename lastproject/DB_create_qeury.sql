@@ -371,6 +371,8 @@ insert into QnA(qId, qTitle, qCategory, qContent,  memberId) values ('230424eric
 insert into QnA(qId, qTitle, qCategory, qContent,  memberId) values ('230424doniQA001', "배송이 왜케 느려요", "배송", "어제 구매했는데 왜 안와요",  "doni" );
 insert into QnA(qId, qTitle, qCategory, qContent,  memberId) values ('230424sky123QA003', "환불해줘요", "환불", "아그냥 해줘요",  "sky123" );
 
+select count(*) cnt from QnA;
+
 -- Answer
 select * from Answer;
 insert into Answer(aId, aContent, qId) values ('230425QAN001', '뱅에 는 추가상품이 없습니다', '230424ericHan12QA002');
