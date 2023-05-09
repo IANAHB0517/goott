@@ -5,14 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script></script>
+    <style>
+      .container {
+        margin: 2vh 0;
+      }
+    </style>
   </head>
   <body>
-    <section>
-      <form>
+    <div class="container">
+      <form action="saveQnA" method="post">
         <input type="text" name="qTitle" />
-        <input type="text" value="writer" name="memberId" readonly />
+        <input type="text" value="로그인한멤버" name="memberId" readonly />
+        <input type="hidden" value="" name="qDate" />
+        <select name="qCategory">
+          <option value="">--글머리선택--</option>
+          <option value="shipping">배송</option>
+          <option value="product">상품</option>
+          <option value="refund">환불</option>
+        </select>
         <input type="textarea" name="qContent" />
+
+        <textarea class="summernote" name="editordata"></textarea>
+
+        <button id="submit" type="reset">취소</button>
+        <button type="submit">저장</button>
       </form>
-    </section>
+    </div>
   </body>
 </html>
