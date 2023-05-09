@@ -387,6 +387,8 @@ select * from QnA order by qDate limit 0,1;
 select * from QnA where memberId  like '%doni%' order by qDate desc limit 0,10 ;
 
 
+update QnA set qnaTitle = '제목이렇게수정하나' and qnaCategory = 'shipping' and qnaContent = '<p>어질 어질 하다!</p><p><br></p><p>와! 태그 안가져 온다!</p> ' where qnaId = '230509gpark0018';
+
 commit;
 
 
