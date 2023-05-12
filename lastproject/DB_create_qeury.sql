@@ -392,6 +392,9 @@ update QnA set qnaTitle = '제목이렇게수정하나' and qnaCategory = 'shipp
 update QnA set qnaTitle = '어지뤄어!' , qnaCategory = 'product' , qnaContent = '<p>어질 어질 하다!</p><p><br></p><p>과연 
 and 연산 이었던건가</p>' where qnaId = '230509gpark0021' ;
 
+select * from qnaReply where qnaId = '230424doniQA0001';
+INSERT INTO qnaReply (`qnaReplyId`, `qnaReplyDate`, `qnaReplyContent`, `qnaId`) VALUES ('230512QAR0003', '2023-05-12 12:50:39', '이렇게 입력', '230511jangyoonjooQA0017');
+update QnA set qnaStatus = '답변 완료' where qnaId = '230511jangyoonjooQA0017';
 commit;
 
 
@@ -399,7 +402,7 @@ commit;
 
 -- 테이블 조회
 select * from Admin ;
-select * from Answer ;
+
 select * from AnswerUpfiles ;
 select * from Brand ;
 select * from Cart ;
@@ -417,6 +420,7 @@ select * from Purchase ;
 select * from Pointpolicy ;
 select * from QnA ;
 select * from QnAUpfiles ;
+select * from qnaReply ;
 select * from Review ;
 select * from ShippingAddr ;
 select * from ThumbImg ;
