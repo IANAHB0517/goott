@@ -33,3 +33,23 @@
 
 // [a, b] = [b, a];
 // console.log(a, b);
+
+
+// <div id='result'></div>
+// <button id='btn'>+</button>
+
+// <script>
+//   let count = 0;  // 전역변수
+//   const btn = document.getElementById('btn');
+    
+//   function increase() {
+//     let count = 0;
+    
+//       count++;
+//       document.getElementById('result').innerHTML = count;
+//    }
+ 
+ 
+//   btn.addEventListener('click', increase());
+//   console.dir(increase());
+// </script>
