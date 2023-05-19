@@ -398,6 +398,14 @@ update QnA set qnaStatus = '답변 완료' where qnaId = '230511jangyoonjooQA001
 commit;
 
 
+    select Product.*, ThumbImg.thumbImgURL from Product, ThumbImg, ProductGenre
+	where Product.productId = ThumbImg.productId
+	and ProductGenre.productId = Product.productId
+	and ProductGenre.genreId = 'G003'
+	and Product.productName like '%다빈치%' 
+    limit 0, 12;
+
+
 -- ========================================================================================================
 
 -- 테이블 조회
