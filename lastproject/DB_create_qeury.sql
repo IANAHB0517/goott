@@ -402,8 +402,12 @@ commit;
 	where Product.productId = ThumbImg.productId
 	and ProductGenre.productId = Product.productId
 	and ProductGenre.genreId = 'G003'
-	and Product.productName like '%다빈치%' 
+	
     limit 0, 12;
+    
+    select * from QnA where qnaContent like '%프라이%'  and qnaStatus = '대기중';
+    
+    select * from QnA where memberId = 'doni';
 
 
 -- ========================================================================================================

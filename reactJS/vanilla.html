@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter</title>
+</head>
+<body>
+    <div id="root">
+        <span>Total Clicks : 0</span>
+        <button id="btn">click Me</button>
+    </div>
+
+    <script>
+        // // 전역변수를 쓰기 보다 지역변수를 쓰는것이 좋다
+        // 전역 변수를 사용하지 않는 이유는 어디에서나 값을 변화시키지 못하고 정해진 규칙 내에서만 값을 변화 시킬 수 있도록 하기 위함이다
+        // let counter = 0;
+        const button = document.getElementById("btn");
+
+        function increase(){
+            let counter = 0;
+
+            return function(){
+                counter++;
+                document.querySelector("span").innerHTML = `Total Clicks : ${counter}`;
+            }
+
+        }
+
+        // button.addEventListener("click", increase); // 반환되는 함수를 즉시 실행하지 못하기 때문에 아래 처럼 사용해야 한다.
+        button.addEventListener("click", increase());
+    </script>
+</body>
+</html>
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter</title>
+</head>
+<body>
+    <span id="counter">Total Clicks: 0</span>
+
+    <button id="btn">Click Me</button>
+
+    <script>
+        let counter = 0;
+        const button = document.getElementById("btn");
+        const counterSpan = document.getElementById("counter");
+
+        function increase() {
+            counter++;
+            counterSpan.innerHTML = `Total Clicks: ${counter}`;
+        }
+
+        button.addEventListener("click", increase);
+    </script>
+</body>
+</html> -->

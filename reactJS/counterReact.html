@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>counter_ReactJS</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<!-- 순수한 react 문법 import -->
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<!-- react-dom을 사용할 수 있도록 해주는 -->
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<!-- JSX를 이해하지 못하는 브라우져를 위한 변환기 Babel-->
+<script src="https://unpkg.com/@babel/standalone@7.21.8/babel.min.js"></script>
+
+
+<script>
+    // const root = document.getElementById("root");
+    // const span = React.createElement(
+    //     "span", // 생성하고자 하는 태그 종류
+    //     {
+    //         id : "mySpan",
+    //         className : "spans",
+    //         style : {
+    //             color: "purple",
+    //             fontSize : "40px"
+    //         }
+    //     }, // 태그에 부여하고싶은 속성
+    //     "Total Clicks : 0"
+    // );
+
+    // const button = React.createElement(
+    //     "button",
+    //     {id : "btn"},
+    //     "Click Me"
+
+    // );
+    // 위의 방식은 태그를 만드는 과정 자체가 너무 복잡하고 한번에 여러 태그를 render하기 까다롭다. 그결과
+    // JSX(JavaScript Extension) 문법이 사용되게 되었다.
+
+    // const App = () => {
+    //     // ArrowFunction의 경우 중괄호가 있으면 return을 생략하면 안된다.
+    //     return (
+    //         <div>
+    //             <span>Total Clicks : 0</span>
+    //             <button>Click Me</button>
+    //         </div>
+    //     );
+        
+    // }
+    // 이대로 render하려고 하면 return은 html 영역이 아니기 때문에 rendering 하지 못한다 그래서 babel이라고 하는 문법이 등장한다.
+    // ReactDOM.render(span, root); // span 객체를 root에 랜더링 // 지웠다가 다시 쓰기 때문에 두번 쓸 수 없다.
+</script>
+
+<script type="text/babel">
+    const root = document.getElementById("root");
+    const App = () => {
+        // ArrowFunction의 경우 중괄호가 있으면 return을 생략하면 안된다.
+
+        // const stateArr = React.useState(); 이렇게 작성하면 undefind , f() 이 들어있는 배열을 반환한다. 이는 아직 정의되지 않은 변수(read Only)와 그 변수의 값을 조절하는 함수를 정의할 자리이다.
+        // counter 라는 속성에 0을 초기값으로 주고,
+        // setCounter 함수로 counter의 값을 조절 한다.
+        const [counter, setCounter] = React.useState(0); // 0 값을 counter에 할당, setCounter로 counter의 값을 변화 시킬 수 있다.
+        console.log(counter);
+        
+        const increase = ()=> {
+            console.log("clicked");
+            setCounter((cur) => cur + 1); // arrow function { } 가 없기 때문에 return이 없어도 된다.
+        }
+        return (
+            // 부모 Element는 반드시 하나여야 한다.
+            <div>
+                {/*부모태그가 등장한 뒤 부터는 자바스크립트로 컴파일 되는 부분이기 때문에 이렇게 해줘야 주석을 사용할 수 있다*/}
+                <span style={{
+                    color : "purple",
+                    fontSize : "32px"
+                }}>Total Clicks : {counter}</span>
+                <button onClick={increase}>Click Me</button>
+                {/*HTML과 구분하기 위해서 대문자 C를 쓴다*/}
+            </div>
+        );
+        
+    }
+
+    ReactDOM.render(<App />, root); // App 객체를 root에 랜더링
+
+</script>
+</html>
