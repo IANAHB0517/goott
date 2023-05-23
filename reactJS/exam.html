@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .btns {
+            display: flex;
+            width : 15%;
+            height: 100px;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <!-- 쇼핑몰에서 가격을 조절 할 수 있는 버튼 만들기 -->
+</body>
+<!-- 순수한 react 문법 import -->
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<!-- react-dom을 사용할 수 있도록 해주는 -->
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<!-- JSX를 이해하지 못하는 브라우져를 위한 변환기 Babel-->
+<script src="https://unpkg.com/@babel/standalone@7.21.8/babel.min.js"></script>
+
+<script type="text/babel">
+    const container= document.getElementById("root");
+
+    // state : 변하는 속성 값.
+    
+    const App = () => {
+        const [price, setPrice]  = React.useState(1000); // state 가 반환하는 배열의 0번째 변하는 값의 속성 1 번째에는 속성값을 조절하는 함수
+
+        /*function으로 써도 const로 써도 상관없다.*/
+        function priceUP () {
+            if(price < 10000){
+                setPrice((curPrice) =>curPrice + 1000 );
+                /* 변수의 값을 간접적으로 변경시키는 것이 안정적인 코드이다.*/
+            } else {
+                alert("값이 너무 높습니다.")
+            }
+        }
+
+        const priceDN = () => {
+            if (price > 0 ){
+                setPrice((curPrice) => curPrice - 1000);
+            } else {
+                alert("값이 너무 낮습니다.");
+            }
+        }
+
+        return (
+        <div class="btns">
+            <button onClick={priceDN}> - </button>
+            <h4>가격 : {price}원</h4>
+            <button onClick={priceUP}> + </button>
+        </div>
+        );
+    }
+
+
+    ReactDOM.render(<App /> , container);
+    /* 함수또한 태그처럼 활용이 된다.*/
+
+</script>
+</html>
