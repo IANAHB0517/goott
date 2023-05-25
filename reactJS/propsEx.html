@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>props</title>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+<!-- 개발 버전용 라이브러리-->
+<script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+
+<!-- 배포 버전용 라이브러리-->
+<!-- <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script> -->
+
+<script src="https://unpkg.com/@babel/standalone@7.21.8/babel.min.js"></script>
+
+<!-- prop types를 위한 import -->
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+
+<script type="text/babel">
+    const root = document.getElementById("root");
+
+    const Btn= ({text, bgColor, fSize}) => { // 구조 분해 할당 문법을 이용해서 개선한 버전
+        // console.log(props);
+        return (
+            <button style ={{
+                backgroundColor : bgColor, // 자바스크립트 영역이기 때문에 {} 를 생략 가능하다
+                color : "white",
+                padding : "10px 20px",
+                border : 0,
+                BorderRadius : 10,
+                fontSize :  fSize
+            }}>{text}</button>
+        ) 
+    }
+
+    // props의 타입을 정의 : prop의 탑을 맞추지 않으면 개발 버전에서 콘솔창에 경고 출력
+    Btn.propTypes = {
+        text : PropTypes.string.isRequired,
+        bgColor : PropTypes.string,
+        fSize : PropTypes.number
+    }
+
+    const App = () => {
+        return (
+            <div>
+                <h1>M</h1>
+                <Btn text="확인" bgColor="purple" fSize={20}/>
+                <Btn text="취소" bgColor="red" fSize={160}/> 
+                <Btn text="전송" bgColor="blue" fSize={40}/>
+                <Btn text="노랑" bgColor="yellow" fSize={30}/>
+            </div>
+        )
+    }
+    // fSize 값을 {""} 텍스트로 보내주면 적용이 되지 않는다
+
+    ReactDOM.render(<App /> , root);
+</script>
+
+
+<script type="text/babel">
+    // const root = document.getElementById("root");
+
+    // const Btn= (props) => {
+    //     console.log(props);
+    //     return (
+    //         <button style ={{
+    //             backgroundColor : props.bgColor, // 자바스크립트 영역이기 때문에 {} 를 생략 가능하다
+    //             color : "white",
+    //             padding : "10px 20px",
+    //             border : 0,
+    //             BorderRadius : 10,
+    //             fontSize :  props.fSize
+    //         }}>{props.text}</button>
+    //     ) 
+    // }
+
+    // const App = () => {
+    //     return (
+    //         <div>
+    //             <h1>M</h1>
+    //             <Btn text="확인" bgColor="purple" fSize="1rem"/>
+    //             <Btn text="취소" bgColor="red" fSize="1.5rem"/>
+    //             <Btn text="전송" bgColor="blue" fSize={40}/>
+    //         </div>
+    //     )
+    // }
+
+    // ReactDOM.render(<App /> , root);
+</script>
+</html>

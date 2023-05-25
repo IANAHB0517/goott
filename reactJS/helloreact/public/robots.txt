@@ -1,0 +1,5 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow:
+# 검색엔진이 데이터를 찾지 못하도록 설정하는 파일
+/admin 
