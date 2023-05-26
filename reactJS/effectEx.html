@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effect</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<!-- 순수한 react 문법 import -->
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<!-- react-dom을 사용할 수 있도록 해주는 -->
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<!-- JSX를 이해하지 못하는 브라우져를 위한 변환기 Babel-->
+<script src="https://unpkg.com/@babel/standalone@7.21.8/babel.min.js"></script>
+
+
+
+<script type="text/babel">
+    import React, { useEffect } from 'react';
+    
+    const root = document.getElementById("root");
+    const App = () => {
+       
+        const [counter, setCounter] = React.useState(0); 
+        const [name, setName] =React.useState('');
+
+        // useEffect((),[]) :
+        // 1 번째 매개변수의 함수는 , 2번째 매개변수에 만족될 때 실행될 함수
+        // 2 번째 매개변수의 배열은, 1번째가 수행될 변수
+
+        useEffect(() => {
+            console.log('name 값이 변경 되었습니다 : ' + name);
+
+        }, [])
+        
+        const increase = ()=> {
+            console.log("clicked");
+            setCounter((cur) => cur + 1); 
+        }
+        
+           
+        const textChange = (evt) => {
+            console.log(evt.target.value)
+            setName(evt.target.value);
+        }
+
+        return (
+            <div>
+                <input tupe='text' onChange={textChange} value={name}/>
+                <span>Total Clicks : {counter}</span>
+                <button onClick={increase}>Click Me</button>
+            </div>
+        );
+        
+    }
+
+    ReactDOM.render(<App />, root);
+
+</script>
+</html>

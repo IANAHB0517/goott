@@ -408,7 +408,31 @@ commit;
     select * from QnA where qnaContent like '%프라이%'  and qnaStatus = '대기중';
     
     select * from QnA where memberId = 'doni';
+    
+    select * from Purchase where memberId= 'haha1234' order by purchaseDate desc;
+    
+    select pur.*, prod.productName from Purchase pur, Cart c, Product prod where pur.cartList = c.cartNo and c.productId = prod.productId and Product.productId = ThumbImg.productId and purchaseId = '20230525THU00726'; 
 
+select * from Cart where cartNo in (select cartList from Purchase where purchaseId = '20230525THU00726') ;
+
+select Product.productId, Product.productName, Product.productPrice, ThumbImg.thumbImgURL, Cart.cartNo, Cart.cartSesId, Cart.quantity, Cart.price, Cart.status, Cart.memberId
+from Product, ThumbImg, Cart where Product.productId = ThumbImg.productId and Product.productId = #{prodNo} and Cart.cartNo = #{cartNo};
+;
+
+select cartList from Purchase where purchaseId = '20230525THU00689';
+
+;얻어온 리스트 반복문 돌려서 조인 하고 구매 디테일 다 가져오기;
+
+select pur.*, c.quantity , prod.productName, c.cartNo , t.thumbImgURL from Purchase pur, Cart c, Product prod, ThumbImg t where 699 = c.cartNo and c.productId = prod.productId and prod.productId = t.productId and purchaseId = '20230525THU00726'; 
+
+;
+
+select pur.*, c.quantity , prod.productName, t.thumbImgURL 
+from Purchase pur, Cart c, Product prod, ThumbImg t 
+where 772 = c.cartNo and
+c.productId = prod.productId and 
+prod.productId = t.productId 
+and purchaseId = '20230525THU00726';
 
 -- ========================================================================================================
 
