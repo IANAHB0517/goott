@@ -1,0 +1,31 @@
+.lastUpdate {
+    float: right;
+}
+
+.coinList {
+    clear: both;
+}
+
+.coin {
+    padding: 15px 20px;
+}
+
+.coinTitle {
+    clear: both;
+    display: flex;
+    justify-content: space-between;
+}
+
+.coinPrice {
+    float: right;
+    margin-right: 5px;
+    color : rgba(0,0,0,0.7);
+}
+
+.up24{
+    color: red;
+
+}
+.dn24 {
+    color : blue;
+}
