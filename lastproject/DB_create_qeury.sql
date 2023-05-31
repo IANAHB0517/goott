@@ -434,6 +434,13 @@ c.productId = prod.productId and
 prod.productId = t.productId 
 and purchaseId = '20230525THU00726';
 
+select productId, count(*) cnt from Cart group by productId order by cnt desc limit 1;
+
+select p.productName, i.thumbImgURL  from Product p , ThumbImg i where p.productId = i.productId and productId = #{productId}
+
+select productId, count(*) cnt from Cart group by productId order by cnt asc limit 1;
+
+
 -- ========================================================================================================
 
 -- 테이블 조회
@@ -460,4 +467,5 @@ select * from qnaReply ;
 select * from Review ;
 select * from ShippingAddr ;
 select * from ThumbImg ;
+
 
