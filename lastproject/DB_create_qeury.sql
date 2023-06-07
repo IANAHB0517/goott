@@ -436,10 +436,19 @@ and purchaseId = '20230525THU00726';
 
 select productId, count(*) cnt from Cart group by productId order by cnt desc limit 1;
 
-select p.productName, i.thumbImgURL  from Product p , ThumbImg i where p.productId = i.productId and productId = #{productId}
+select p.productName, i.thumbImgURL  from Product p , ThumbImg i where p.productId = i.productId and p.productId = '1000000010';
 
 select productId, count(*) cnt from Cart group by productId order by cnt asc limit 1;
 
+select p.productName, i.thumbImgURL  from Product p , ThumbImg i where p.productId = i.productId and p.productId = '1000003998';
+
+select productId , count(*) cnt from Cart group by productId order by cnt asc limit 0, 3;
+
+select productName, productGenre from Product ;
+
+select n.genreName from ProductGenre g , Genre n where g.genreId = n.genreId  and productId = '1000003998';
+
+select sum(prodTotPrice) price , memberId from Purchase where memberId is not null and memberId != "" and date_format(purchaseDate, '%y') = date_format(#{today}, '%y') group by memberId order by price desc limit 10
 
 -- ========================================================================================================
 
