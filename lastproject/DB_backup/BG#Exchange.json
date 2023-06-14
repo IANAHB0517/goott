@@ -1,0 +1,10 @@
+[{"exchangeNo":25, "exchangeDate":"2023-05-31 16:15:57", "exchangeStatus":"\uc694\uccad", "cartList":"", "exchangeReason":"ex2", "purchaseId":"20230525THU00820"},
+ {"exchangeNo":26, "exchangeDate":"2023-05-31 16:57:05", "exchangeStatus":"\uc694\uccad", "cartList":"717", "exchangeReason":"ex1", "purchaseId":"20230525THU00717"},
+ {"exchangeNo":27, "exchangeDate":"2023-05-31 16:57:13", "exchangeStatus":"\uc694\uccad", "cartList":"808,809", "exchangeReason":"ex1", "purchaseId":"20230525THU00808"},
+ {"exchangeNo":28, "exchangeDate":"2023-05-31 16:58:20", "exchangeStatus":"\uc694\uccad", "cartList":"874,875,876,877,878", "exchangeReason":"ex1", "purchaseId":"20230525THU00874"},
+ {"exchangeNo":29, "exchangeDate":"2023-05-31 16:59:20", "exchangeStatus":"\uc694\uccad", "cartList":"826,827,828,853,854", "exchangeReason":"ex2", "purchaseId":"20230525THU00826"},
+ {"exchangeNo":30, "exchangeDate":"2023-05-31 17:00:13", "exchangeStatus":"\uc694\uccad", "cartList":"856", "exchangeReason":"ex2", "purchaseId":"20230525THU00856"},
+ {"exchangeNo":40, "exchangeDate":"2023-06-01 12:50:23", "exchangeStatus":"\uc694\uccad", "cartList":"971", "exchangeReason":"\uce74\ub4dc \ubaa8\uc591\uc774 \uc774\uc0c1\ud574\uc694", "purchaseId":"20230601THU00971"},
+ {"exchangeNo":41, "exchangeDate":"2023-06-01 15:44:50", "exchangeStatus":"\uc694\uccad", "cartList":"726,727,728,729,730,731,732,733,734,735,736,737,738,739,740,741,742,743,744,745,746,747,748,749,750,752,754,755,758,759,763,764,765,767,768,769,772,773,774,775,783,784,786,793", "exchangeReason":"ex2", "purchaseId":"20230525THU00726"},
+ {"exchangeNo":42, "exchangeDate":"2023-06-01 15:45:32", "exchangeStatus":"\uc694\uccad", "cartList":"844,845", "exchangeReason":"", "purchaseId":"20230525THU00844"},
+ {"exchangeNo":43, "exchangeDate":"2023-06-02 15:58:55", "exchangeStatus":"\uc694\uccad", "cartList":"1013,1020", "exchangeReason":"ex1", "purchaseId":"20230602FRI001013"}]

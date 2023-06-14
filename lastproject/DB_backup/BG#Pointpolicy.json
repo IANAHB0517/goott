@@ -1,0 +1,5 @@
+[{"pointpolicyId":"PPI01", "pointpolicyWhy":"\ud68c\uc6d0\uac00\uc785", "pointpolicyHowmuch":3000},
+ {"pointpolicyId":"PPI02", "pointpolicyWhy":"\uc0c1\ud488\ud6c4\uae30", "pointpolicyHowmuch":500},
+ {"pointpolicyId":"PPI03", "pointpolicyWhy":"\ud6c4\uae30\uc774\ubbf8\uc9c0\ucca8\ubd80", "pointpolicyHowmuch":1000},
+ {"pointpolicyId":"PPI04", "pointpolicyWhy":"\uc0ac\uc6a9\uc801\ub9bd\uae08", "pointpolicyHowmuch":0},
+ {"pointpolicyId":"PPI05", "pointpolicyWhy":"\uad6c\ub9e4\uc801\ub9bd\uae08", "pointpolicyHowmuch":0}]
